@@ -150,7 +150,7 @@ CREATE TABLE `material` (
   `date_edit` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_add` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `file_path` varchar(512) NOT NULL,
-  `status` tinyint(1) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `pub_place_id` (`pub_place_id`),
   KEY `language_id` (`language_id`),
@@ -158,7 +158,7 @@ CREATE TABLE `material` (
   CONSTRAINT `material_ibfk_1` FOREIGN KEY (`pub_place_id`) REFERENCES `place` (`id`),
   CONSTRAINT `material_ibfk_2` FOREIGN KEY (`language_id`) REFERENCES `language` (`id`),
   CONSTRAINT `material_ibfk_3` FOREIGN KEY (`type_id`) REFERENCES `type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=245 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=246 DEFAULT CHARSET=utf8;
 
 /*Data for the table `material` */
 
@@ -399,7 +399,8 @@ insert  into `material`(`id`,`name`,`type_id`,`language_id`,`date_publish`,`src`
 (241,'paradox29',1,1,'2024-01-16',NULL,2,30,3,'2024-01-16 09:28:25','2024-01-16 09:28:25','3 цикл ним. 1 23-24 (1).pdf',1),
 (242,'paradox29',1,1,'2024-01-16',NULL,2,30,3,'2024-01-16 09:28:39','2024-01-16 09:28:39','3 цикл ним. 1 23-24 (1).pdf',1),
 (243,'paradox29',2,3,'2024-01-16',NULL,1,35,3,'2024-01-16 09:29:01','2024-01-16 09:29:01','16958_571297297.pdf',1),
-(244,'TEst',1,1,'2024-01-20',NULL,1,1,3,'2024-01-20 15:52:20','2024-01-20 15:52:20','2.txt',0);
+(244,'TEst',1,1,'2024-01-20',NULL,1,1,3,'2024-01-20 15:52:20','2024-01-20 15:52:20','2.txt',0),
+(245,'Test',2,2,'2024-02-03',NULL,1,20,3,'2024-02-03 12:18:26','2024-02-03 12:18:26','photo_2024-02-03_10-44-04.ico',1);
 
 /*Table structure for table `material_author` */
 
@@ -414,7 +415,7 @@ CREATE TABLE `material_author` (
   KEY `material_id` (`material_id`),
   CONSTRAINT `material_author_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `author` (`id`),
   CONSTRAINT `material_author_ibfk_2` FOREIGN KEY (`material_id`) REFERENCES `material` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=332 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=334 DEFAULT CHARSET=utf8;
 
 /*Data for the table `material_author` */
 
@@ -696,7 +697,9 @@ insert  into `material_author`(`id`,`material_id`,`author_id`) values
 (328,241,2),
 (329,242,2),
 (330,243,1),
-(331,244,1);
+(331,244,1),
+(332,245,1),
+(333,245,2);
 
 /*Table structure for table `material_specialty` */
 
@@ -711,7 +714,7 @@ CREATE TABLE `material_specialty` (
   KEY `material_id` (`material_id`),
   CONSTRAINT `material_specialty_ibfk_1` FOREIGN KEY (`specialty_id`) REFERENCES `specialty` (`id`),
   CONSTRAINT `material_specialty_ibfk_2` FOREIGN KEY (`material_id`) REFERENCES `material` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=287 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=288 DEFAULT CHARSET=utf8;
 
 /*Data for the table `material_specialty` */
 
@@ -955,7 +958,8 @@ insert  into `material_specialty`(`id`,`material_id`,`specialty_id`) values
 (283,241,2),
 (284,242,2),
 (285,243,2),
-(286,244,1);
+(286,244,1),
+(287,245,20);
 
 /*Table structure for table `material_subject` */
 
@@ -970,7 +974,7 @@ CREATE TABLE `material_subject` (
   KEY `material_id` (`material_id`),
   CONSTRAINT `material_subject_ibfk_1` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`id`),
   CONSTRAINT `material_subject_ibfk_2` FOREIGN KEY (`material_id`) REFERENCES `material` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=274 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=275 DEFAULT CHARSET=utf8;
 
 /*Data for the table `material_subject` */
 
@@ -1213,7 +1217,8 @@ insert  into `material_subject`(`id`,`material_id`,`subject_id`) values
 (270,241,94),
 (271,242,94),
 (272,243,94),
-(273,244,116);
+(273,244,116),
+(274,245,42);
 
 /*Table structure for table `place` */
 
@@ -1244,13 +1249,14 @@ CREATE TABLE `role` (
   `date_add` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `comment` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 /*Data for the table `role` */
 
 insert  into `role`(`id`,`name`,`date_add`,`comment`) values 
 (1,'admin','2020-04-16 01:08:13','all permission'),
-(2,'moderator','2020-04-16 01:08:20','permission to insert/update');
+(2,'moderator','2020-04-16 01:08:20','permission to insert/update'),
+(3,'superadmin','2024-02-03 15:29:02','all permission');
 
 /*Table structure for table `specialty` */
 
@@ -1503,7 +1509,7 @@ CREATE TABLE `user` (
   `role_id` int(11) NOT NULL,
   `date_edit` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_add` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `image_url` varchar(512) NOT NULL,
+  `image_url` tinytext NOT NULL,
   PRIMARY KEY (`id`),
   KEY `role_id` (`role_id`),
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
@@ -1512,9 +1518,9 @@ CREATE TABLE `user` (
 /*Data for the table `user` */
 
 insert  into `user`(`id`,`name`,`login`,`password`,`access`,`role_id`,`date_edit`,`date_add`,`image_url`) values 
-(2,'Usmonova M','m_usmonova','1234_',2,1,'2020-04-16 02:18:34','2020-04-16 02:18:34',''),
-(3,'Akbarov Jahongir Merotovich','admin','$2020$',1,1,'2020-04-16 02:19:27','2020-04-16 02:19:27','photo_2024-01-20_14-54-23.jpg'),
-(4,'Student','student','student',1,2,'2020-04-16 02:20:19','2020-04-16 02:20:19','');
+(2,'Razokov Abduhamid','admin1','12345',2,1,'2020-04-16 02:18:34','2020-04-16 02:18:34','\0'),
+(3,'Akbarov Jahongir Murotovich','admin','$2020$',1,3,'2020-04-16 02:19:27','2020-04-16 02:19:27','photo_2024-01-20_14-54-23.jpg'),
+(4,'Student','student','student',1,2,'2020-04-16 02:20:19','2020-04-16 02:20:19','\0');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
