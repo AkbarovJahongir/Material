@@ -82,25 +82,25 @@ class Route{
 	}
 	
 	static function MainPage(){
-        $host = 'http://'.$_SERVER['HTTP_HOST'].'/';
+        $host = 'https://'.$_SERVER['HTTP_HOST'].'/';
         header('Location:'.$host.'main');
     }
 
     static function AuthPage(){
-        $host = 'http://'.$_SERVER['HTTP_HOST'].'/';
+        $host = 'https://'.$_SERVER['HTTP_HOST'].'/';
         header('Location:'.$host.'auth');
     }
 
     static function ErrorPage404(){
-        $host = 'http://'.$_SERVER['HTTP_HOST'].'/';
-        header('HTTP/1.1 404 Not Found');
+        $host = 'https://'.$_SERVER['HTTP_HOST'].'/';
+        header('HTTPS/1.1 404 Not Found');
 		header("Status: 404 Страница не найдена");
 		header('Location:'.$host.'error/404');
     }
 
     static function ErrorPage403(){
-        $host = 'http://'.$_SERVER['HTTP_HOST'].'/';
-        header('HTTP/1.1 403 Forbidden');
+        $host = 'https://'.$_SERVER['HTTP_HOST'].'/';
+        header('HTTPS/1.1 403 Forbidden');
 		header("Status: 403 Запрещено");
 		header('Location:'.$host.'error/403');
     }

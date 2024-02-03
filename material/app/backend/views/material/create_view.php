@@ -12,8 +12,8 @@
     <div class="col-md-12 content">
         <div class="tile">
             <?php
-            if (isset($data["message"])){
-                echo '<div class="card text-black bg-light"><div class="card-body">'.$data["message"].'</div></div><br>';
+            if (isset($data["message"])) {
+                echo '<div class="card text-black bg-light"><div class="card-body">' . $data["message"] . '</div></div><br>';
             }
             ?>
 
@@ -32,9 +32,9 @@
                             <select id="authorSelect" class="form-control" multiple="">
                                 <optgroup label="Выберите автора">
                                     <?php
-                                    if(isset($data["authors"])){
+                                    if (isset($data["authors"])) {
                                         foreach ($data['authors'] as $row) {
-                                            echo "<option value='".$row["id"]."'>".$row['name']."</option>";
+                                            echo "<option value='" . $row["id"] . "'>" . $row['name'] . "</option>";
                                         }
                                     }
                                     ?>
@@ -48,9 +48,9 @@
                             <select name="type" class="form-control">
                                 <option value=''>Выберите тип материала</option>
                                 <?php
-                                if(isset($data["types"])){
+                                if (isset($data["types"])) {
                                     foreach ($data['types'] as $row) {
-                                        echo "<option value='".$row["id"]."'>".$row['name']."</option>";
+                                        echo "<option value='" . $row["id"] . "'>" . $row['name'] . "</option>";
                                     }
                                 }
                                 ?>
@@ -60,9 +60,9 @@
                             <select name="language" class="form-control">
                                 <option value=''>Выберите язык</option>
                                 <?php
-                                if(isset($data["languages"])){
+                                if (isset($data["languages"])) {
                                     foreach ($data['languages'] as $row) {
-                                        echo "<option value='".$row["id"]."'>".$row['code']." - ".$row['name']."</option>";
+                                        echo "<option value='" . $row["id"] . "'>" . $row['code'] . " - " . $row['name'] . "</option>";
                                     }
                                 }
                                 ?>
@@ -75,9 +75,9 @@
                             <select id="subjectSelect" class="form-control" multiple="">
                                 <optgroup label="Выберите предмет">
                                     <?php
-                                    if(isset($data["subjects"])){
+                                    if (isset($data["subjects"])) {
                                         foreach ($data['subjects'] as $row) {
-                                            echo "<option value='".$row["id"]."'>".$row['name']."</option>";
+                                            echo "<option value='" . $row["id"] . "'>" . $row['name'] . "</option>";
                                         }
                                     }
                                     ?>
@@ -91,9 +91,9 @@
                             <select id="specialtySelect" class="form-control" multiple="">
                                 <optgroup label="Выберите специальностей">
                                     <?php
-                                    if(isset($data["specialties"])){
+                                    if (isset($data["specialties"])) {
                                         foreach ($data['specialties'] as $row) {
-                                            echo "<option value='".$row["id"]."'>".$row['code']." - ".$row['name']."</option>";
+                                            echo "<option value='" . $row["id"] . "'>" . $row['code'] . " - " . $row['name'] . "</option>";
                                         }
                                     }
                                     ?>
@@ -108,7 +108,7 @@
                         </div>
                         <label class="control-label col-md-3 text-right">Выберите файл для публикации*:</label>
                         <div class="col-md-3">
-                             <input type="file" class="form-control" value="Выбрать" name="fileToUpload" id="fileToUpload" required>
+                            <input type="file" class="form-control" value="Выбрать" name="fileToUpload" id="fileToUpload" required>
                         </div>
                     </div>
 
@@ -118,9 +118,9 @@
                             <select name="place" class="form-control">
                                 <option value=''>Выберите место</option>
                                 <?php
-                                if(isset($data["places"])){
+                                if (isset($data["places"])) {
                                     foreach ($data['places'] as $row) {
-                                        echo "<option value='".$row["id"]."'>".$row['name']."</option>";
+                                        echo "<option value='" . $row["id"] . "'>" . $row['name'] . "</option>";
                                     }
                                 }
                                 ?>
@@ -157,7 +157,7 @@
     $('#date_publish').datepicker({
         format: "yyyy/mm/dd",
         todayBtn: "linked",
-        todayHighlight : true,
+        todayHighlight: true,
         orientation: "top",
         autoclose: true,
         todayHighlight: true
@@ -165,21 +165,21 @@
 
     $('#authorSelect').select2();
 
-    $('#authorSelect').on("change", function () {
+    $('#authorSelect').on("change", function() {
         var authorJSON = JSON.stringify($(this).val());
         $('#json_authors').text(authorJSON);
     });
 
     $('#subjectSelect').select2();
 
-    $('#subjectSelect').on("change", function () {
+    $('#subjectSelect').on("change", function() {
         var subjectJSON = JSON.stringify($(this).val());
         $('#json_subjects').text(subjectJSON);
     });
 
     $('#specialtySelect').select2();
 
-    $('#specialtySelect').on("change", function () {
+    $('#specialtySelect').on("change", function() {
         var specialtyJSON = JSON.stringify($(this).val());
         $('#json_specialties').text(specialtyJSON);
     });

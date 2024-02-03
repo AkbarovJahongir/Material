@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Materials</title>
+    <title>Научные достижения</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -46,6 +46,7 @@
             $specialty_active = (Route::$active_controller == "specialty") ? "active" : "";
             $subject_active = (Route::$active_controller == "subject") ? "active" : "";
             $user_active = (Route::$active_controller == "user") ? "active" : "";
+            $report_active = (Route::$active_controller == "report") ? "active" : "";
             ?>
             <li><a class="app-menu__item <?= $main_active ?>" href="/"><i class="app-menu__icon fa fa-home"></i><span class="app-menu__label">Главная страныца</span></a></li>
             <li class="treeview"><a class="app-menu__item <?= $material_active ?>" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-book"></i><span class="app-menu__label">Материалы</span><i class="treeview-indicator fa fa-angle-right"></i></a>
@@ -78,6 +79,12 @@
                     <li><a class="treeview-item" href="/user/add"><i class="icon fa fa-circle-o"></i> Добвить новый</a></li>
                 </ul>
             </li>
+            <li class="treeview"><a class="app-menu__item <?= $report_active ?>" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-file"></i><span class="app-menu__label">Отчеты</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+                <ul class="treeview-menu">
+                    <li><a class="treeview-item" href="/report/allReport"><i class="icon fa fa-circle-o"></i> Все отчеты</a></li>
+                    <li><a class="treeview-item" href="/report/report_barchart"><i class="icon fa fa-circle-o"></i> Графический отчет</a></li>
+                </ul>
+            </li>
         </ul>
     </aside>
 
@@ -88,13 +95,20 @@
     <script src="/assets/js/main.js"></script>
     <!-- The javascript plugin to display page loading on top-->
     <script src="/assets/js/plugins/pace.min.js"></script>
+    <script type="text/javascript" src="/assets/js/export/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript" src="/assets/js/export/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="/assets/js/export/buttons.flash.min.js"></script>
+    <script type="text/javascript" src="/assets/js/export/jszip.min.js"></script>
+    <script type="text/javascript" src="/assets/js/export/pdfmake.min.js"></script>
+    <script type="text/javascript" src="/assets/js/export/vfs_fonts.js"></script>
+
+    <script type="text/javascript" src="/assets/js/export/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="/assets/js/export/buttons.print.min.js"></script>
 
     <main class="app-content">
         <?php include 'app/backend/views/' . $content_view; ?>
     </main>
-
-
-
 
 </body>
 
