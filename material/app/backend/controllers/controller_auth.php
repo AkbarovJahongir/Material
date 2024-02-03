@@ -22,7 +22,7 @@ class Controller_Auth extends Controller {
         $users = $this->model->get_user($_SESSION['uid']);
         $this->data["users"] = $users;
        
-        //$this->print_array($this->data); die;
+        $this->print_array($this->data); die;
 
 		$this->view->generate('user/list_view.php', 'template_view.php', $this->data);
     }

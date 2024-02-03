@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
     <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css" href="/assets/css/font-awesome.min.css">
-    <title>Authorization</title>
+    <title>Авторизация</title>
   </head>
   <body>
     <section class="material-half-bg">

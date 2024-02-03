@@ -13,7 +13,9 @@
   <body class="app sidebar-mini rtl  <?php if(isset($_SESSION["sidenav_toggled"])){if($_SESSION["sidenav_toggled"]==='1'){echo 'sidenav-toggled';}}?>">
     <!-- Navbar-->
     <header class="app-header">
-        <a class="app-header__logo"  href="/" style="display: flex;justify-content: space-around;align-items: center;">Обычный пользователь</a>
+        <a class="app-header__logo"  href="/" style="display: flex;justify-content: space-around;align-items: center;">
+        <img src="/assets/images/logo.png" />
+        Обычный пользователь</a>
         <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
         <ul class="app-nav">
             <!-- User Menu-->

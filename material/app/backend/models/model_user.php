@@ -7,11 +7,11 @@ class Model_User extends Model
 	}
 	public function get_users()
 	{
-		//if ($_SESSION["uid"]["role"]==2) {
-		//$result = $this->select("SELECT u.*, r.name AS role_name FROM `user` u, `role` r WHERE r.id=u.role_id AND u.role_id IN (4, 5) ORDER BY u.date_add");
-		//}elseif ($_SESSION["uid"]["role"]==1) {
-		$result = $this->select("SELECT u.*, r.name AS role_name FROM `user` u, `role` r WHERE r.id=u.role_id AND u.role_id <> 4 ORDER BY u.date_add");
-		//}
+		if ($_SESSION["uid"]["role_id"] == 2) {
+			$result = $this->select("SELECT u.*, r.name AS role_name FROM `user` u, `role` r WHERE r.id=u.role_id AND u.role_id IN (2, 5) ORDER BY u.date_add");
+		} elseif ($_SESSION["uid"]["role_id"] == 3) {
+			$result = $this->select("SELECT u.*, r.name AS role_name FROM `user` u, `role` r WHERE r.id=u.role_id AND u.role_id <> (SELECT `id` FROM role where `name` = 'superadmin') ORDER BY u.date_add");
+		}
 		return $result;
 	}
 	public function get_user($user_id)

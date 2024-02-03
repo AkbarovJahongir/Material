@@ -21,7 +21,8 @@ class Controller_Auth extends Controller {
                         $_SESSION["uid"] = $result[0];
                         $_SESSION["name"] = $result[0]["name"];
                         $_SESSION["image_url"] = $result[0]["image_url"];
-                        //print_r($result[0]["image_url"]);
+                        //print_r($result[0]["role"]);die;
+                        //$this->print_array($result[0]);die;
                         $data["message"] = "Success";
                         Route::MainPage();
                     } else {

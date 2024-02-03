@@ -12,6 +12,7 @@ class Model_Material extends Model{
                                         ." ,m.`file_path`"
                                         ." FROM `material` m"
                                         ." LEFT JOIN `type` t ON t.`id`=m.`type_id`"
+                                        ." WHERE `status` = 1"
                                         ." ORDER BY m.`date_add` DESC");
 		return $result;
 	}

@@ -10,19 +10,19 @@
     <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
     <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css" href="/assets/css/font-awesome.min.css">
-</head>
+</head> 
 
 <body class="app sidebar-mini rtl  <?php if (isset($_SESSION["sidenav_toggled"])) {
                                         if ($_SESSION["sidenav_toggled"] === '1') {
                                             echo 'sidenav-toggled';
-        echo $_SESSION['users'];
+                                            echo $_SESSION['users'];
                                         }
                                     } ?>">
     <!-- Navbar-->
     <header class="app-header">
-    <a class="app-header__logo" href="/" style="display: flex;justify-content: space-around;align-items: center;">
-    <img src="/app/uploads/image_users/<?php echo $_SESSION["uid"]["image_url"]; ?>" /><?php echo $_SESSION["uid"]["name"]; ?>
-</a>
+        <a class="app-header__logo" href="/" style="display: flex;justify-content: space-around;align-items: center;">
+            <img src="/app/uploads/image_users/<?php echo $_SESSION["uid"]["image_url"]; ?>" /><?php echo $_SESSION["uid"]["name"]; ?>
+        </a>
 
         <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
         <ul class="app-nav">
