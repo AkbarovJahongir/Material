@@ -16,6 +16,9 @@ class Model_Common extends Model{
     public function get_authors(){
         $result = $this->select("SELECT `id`, `name` FROM `author`");
         return $result;
+    } public function get_kafedra(){
+        $result = $this->select("SELECT `id`, `name` FROM `kafedra`");
+        return $result;
     }
     public function get_places(){
         $result = $this->select("SELECT `id`, `name` FROM `place`");

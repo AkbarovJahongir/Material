@@ -24,17 +24,13 @@ class Controller_User extends Controller
     function action_add()
     {
         $error_message = '';
-        // Открытие файла для записи лога
-        $fd = fopen("./log/users_log.txt", "a") or die("Не удалось открыть файл лога");
-        // Check if "fileToUpload" key is set in $_FILES
-        //$this->print_array($_FILES["image_url"]); die;
+
         if (isset($_FILES["image_url"])) {
             $target_dir = "./app/uploads/image_users/";
 
-            // Create the target directory if it doesn't exist
             if (!file_exists($target_dir) && !mkdir($target_dir, 0755, true)) {
-                echo 'Failed to create the target directory';
-                die('Failed to create the target directory');
+                //echo 'Failed to create the target directory';
+                $error_message = 'Не удалось создать целевой каталог.';
             }
 
             $file_type = strtolower(pathinfo($_FILES["image_url"]["name"], PATHINFO_EXTENSION));
@@ -46,96 +42,101 @@ class Controller_User extends Controller
 
             // Проверка наличия файла
             if ($_FILES["image_url"]["size"] == 0) {
-                echo "Файл не был загружен.";
+                //echo "Файл не был загружен.";
                 $error_message = "Файл не был загружен.";
             }
 
             $allowed_extensions = array("png", "jpg");
 
             if (!in_array($file_type, $allowed_extensions)) {
-                echo "Недопустимый формат файла.";
+                // echo "Недопустимый формат файла.";
                 $error_message = "Недопустимый формат файла.";
             }
 
             if (isset($_FILES["image_url"]["tmp_name"]) && move_uploaded_file($_FILES["image_url"]["tmp_name"], $target_file)) {
-                echo "Файл " . basename($_FILES["image_url"]["name"]) . " успешно загружен.";
+                //echo "Файл " . basename($_FILES["fileToUpload"]["name"]) . " успешно загружен.";
             } else {
-                echo "Ошибка при загрузке файла.";
+                //echo "Ошибка при загрузке файла.";
                 $error_message = "Ошибка при загрузке файла.";
             }
         } else {
-            echo "Файл не был загружен.";
-            $error_message = "Файл не был загружен.";
+            $error_message = "File was not uploaded.";
         }
-        $this->data["role"] = $this->model_common->get_roles();
-        //$this->print_array( $_POST ); die;
+        //$this->print_array($_POST);
+        //$this->print_array($unique_filename);die;
         if (
-            isset($_POST["login"]) && 
-            isset($_POST["name"]) && 
-            isset($_POST["password"]) && 
-            isset($_POST["role_id"]) && 
-            isset($unique_filename) &&
-            isset($_POST["role"]) && 
-            isset($_POST["access"])
+            !empty($_POST["login"]) &&
+            !empty($_POST["name"]) &&
+            !empty($_POST["password"]) &&
+            //isset($unique_filename) &&
+            !empty($_POST["role"]) &&
+            !empty($_POST["kafedra"]) &&
+            !empty($_POST["access"])
         ) {
             $login = $_POST["login"];
             $name = $_POST["name"];
+            $surname = $_POST["surname"];
+            $father_name = $_POST["father_name"];
             $password = $_POST["password"];
-            $role_id = $_POST["role_id"];
-            $access = $_POST["access"];
-            $role = json_decode($_POST["role"]);
+            $role_id = $_POST["role"];
+            $kafedra = $_POST["kafedra"];
+            $access = $_POST["access"] == 'on' ? 1 : 0;
+            $full_name = $surname . ' ' . $name . ' ' . $father_name;
+            if ($login != "" && $full_name != "" && $password != "" && $role_id != "" && $unique_filename != "" && $access != "" && $kafedra != "") {
+                $result = $this->model->add_user($full_name, $login, $password, $access, $role_id, $unique_filename, $kafedra);
 
-            if ($login != "" && $name != "" && $password != "" && $role_id != "" && $unique_filename != "" && $access != "") {
-                $jsons = ["role_id" => $role];
-                $result = $this->model->add_user($name, $login, $password, $access, $jsons, $unique_filename);
-                //$this->print_array($_POST);
-                die;
                 if ($result) {
                     $this->data["error"] = 0;
-                    $this->data["message"] = "Новый пользователь добавлен!";
+                    $this->data["message"] = "Добавлен новый пользователь!";
                 } else {
                     $this->data["error"] = 1;
-                    $this->data["message"] = "Не верные данные!";
+                    $this->data["message"] = "Неверные данные!";
                 }
             } else {
                 $this->data["error"] = 1;
                 $this->data["message"] = "Некоторые данные пусты!";
             }
-
         }
+
+        $this->data["role"] = $this->model_common->get_roles();
+        $this->data["kafedra"] = $this->model_common->get_kafedra();
         $this->view->generate('user/add_view.php', 'template_view.php', $this->data);
 
-        fwrite($fd, $error_message . "\n");
+        // Logging error messages
+        $fd = fopen("./log/users_log.txt", "a") or die("Не удалось открыть файл журнала");
+        $date_time_now = date("Y-m-d H:i:s"); // Get current date and time in the format YYYY-MM-DD HH:MM:SS
+        fwrite($fd, $date_time_now . ": " . $error_message . "\n"); // Append date and time to the error message
         fclose($fd);
     }
 
+
     function action_edit($id)
     {
+        // $this->print_array($id);
+        // die;
 
         $this->data["user"] = $this->model->get_user($id);
+        $this->data["kafedra"] = $this->model_common->get_kafedra();
 
         $this->data["role"] = $this->model_common->get_roles();
 
         if (
-            isset($_POST["login"]) && isset($_POST["name"]) && isset($_POST["password"]) && isset($_POST["role_id"]) && isset($_POST["image_url"]) &&
-            isset($_POST["role"]) && isset($_POST["access"])
+            isset($_POST["login"]) && isset($_POST["name"]) &&
+            !empty($_POST["kafedra"]) && isset($_POST["role"]) && isset($_POST["image_url"]) && isset($_POST["access"])
         ) {
-            //$this->print_array( $_POST ); die;
             $login = $_POST["login"];
             $name = $_POST["name"];
-            $password = $_POST["password"];
-            $role_id = $_POST["role_id"];
+            $kafedra = $_POST["kafedra"];
+            $role_id = $_POST["role"];
             $image_url = $_POST["image_url"];
-            $access = $_POST["access"];
-            $role = json_decode($_POST["role"]);
+            $access = $_POST["access"] == 'on' ? 1 : 0;
 
-            if ($login != "" && $name != "" && $password != "" && $role_id != "" && $image_url != "" && $access != "") {
-                $jsons = ["role_id" => $role];
-                $result = $this->model->edit_user($id, $name, $login, $password, $access, $image_url, $jsons);
+            if ($login != "" && $name != "" && $kafedra != "" && $role_id != "" && $image_url != "" && $access != "") {
+                $result = $this->model->edit_user($id, $name, $login, $kafedra, $access, $image_url, $role_id);
 
                 if ($result) {
                     $this->data["error"] = 0;
-                    $this->data["message"] = "Специальность успешно изменен!";
+                    $this->data["message"] = "Пользователь успешно изменен!";
                     /* #Get specialty data by @id */
                     $this->data["user"] = $this->model->get_user($id);
                     //$this->view->generate('user/index.php', 'template_view.php', $this->data);
@@ -149,7 +150,17 @@ class Controller_User extends Controller
                 $this->data["message"] = "Некоторые данные пусты!";
             }
         }
-        //$this->print_array($this->data["user"]);die;
+        //$this->data["user"] = $this->model->get_user($id);
+        //  $this->print_array($this->data);
+        //  die;
         $this->view->generate('user/edit_view.php', 'template_view.php', $this->data);
     }
+
+    function action_operation($id, $type_operation)
+    {
+        if (isset($id) && isset($type_operation)) {
+            
+        }
+    }
 }
+?>

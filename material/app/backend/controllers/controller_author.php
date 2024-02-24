@@ -18,7 +18,6 @@ class Controller_Author extends Controller{
 
 		$this->view->generate('author/list_view.php', 'template_view.php', $this->data);
 	}
-
     function action_add() {
 
         /* #Field names with POST request

@@ -12,10 +12,41 @@ class Model_Material extends Model
             . " ,material.`pub_place_id`"
             . " ,material.`count`"
             . " ,material.`file_path`"
+            . " ,kafedra.`name` AS kafedra"
+            . " ,facultet.`name` AS facultet"
+            . " ,material_status.`desciption` AS `status`"
+            . " ,material.`comment`"
             . " FROM `material` AS material"
             . " INNER JOIN `type` AS `type` ON material.`type_id` = `type`.`id`"
-            . " WHERE material.`status` = 1"
+            . " INNER JOIN `kafedra` AS `kafedra` ON material.`kafedra_id` = `kafedra`.`id`"
+            . " INNER JOIN `facultet` AS `facultet` ON kafedra.`facultet_id` = `facultet`.`id`"
+            . " INNER JOIN `material_status` AS `material_status` ON material_status.`id` = `material`.`status`"
+            // . " WHERE material.`status` = 3"
             . " ORDER BY material.`date_add` DESC");
+        return $result;
+    }
+    public function get_materialByuserId($id)
+    {
+        $result = $this->select("SELECT material.`id`"
+            . " ,material.`name`"
+            . " ,`type`.`name` AS `type`"
+            . " ,material.`language_id`"
+            . " ,DATE_FORMAT(material.`date_publish`, \"%d/%m/%Y\") AS `date_publish`"
+            . " ,material.`pub_place_id`"
+            . " ,material.`count`"
+            . " ,material.`file_path`"
+            . " ,kafedra.`name` AS kafedra"
+            . " ,facultet.`name` AS facultet"
+            . " ,material_status.`desciption` AS `status`"
+            . " ,material.`comment`"
+            . " FROM `material` AS material"
+            . " INNER JOIN `type` AS `type` ON material.`type_id` = `type`.`id`"
+            . " INNER JOIN `user` AS `user` ON material.`user_id` = `user`.`id`"
+            . " INNER JOIN `kafedra` AS `kafedra` ON material.`kafedra_id` = `kafedra`.`id`"
+            . " INNER JOIN `facultet` AS `facultet` ON kafedra.`facultet_id` = `facultet`.`id`"
+            . " INNER JOIN `material_status` AS `material_status` ON material_status.`id` = `material`.`status`"
+            . " WHERE material.`status` = 1 AND `user`.`role_id` = ?"
+            . " ORDER BY material.`date_add` DESC",[$id]);
         return $result;
     }
     public function get_material_authors($id)
@@ -81,45 +112,50 @@ class Model_Material extends Model
             . " ,`pub_place_id`"
             . " ,`count`"
             . " ,`file_path`"
+            . " ,`kafedra_id`"
             . " FROM `material` WHERE id=?", [$id])[0];
         return $result;
     }
 
-    public function add_material($name, $type_id, $language_id, $date_publish, $pub_place_id, $count, $jsons, $unique_filename)
+    public function add_material($name, $type_id, $language_id, $date_publish, $pub_place_id, $count, $jsons, $unique_filename,$kafedra)
     {
         try {
-            
-            $id = $this->insert_get_id(
-                "INSERT INTO `material` SET `name`=?,`type_id`=?,`language_id`=?,"
-                    . "`date_publish`=?,`pub_place_id`=?,`count`=?,`user_id`=?,`file_path`=?",
-                [$name, $type_id, $language_id, $date_publish, $pub_place_id, $count, $this->user_id, $unique_filename]
-            );
-            if ($id) {
-                $authors = $jsons["authors"];
-                $subjects = $jsons["subjects"];
-                $specialties = $jsons["specialties"];
+            if (!$this->select("SELECT * FROM `material` WHERE `name` = ? AND `language_id` = ?",[$name, $language_id])) {
+                $id = $this->insert_get_id(
+                    "INSERT INTO `material` SET `name`=?,`type_id`=?,`language_id`=?,"
+                    . "`date_publish`=?,`pub_place_id`=?,`count`=?,`user_id`=?,`file_path`=?,`kafedra_id`=?",
+                    [$name, $type_id, $language_id, $date_publish, $pub_place_id, $count, $this->user_id, $unique_filename,$kafedra]
+                );
+                if ($id) {
+                    $authors = $jsons["authors"];
+                    $subjects = $jsons["subjects"];
+                    $specialties = $jsons["specialties"];
 
-                foreach ($authors as $author) {
-                    $this->insert("INSERT INTO `material_author` (`material_id`, `author_id`)"
-                        . " VALUES (?, ?)", [$id, $author]);
+                    foreach ($authors as $author) {
+                        $this->insert("INSERT INTO `material_author` (`material_id`, `author_id`)"
+                            . " VALUES (?, ?)", [$id, $author]);
+                    }
+                    foreach ($subjects as $subject) {
+                        $this->insert("INSERT INTO `material_subject` (`material_id`, `subject_id`)"
+                            . " VALUES (?, ?)", [$id, $subject]);
+                    }
+                    foreach ($specialties as $specialty) {
+                        $this->insert("INSERT INTO `material_specialty` (`material_id`, `specialty_id`)"
+                            . " VALUES (?, ?)", [$id, $specialty]);
+                    }
                 }
-                foreach ($subjects as $subject) {
-                    $this->insert("INSERT INTO `material_subject` (`material_id`, `subject_id`)"
-                        . " VALUES (?, ?)", [$id, $subject]);
-                }
-                foreach ($specialties as $specialty) {
-                    $this->insert("INSERT INTO `material_specialty` (`material_id`, `specialty_id`)"
-                        . " VALUES (?, ?)", [$id, $specialty]);
-                }
+                return true;
             }
-        } 
-        catch (Exception $ex) {
+            else{
+                return false;
+            }
+        } catch (Exception $ex) {
             return false;
         }
-        return true;
     }
-    public function edit_material($id, $name, $type_id, $language_id, $date_publish, $pub_place_id, $count, $file_path, $jsons)
+    public function edit_material($id, $name, $type_id, $language_id, $date_publish, $pub_place_id, $count, $file_path, $jsons,$kafedra)
     {
+        echo 'hi';
         $result = $this->update(
             "UPDATE `material` SET `name`=?"
                 . " ,`type_id`=? "
@@ -129,9 +165,10 @@ class Model_Material extends Model
                 . " ,`count`=?"
                 . " ,`file_path`=?"
                 . " ,`date_edit`=?"
+                . " ,`kafedra_id`=?"
                 . " ,`user_id`=?  WHERE id=?",
             [
-                $name, $type_id, $language_id, $date_publish, $pub_place_id, $count, $file_path, $this->current_date, $this->user_id, $id
+                $name, $type_id, $language_id, $date_publish, $pub_place_id, $count, $file_path, $this->current_date,$kafedra, $this->user_id, $id
             ]
         );
 
@@ -162,15 +199,85 @@ class Model_Material extends Model
 
         return true;
     }
-    public function delete_material($id)
-{
-    $result = $this->select("SELECT COUNT(*) as count FROM `material` WHERE `id`=?", [$id]);
-
-    if ($result === false || $result[0]['count'] < 0) {
-        return false;
-    } else {
-        return $this->delete("UPDATE `material` SET `status` = 0 WHERE id=?", [$id]);
+    public function confirm_material($id)
+    {
+        $result = $this->update(
+            "UPDATE `material` SET `status`= 2"
+            . " ,`date_edit`=?"
+            . " ,`user_id`=?  WHERE id=?",
+            [
+                $this->current_date,
+                $this->user_id,
+                $id
+            ]
+        );
+        return true;
     }
-}
+    public function decline_material($id, $comment)
+    {
+        $result = $this->update(
+            "UPDATE `material` SET `status`= 4"
+            . " ,`date_edit`=?"
+            . " ,`comment`=? "
+            . " ,`user_id`=?  WHERE id=?",
+            [
+                $this->current_date,
+                $comment,
+                $this->user_id,
+                $id
+            ]
+        );
+        return true;
+    }
+    public function delete_material($id)
+    {
+        $result = $this->select("SELECT COUNT(*) as count FROM `material` WHERE `id`=?", [$id]);
 
+        if ($result === false || $result[0]['count'] < 0) {
+            return false;
+        } else {
+            return $this->delete("UPDATE `material` SET `status` = 0 WHERE id=?", [$id]);
+        }
+    }
+    public function get_materials_by_author($id){
+        $result = $this->select("SELECT m.`id`"
+            ." ,m.`name`"
+            ." ,t.`name` AS type_name"
+            ." ,m.`language_id`"
+            ." ,m.`date_publish` AS `date_publish`"
+            ." ,m.`pub_place_id`"
+            ." ,m.`count` FROM `material` m"
+            ." LEFT JOIN `type` t ON t.`id`=m.`type_id`"
+            ." LEFT JOIN `material_author` ma ON ma.`material_id`=m.`id`"
+            ." WHERE ma.`author_id`=? ORDER BY m.`date_add` DESC", [$id]);
+        return $result;
+    }
+
+    public function get_materials_by_specialty($id){
+        $result = $this->select("SELECT m.`id`"
+            ." ,m.`name`"
+            ." ,t.`name` AS type_name"
+            ." ,m.`language_id`"
+            ." ,m.`date_publish` AS `date_publish`"
+            ." ,m.`pub_place_id`"
+            ." ,m.`count` FROM `material` m"
+            ." LEFT JOIN `type` t ON t.`id`=m.`type_id`"
+            ." LEFT JOIN `material_specialty` ms ON ms.`material_id`=m.`id`"
+            ." WHERE ms.`specialty_id`=? ORDER BY m.`date_add` DESC", [$id]);
+        return $result;
+    }
+
+    public function get_materials_by_subject($id){
+        $result = $this->select("SELECT m.`id`"
+            ." ,m.`name`"
+            ." ,t.`name` AS type_name"
+            ." ,m.`language_id`"
+            ." ,m.`date_publish` AS `date_publish`"
+            ." ,m.`pub_place_id`"
+            ." ,m.`count` FROM `material` m"
+            ." LEFT JOIN `type` t ON t.`id`=m.`type_id`"
+            ." LEFT JOIN `material_subject` ms ON ms.`material_id`=m.`id`"
+            ." WHERE ms.`subject_id`=? ORDER BY m.`date_add` DESC", [$id]);
+        return $result;
+    }
 }

@@ -1,5 +1,5 @@
 <style>
-    span.dropdown-item{
+    span.dropdown-item {
         cursor: pointer;
     }
 </style>
@@ -22,31 +22,33 @@
                         <div class="col-md-12">
                             <div class="tile">
                                 <div class="tile-body">
-                                    <table class="table table-hover table-bordered" id="sampleTable">
-                                        <thead>
-                                        <tr>
-                                            <th>№</th>
-                                            <th>Код</th>
-                                            <th>Специальность</th>
-                                            <th>Материалы</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <?php $i = 1; ?>
-                                        <?php foreach ($data['specialties'] as $specialty) : ?>
-                                            <tr>
-                                                <td><?= $i++ ?></td>
-                                                <td><?= $specialty['code'] ?></td>
-                                                <td><?= $specialty['name'] ?></td>
-                                                <td>
-                                                    <div class="btn-group">
-                                                        <a href="/material/<?= $data['controller_name'] ?>/<?= $specialty['id'] ?>" class="btn btn-primary btn-sm"><i class="fa fa-lg fa-book"></i> Материалы</a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        <?php endforeach; ?>
-                                        </tbody>
-                                    </table>
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-bordered" id="sampleTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>№</th>
+                                                    <th>Код</th>
+                                                    <th>Специальность</th>
+                                                    <th>Материалы</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php $i = 1; ?>
+                                                <?php foreach ($data['specialties'] as $specialty) : ?>
+                                                    <tr>
+                                                        <td><?= $i++ ?></td>
+                                                        <td><?= $specialty['code'] ?></td>
+                                                        <td><?= $specialty['name'] ?></td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <a href="/material/<?= $data['controller_name'] ?>/<?= $specialty['id'] ?>" class="btn btn-primary btn-sm"><i class="fa fa-lg fa-book"></i> Материалы</a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>

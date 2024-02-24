@@ -18,7 +18,7 @@
             ?>
 
             <h3 class="tile-title">Изменение материала</h3>
-            <form class="form-horizontal" method="POST">
+            <form class="form-horizontal" method="POST" enctype="multipart/form-data">
                 <div class="tile-body">
                     <div class="form-group row">
                         <label class="control-label col-md-3">Название материала*:</label>
@@ -116,7 +116,7 @@
                         </div>
                         <label class="control-label col-md-3 text-right">Выберите файл для публикации*:</label>
                         <div class="col-md-3">
-                             <input type="file" class="form-control" value="Выбрать" name="fileToUpload" id="fileToUpload" required>
+                            <input type="file" class="form-control" value="Выбрать" name="fileToUpload" id="fileToUpload" required>
                         </div>
                     </div>
 
@@ -141,6 +141,24 @@
                         <div class="col-md-3">
                             <input name="count" class="form-control" type="number" placeholder="Введите количеству"
                                    value="<?= $data["material"]["count"] ?>">
+                        </div>
+                    </div>
+                        <div class="form-group row">
+                        <label class="control-label col-md-3">Выберите кафедру*:</label>
+                        <div class="col-md-9">
+                            <select name="kafedra" class="form-control">
+                                <option value=''></option>
+                                <?php
+                                if (isset($data["kafedra"])) {
+                                    foreach ($data['kafedra'] as $row) {
+                                        if($row["id"] == $data["material"]["kafedra_id"])
+                                            echo "<option value='" . $row["id"] . "'selected>" . $row['name'] . "</option>";
+                                        else
+                                            echo "<option value='" . $row["id"] . "'>" . $row['name'] . "</option>";
+                                    }
+                                }
+                                ?>
+                            </select>
                         </div>
                     </div>
                     <div class="d-none">

@@ -22,35 +22,37 @@
             <div class="col-md-12">
               <div class="tile">
                 <div class="tile-body">
-                  <table class="table table-hover table-bordered" id="sampleTable">
-                    <thead>
-                      <tr>
-                        <th>№</th>
-                        <th>Имя</th>
-                        <th>Авторы</th>
-                        <th>Предметы</th>
-                        <th>Тип</th>
-                        <th>Специальности</th>
-                        <th>Дата публикации</th>
-                        <th>Файл</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <?php $i = 1; ?>
-                      <?php foreach ($data["materials"] as $material) : ?>
+                  <div class="table-responsive">
+                    <table class="table table-hover table-bordered" id="sampleTable">
+                      <thead>
                         <tr>
-                          <td><?= $i++ ?></td>
-                          <td><?= $material["name"] ?></td>
-                          <td><?= $material["authors"] ?></td>
-                          <td><?= $material["subjects"] ?></td>
-                          <td><?= $material["type_name"] ?></td>
-                          <td><?= $material["specialties"] ?></td>
-                          <td><?= $material["date_publish"] ?></td>
-                          <td><?= $material['file_path'] ?></td>
+                          <th>№</th>
+                          <th>Имя</th>
+                          <th>Авторы</th>
+                          <th>Предметы</th>
+                          <th>Тип</th>
+                          <th>Специальности</th>
+                          <th>Дата публикации</th>
+                          <th>Файл</th>
                         </tr>
-                      <?php endforeach; ?>
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        <?php $i = 1; ?>
+                        <?php foreach ($data["materials"] as $material) : ?>
+                          <tr>
+                            <td><?= $i++ ?></td>
+                            <td><?= $material["name"] ?></td>
+                            <td><?= $material["authors"] ?></td>
+                            <td><?= $material["subjects"] ?></td>
+                            <td><?= $material["type_name"] ?></td>
+                            <td><?= $material["specialties"] ?></td>
+                            <td><?= $material["date_publish"] ?></td>
+                            <td><?= $material['file_path'] ?></td>
+                          </tr>
+                        <?php endforeach; ?>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>

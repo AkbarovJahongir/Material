@@ -54,7 +54,7 @@
             </div>
             <label class="control-label col-md-3 text-right">Выберите файл для публикации*:</label>
             <div class="col-md-3">
-              <input type="file" class="form-control" value="Выбрать" name="fileToUpload" id="fileToUpload" required>
+            <input type="file" class="form-control" name="image_url" id="image_url" required accept="image/png, image/jpeg, image/jpg">
             </div>
           </div>
           <div class="form-group row">
@@ -63,7 +63,12 @@
               <select class="form-control" name="role" id="select_role">
                 <?php if (isset($data["role"])) {
                   foreach ($data['role'] as $row) {
-                    echo "<option value='" . $row["id"] . "'>" . $row['name'] . "</option>";
+                    if ($row["id"] != 1) {
+                      echo "<option value='" . $row["id"] . "'>" . $row['name'] . "</option>";
+                    }
+                    else{
+                      echo "<option value='" . $row["id"] . "'>" . $row['name'] . "</option>";
+                    }
                   }
                 }
                 ?>
@@ -77,6 +82,19 @@
                   <input name="access" class="form-check-input" type="checkbox" checked>Есть/Нет
                 </label>
               </div>
+            </div>
+          </div>
+          <div class="form-group row" id="kafedra" style="display: none;">
+            <label class="control-label col-md-3">Кафедра*:</label>
+            <div class="col-md-9">
+              <select class="form-control" name="kafedra" id="select_kafedra">
+                <?php if (isset($data["kafedra"])) {
+                  foreach ($data['kafedra'] as $row) {
+                    echo "<option value='" . $row["id"] . "'>" . $row['name'] . "</option>";
+                  }
+                }
+                ?>
+              </select>
             </div>
           </div>
           <div class="tile-footer">
@@ -103,6 +121,11 @@
       $('input[name ="d_sms"]').prop('checked', false);
       $('input[name ="d_tel"]').val("");
       $('input[name ="d_passport"]').val("");
+    } 
+    if (this.value == 2) {
+      $("#kafedra").show();
+    } else {
+      $("#kafedra").hide();
     }
   });
 </script>

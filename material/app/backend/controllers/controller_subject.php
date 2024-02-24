@@ -18,12 +18,7 @@ class Controller_Subject extends Controller{
 
 		$this->view->generate('subject/list_view.php', 'template_view.php', $this->data);
 	}
-
     function action_add() {
-
-        /* #Field names with POST request
-         * @name
-        */
 
         if ( isset($_POST["name"]) )
         {

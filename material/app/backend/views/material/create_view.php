@@ -108,7 +108,7 @@
                         </div>
                         <label class="control-label col-md-3 text-right">Выберите файл для публикации*:</label>
                         <div class="col-md-3">
-                            <input type="file" class="form-control" value="Выбрать" name="fileToUpload" id="fileToUpload" required>
+                            <input type="file" class="form-control" value="Выбрать" name="fileToUpload" id="fileToUpload" required accept="file/pdf">
                         </div>
                     </div>
 
@@ -129,6 +129,21 @@
                         <label class="control-label col-md-3 text-right">Количество*:</label>
                         <div class="col-md-3">
                             <input name="count" class="form-control" type="number" placeholder="Введите количество">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                    <label class="control-label col-md-3">Выберите кафедру*:</label>
+                        <div class="col-md-9">
+                            <select name="kafedra" class="form-control">
+                                <option value=''></option>
+                                <?php
+                                if (isset($data["kafedra"])) {
+                                    foreach ($data['kafedra'] as $row) {
+                                        echo "<option value='" . $row["id"] . "'>" . $row['name'] . "</option>";
+                                    }
+                                }
+                                ?>
+                            </select>
                         </div>
                     </div>
                     <div class="d-none">

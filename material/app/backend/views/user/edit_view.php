@@ -11,59 +11,37 @@
 <div class="row">
   <div class="col-md-12">
     <div class="tile">
+
       <?php
-      /*
-	  echo "<pre>";
-      print_r($data);
-	  echo "</pre>"; die;
-	  */
-      $info = $data["user_info"];
       if (isset($data["message"])) {
         echo '<div class="card text-black bg-light"><div class="card-body">' . $data["message"] . '</div></div><br>';
       }
       ?>
-      <? 
-          foreach ($data['user'] as $row) {
-        echo $row;
-          }
-      //$this->print_array($data["user"]);
-      ?>
 
-      <h3 class="tile-title">Редактирование: <?php echo "<span class='text-primary'> " . $info["name"] . "</span>"; ?></h3>
+      <h3 class="tile-title">Редактирование: <?php echo "<span class='text-primary'> " . $data["user"][0]["name"] . "</span>"; ?></h3>
       <div class="tile-body">
         <form class="form-horizontal" method="POST">
           <div class="form-group row">
-            <label class="control-label col-md-3">Имя *</label>
-            <div class="col-md-9">
-              <input name="name" class="form-control" type="text" placeholder="Введите имя" value="<?= $data["user"]["name"]?>" >
+            <label class="control-label col-md-2">Имя *</label>
+            <div class="col-md-10">
+              <input name="name" class="form-control" type="text" placeholder="Введите имя" value="<?= $data["user"][0]["name"] ?>">
             </div>
           </div>
 
           <div class="form-group row">
-            <label class="control-label col-md-3">Логин (Телефон) *</label>
-            <div class="col-md-9">
-              <input name="login" class="form-control" type="text" placeholder="Ввидите номер телефона" value="<?= $data["user"]["login"]?>">
+            <label class="control-label col-md-2">Логин (Телефон) *</label>
+            <div class="col-md-10">
+              <input name="login" class="form-control" type="text" placeholder="Ввидите номер телефона" value="<?= $data["user"][0]["login"] ?>">
             </div>
           </div>
 
-          <div class="form-group row">
-            <label class="control-label col-md-3">Пароль *</label>
-            <div class="col-md-3">
-              <input name="password" class="form-control" type="password" placeholder="Введите пароль" value="<?= $data["user"]["password"]?>">
-            </div>
-            <label class="control-label col-md-3 text-right">Выберите фото пользователя*:</label>
-            <div class="col-md-3">
-              <input type="file" class="form-control" value="Выбрать" name="image_url" id="image_url" required>
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label class="control-label col-md-3">Роль *</label>
-            <div class="col-md-3">
-              <select id="select_role" class="form-control" name="role">
-                <?php if (isset($data["role"])) {
-                  foreach ($data['role'] as $row) {
-                    if ($row['id'] == $info["role"])
+          <div class="form-group row" id="kafedra" style="display: none;">
+            <label class="control-label col-md-2">Кафедра*:</label>
+            <div class="col-md-10">
+              <select class="form-control" name="kafedra" id="select_kafedra">
+                <?php if (isset($data["kafedra"])) {
+                  foreach ($data['kafedra'] as $row) {
+                    if ($row == $data["user"][0]["kafedra_id"])
                       echo "<option selected value='" . $row["id"] . "'>" . $row['name'] . "</option>";
                     else
                       echo "<option value='" . $row["id"] . "'>" . $row['name'] . "</option>";
@@ -72,12 +50,31 @@
                 ?>
               </select>
             </div>
-
-            <label class="control-label col-md-3 text-right">Доступ для входа *</label>
+          </div>
+          <div class="form-group row">
+            <label class="control-label col-md-2">Роль *</label>
+            <div class="col-md-2">
+              <select id="select_role" class="form-control" name="role">
+                <?php if (isset($data["role"])) {
+                  foreach ($data['role'] as $row) {
+                    if ($row['id'] == $data["user"][0]["role_id"]) {
+                      echo "<option selected value='" . $row["id"] . "'>" . $row['name'] . "</option>";
+                    } else
+                      echo "<option value='" . $row["id"] . "'>" . $row['name'] . "</option>";
+                  }
+                }
+                ?>
+              </select>
+            </div>
+            <label class="control-label col-md-2 text-right">Выберите фото пользователя*:</label>
+            <div class="col-md-2">
+              <input type="file" class="form-control" name="image_url" id="image_url" required accept="image/png, image/jpeg, image/jpg">
+            </div>
+            <label class="control-label col-md-2 text-right">Доступ для входа *</label>
             <div class="col-md-2">
               <div class="form-check">
                 <label class="form-check-label">
-                  <input name="access" class="form-check-input" type="checkbox" <?php echo ($info["access"] ? "checked" : "") ?>>Есть/Нет
+                  <input name="access" class="form-check-input" type="checkbox" <?php echo ($data["user"][0]["access"] ? "checked" : "") ?>>Есть/Нет
                 </label>
               </div>
             </div>
@@ -92,7 +89,6 @@
 
         </form>
       </div>
-
     </div>
   </div>
 </div>
@@ -104,6 +100,32 @@
       $("#deliver_block").css("display", "none");
       $('input[name ="d_tel"]').val("");
       $('input[name ="d_passport"]').val("");
+    }
+    if (this.value == 2) {
+      $("#kafedra").show();
+    } else {
+      $("#kafedra").hide();
+    }
+  });
+  document.addEventListener("DOMContentLoaded", function() {
+    var roleSelect = document.getElementById("select_role");
+    var kafedraDiv = document.getElementById("kafedra");
+
+    roleSelect.addEventListener("change", function() {
+      var selectedRoleId = this.value;
+      if (selectedRoleId === "2") {
+        kafedraDiv.style.display = "block";
+      kafedraDiv.style.display = "flex";
+      } else {
+        kafedraDiv.style.display = "none";
+      }
+    });
+
+    if (roleSelect.value === "2") {
+      kafedraDiv.style.display = "block";
+      kafedraDiv.style.display = "flex";
+    } else {
+      kafedraDiv.style.display = "none";
     }
   });
 </script>
