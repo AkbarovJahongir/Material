@@ -62,11 +62,11 @@
 													</a>
 												</div>
 												<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-													<span class="btn btn-primary btn-sm">действие</span>
+													<span class="btn btn-primary btn-sm">действия</span>
 													<div class="btn-group" role="group">
 														<button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 														<div id="dropdown_<?= $row['id']; ?>" class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
-															<span class="dropdown-item" onclick="operation(<?= $row['id']; ?>, 'resetPassword');">Сбросить пароль</span>
+															<span class="dropdown-item" onclick="openModal(<?= $row['id'] ?>)">Сбросить пароль</span>
 															<span class="dropdown-item" onclick="operation(<?= $row['id']; ?>, '<?= ($row['access'] ? "blockUser" : "unlockUser") ?>');">
 																<?= ($row['access'] ? "Заблокировать" : "Разблокировать") ?>
 															</span>
@@ -87,17 +87,64 @@
 		</div>
 	</div>
 </div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title" id="exampleModalLabel">Обновление пароля</h3>
+			</div>
+			<div class="modal-body">
+				<div class="col-md-12">
+					<form class="form-horizontal" style="margin-top: 20px;">
+						<input id="Language" type="hidden" />
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-group">
+										<label id="name" class="col-md-12" for="name">Пользователь</label>
+										<label id="id" class="col-md-12" for="name" style="display: none;"></label>
+										<div class="col-md-12">
+											<input class="form-control" id="nameUser" readonly />
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-group">
+										<label class="col-md-12" for="comment">Новый пароль</label>
+										<div class="col-md-12">
+										<input name="password" class="form-control" type="password" placeholder="Введите пароль">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" id="submit" onclick="operation(<?= $row['id']; ?>, 'resetPassword');" style="background-color:limegreen; color:white" class="btn btn-secondary" data-dismiss="modal">Обновить</button>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+			</div>
+		</div>
+	</div>
+</div>
 <script>
+	var $id = ''; 
 	function operation(id, typeOperation) {
-		var dataString = 'id=' + id + '&type_operation=';
+		var dataString = '';
 		switch (typeOperation) {
 			case 'resetPassword':
+				dataString= 'id=' + $id + '&type_operation='
 				dataString += typeOperation;
 				break;
 			case 'blockUser':
+				dataString= 'id=' + id + '&type_operation='
 				dataString += typeOperation;
 				break;
 			case 'unlockUser':
+				dataString= 'id=' + id + '&type_operation='
 				dataString += typeOperation;
 				break;
 		}
@@ -128,5 +175,28 @@
 			}
 		});
 
+	}
+	function openModal(id) {
+		$.ajax({
+			url: "/user/getUserById/" + id,
+			type: "GET",
+			dataType: "json",
+			cache: false,
+			success: function(response) {
+				console.log(response);
+				if (response && !response.error) {
+					$id = id;
+					$('#nameUser').val(response["name"]);
+				} else {
+					console.log("Пользователь с идентификатором не найден: " + id);
+					//swal("ОШИБКА!", "Пользователь не найден!", "error");
+				}
+			},
+			error: function(err) {
+				console.log(err);
+				swal("ОШИБКА!", "Что-то пошло не так!", "error");
+			}
+		});
+		$('#myModal').modal('show');
 	}
 </script>

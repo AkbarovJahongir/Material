@@ -158,9 +158,55 @@ class Controller_User extends Controller
 
     function action_operation($id, $type_operation)
     {
+        $this->print_array($id, $type_operation);
+        die;
         if (isset($id) && isset($type_operation)) {
-            
+            if($type_operation == "resetPassword"){
+                $result = $this->model->reset_password($id, $type_operation);
+                if ($result) {
+                    $this->data["error"] = 0;
+                    $this->data["message"] = "Пароль сброшен!";
+                } else {
+                    $this->data["error"] = 1;
+                    $this->data["message"] = "Не успешно!";
+                }
+            }
+            else if($type_operation == "blockUser"){
+                $result = $this->model->access_user($id, 0);
+                if ($result) {
+                    $this->data["error"] = 0;
+                    $this->data["message"] = "Пользователь заблокирован!";
+                } else {
+                    $this->data["error"] = 1;
+                    $this->data["message"] = "Не удалось заблокировать пользователя!";
+                }
+            }
+            else if($type_operation == "unlockUser"){
+                $result = $this->model->access_user($id, 1);
+                if ($result) {
+                    $this->data["error"] = 0;
+                    $this->data["message"] = "Пользователь успешно разблокирован!";
+                } else {
+                    $this->data["error"] = 1;
+                    $this->data["message"] = "Не удалось раблокировать пользователя!";
+                }
+            }
+        }else {
+            $this->data["error"] = 1;
+            $this->data["message"] = "Неизвестная ошибка!";
         }
+    }
+
+    public function action_getUserById($id)
+    {
+        $user = $this->model->get_user($id);
+        if (!$user) {
+            return json_encode(["error" => 1, "message" => "Пользователь не найден"]);
+        }
+        $this->print_array($user);
+        die;
+        $this->return_json($user);
+        return;
     }
 }
 ?>

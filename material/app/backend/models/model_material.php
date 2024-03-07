@@ -21,12 +21,18 @@ class Model_Material extends Model
             . " INNER JOIN `kafedra` AS `kafedra` ON material.`kafedra_id` = `kafedra`.`id`"
             . " INNER JOIN `facultet` AS `facultet` ON kafedra.`facultet_id` = `facultet`.`id`"
             . " INNER JOIN `material_status` AS `material_status` ON material_status.`id` = `material`.`status`"
-            // . " WHERE material.`status` = 3"
+            //. " WHERE material.`status` = 3"
             . " ORDER BY material.`date_add` DESC");
         return $result;
     }
     public function get_materialByuserId($id)
     {
+        $status = 3;
+        if ($id == 4){
+            $status = 2;
+        }else if ($id == 1 || $id == 2){
+            $status = 1;
+        }
         $result = $this->select("SELECT material.`id`"
             . " ,material.`name`"
             . " ,`type`.`name` AS `type`"
@@ -45,8 +51,8 @@ class Model_Material extends Model
             . " INNER JOIN `kafedra` AS `kafedra` ON material.`kafedra_id` = `kafedra`.`id`"
             . " INNER JOIN `facultet` AS `facultet` ON kafedra.`facultet_id` = `facultet`.`id`"
             . " INNER JOIN `material_status` AS `material_status` ON material_status.`id` = `material`.`status`"
-            . " WHERE material.`status` = 1 AND `user`.`role_id` = ?"
-            . " ORDER BY material.`date_add` DESC",[$id]);
+            . " WHERE material.`status` = ? AND `user`.`role_id` = ?"
+            . " ORDER BY material.`date_add` DESC",[$status,$id]);
         return $result;
     }
     public function get_material_authors($id)
@@ -201,11 +207,18 @@ class Model_Material extends Model
     }
     public function confirm_material($id)
     {
+        $status = 3;
+        if ($id == 4){
+            $status = 4;
+        }else if ($id == 2){
+            $status = 2;
+        }
         $result = $this->update(
-            "UPDATE `material` SET `status`= 2"
+            "UPDATE `material` SET `status`= ?"
             . " ,`date_edit`=?"
-            . " ,`user_id`=?  WHERE id=?",
+            . " ,`user_id`=?  WHERE id=? AND `status` <> '2'",
             [
+                $status,
                 $this->current_date,
                 $this->user_id,
                 $id
@@ -215,12 +228,19 @@ class Model_Material extends Model
     }
     public function decline_material($id, $comment)
     {
+        $status = 3;
+        if ($id == 4){
+            $status = 5;
+        }else if ($id == 2){
+            $status = 4;
+        }
         $result = $this->update(
             "UPDATE `material` SET `status`= 4"
             . " ,`date_edit`=?"
             . " ,`comment`=? "
             . " ,`user_id`=?  WHERE id=?",
             [
+                $status,
                 $this->current_date,
                 $comment,
                 $this->user_id,

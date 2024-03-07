@@ -382,6 +382,8 @@ class Controller_Material extends Controller
     }
     function action_confirm($id)
     {
+        // $this->print_array($id);
+        // die;
         $result = $this->model->confirm_material($id);
 
         if ($result) {
@@ -392,7 +394,7 @@ class Controller_Material extends Controller
             $this->data["message"] = "По каким то причинам материал не может быть подтвержден!";
         }
         //$this->return_json($result);
-        $materials = $this->model->get_materialByuserId($_SESSION["uid"]["id"]);
+        $materials = $this->model->get_materialByuserId($_SESSION["uid"]["role_id"]);
         for ($i = 0; $i < count($materials); $i++) {
             $authors = $this->model->get_material_authors($materials[$i]['id']);
 
@@ -428,7 +430,8 @@ class Controller_Material extends Controller
             $materials[$i]['specialties'] = $specialties_str;
         }
         $this->data["materials"] = $materials;
-        //$this->print_array($_FILES["fileToUpload"] ); die;
+        // $this->print_array($this->data["materials"]); die;
+        //return;
         $this->view->generate('material/list_view.php', 'template_view.php', $this->data);
     }
     function action_decline()
@@ -444,8 +447,6 @@ class Controller_Material extends Controller
             $this->data["error"] = 1;
             $this->data["message"] = "По каким то причинам материал не может быть отклонен!";
         }
-        $this->return_json($result);
-        return;
         $materials = $this->model->get_materialByuserId($_SESSION["uid"]["id"]);
         for ($i = 0; $i < count($materials); $i++) {
             $authors = $this->model->get_material_authors($materials[$i]['id']);
@@ -483,6 +484,9 @@ class Controller_Material extends Controller
         }
         $this->data["materials"] = $materials;
         $this->view->generate('material/list_view.php', 'template_view.php', $this->data);
+        
+        // $this->return_json($materials);
+        // return;
     }
     function action_delete()
     {

@@ -10,8 +10,8 @@ class Model_Auth extends Model{
 		return $result;
 	}
 	public function check($login, $password){
-		//echo hash_hmac('SHA256',$password, 'J@h0n');
-		$result = $this->select("SELECT * FROM `user` WHERE login=? AND password=?",array($login, hash_hmac('SHA256',$password, 'J@h0n')));
+		//echo hash_hmac('SHA256',$password, 'p0l!t3kh');
+		$result = $this->select("SELECT * FROM `user` WHERE login=? AND password=?",array($login, hash_hmac('SHA256',$password, 'p0l!t3kh')));
 		return $result;
 	}
 }

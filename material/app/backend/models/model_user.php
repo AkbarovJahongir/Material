@@ -30,7 +30,7 @@ class Model_User extends Model
 		$date_now = date('Y-m-d H:i:s', strtotime('+5 hours'));
 
 		// Хешируем пароль
-		$hashed_password = hash_hmac('SHA256',$password, 'J@h0n');
+		$hashed_password = hash_hmac('SHA256',$password, 'p0l!t3kh');
 		//echo $name,' \n', $login,'  \n', $hashed_password,'  \n', $access,' \n ', $role,'  \n', $date_now,'  \n', $unique_filename,'  \n',$kafedra,'  \n';
 		return $this->insert_get_Id(
 			"INSERT INTO `user` SET name=?,login=?,password=?,access=?,role_id=?,date_add=?,image_url=?,kafedra_id=?",
@@ -47,7 +47,7 @@ class Model_User extends Model
 
 	public function reset_password($user_id, $password)
 	{
-		$hashed_password = hash_hmac('SHA256',$password, 'J@h0n');
+		$hashed_password = hash_hmac('SHA256',$password, 'p0l!t3kh');
 		return $this->update("UPDATE `user` SET password=? WHERE id=?", array($hashed_password, $user_id));
 	}
 	public function access_user($user_id, $access)

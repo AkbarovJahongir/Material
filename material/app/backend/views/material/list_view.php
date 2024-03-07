@@ -16,6 +16,11 @@
 <div class="row">
 	<div class="col-md-12">
 		<div class="tile">
+			<?php
+			if (isset($data["message"])) {
+				echo '<div id="messageBlock" class="card text-black bg-light"><div class="card-body">' . $data["message"] . '</div></div><br>';
+			}
+			?>
 			<h3 class="tile-title">Все материалы</h3>
 			<div class="tile-body">
 				<div id="sampleTable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
@@ -33,14 +38,17 @@
 													<th>Тип</th>
 													<th>Факультет</th>
 													<th>Кафедра</th>
-													<?php
-													if ($_SESSION["uid"]["role_id"] == 3 || $_SESSION["uid"]["role_id"] == 1) {
-														echo '<th>Статус</th>
-															<th>Комментарий</th>';
-													};
-													?>
 													<th>Дата публикации</th>
-													<th style="height: 10px;">Действие</th>
+													<th>Статус</th>
+													<?php
+													if ($_SESSION["uid"]["role_id"] == 2 || $_SESSION["uid"]["role_id"] == 1) {
+														echo '
+															<th>Комментарий</th>
+														<th style="height: 10px;">Действие</th>';
+													} else if ($_SESSION["uid"]["role_id"] == 4) {
+														echo '<th style="height: 10px;">Действие</th>';
+													}
+													?>
 													<th>Файл</th>
 												</tr>
 											</thead>
@@ -53,52 +61,35 @@
 														<td><?= $material['type'] ?></td>
 														<td><?= $material['facultet'] ?></td>
 														<td><?= $material['kafedra'] ?></td>
-														<?php
-														if ($_SESSION["uid"]["role_id"] == 3 || $_SESSION["uid"]["role_id"] == 1) {
-															echo '
-														<td>' . $material['status'] . ' </td>
-														<td>' . $material['comment'] . ' </td>';
-														};
-														?>
 														<td><?= $material['date_publish'] ?></td>
-														<td>
-															<?php
-															if ($_SESSION["uid"]["role_id"] == 3) {
-																echo '
-																	<div style="display:flex;justify-content:space-around;padding: 5px;">
-																		<div class="btn-group">
-																			<a href="#" onclick="deleteMaterial(' . $material['id'] . ')" class="btn btn-danger btn-sm del-material"><i class="fa fa-lg fa-trash"></i> Удалить</a>
-																		</div>
-																	</div>';
-															} else if ($_SESSION["uid"]["role_id"] == 1) {
-																echo '
+															<td><?= $material['status'] ?></td>
+														<?php if ($_SESSION["uid"]["role_id"] == 2 || $_SESSION["uid"]["role_id"] == 1) : ?>
+															<td><?= $material['comment'] ?></td>
+														<?php endif; ?>
+														<?php if ($_SESSION["uid"]["role_id"] == 1) : ?>
+															<td>
 																<div class="btn-group">
-																		<a href="/' . $data['controller_name'] . '/edit/' . $material['id'] . '" class="btn btn-primary btn-sm"><i class="fa fa-lg fa-edit"></i> Изменить</a>
-																	</div>
+																	<a href="/<?= $data['controller_name'] ?>/edit/<?= $material['id'] ?>" class="btn btn-primary btn-sm"><i class="fa fa-lg fa-edit"></i> Изменить</a>
+																</div>
 																<div style="display:flex;justify-content:space-around;padding: 5px;">
 																	<div class="btn-group">
-																		<a href="#" onclick="deleteMaterial(' . $material['id'] . ')" class="btn btn-danger btn-sm del-material"><i class="fa fa-lg fa-trash"></i> Удалить</a>
+																		<a href="#" onclick="deleteMaterial(<?= $material['id'] ?>)" class="btn btn-danger btn-sm del-material"><i class="fa fa-lg fa-trash"></i> Удалить</a>
 																	</div>
-																</div>';
-															}
-															 else if ($_SESSION["uid"]["role_id"] == 2) {
-																echo '
-																	<div style="display:flex;justify-content:space-around;padding: 5px;">
-																		<div class="btn-group">
-																			<a href="/' . $data['controller_name'] . '/confirm/' . $material['id'] . '" class="btn btn-primary btn-sm"><i class="fa fa-lg fa-edit"></i> Подтвердить</a>
-																		</div>
-																		<div class="btn-group">
-																		<a href="#"onclick="openModal(' . $material['id'] . ')"  class="btn btn-danger btn-sm del-material"><i class="fa fa-lg fa-trash"></i> Отклонить</a>
-																		</div>
-																	</div>';
-															}
-
-															?>
-														</td>
-
-														<!-- <div class="btn-group">
-																			<a href="/' . $data['controller_name'] . '/edit/' . $material['id'] . '" class="btn btn-primary btn-sm"><i class="fa fa-lg fa-edit"></i> Изменить</a>
-																		</div> -->
+																</div>
+															</td>
+														<?php endif; ?>
+														<?php if ($_SESSION["uid"]["role_id"] == 2 || $_SESSION["uid"]["role_id"] == 4) : ?>
+															<td>
+																<div style="display:flex;justify-content:space-around;padding: 5px;">
+																	<div class="btn-group">
+																		<a href="/<?= $data['controller_name'] ?>/confirm/<?= $material['id'] ?>" class="btn btn-primary btn-sm"><i class="fa fa-lg fa-edit"></i> Подтвердить</a>
+																	</div>
+																	<div class="btn-group">
+																		<a href="#" onclick="openModal(<?= $material['id'] ?>)" class="btn btn-danger btn-sm del-material"><i class="fa fa-lg fa-trash"></i> Отклонить</a>
+																	</div>
+																</div>
+															</td>
+														<?php endif; ?>
 														<td>
 															<div class="btn-group">
 																<?php if (!empty($material['file_path'])) : ?>
@@ -108,11 +99,11 @@
 																<?php else : ?>
 																	<p>Файл отсутствует</p>
 																<?php endif; ?>
-
 															</div>
 														</td>
 													</tr>
 												<?php endforeach; ?>
+
 											</tbody>
 										</table>
 									</div>
@@ -289,4 +280,16 @@
 		$id = '';
 		$("#comment").val('');
 	}
+	var delayBeforeClose = 3000; // Например, 3000 миллисекунд = 3 секунды
+
+	// Функция для закрытия сообщения
+	function closeMessage() {
+		var messageBlock = document.getElementById('messageBlock');
+		if (messageBlock) {
+			messageBlock.style.display = 'none'; // Скрыть блок сообщения
+		}
+	}
+
+	// Запуск функции closeMessage() через указанное время
+	setTimeout(closeMessage, delayBeforeClose);
 </script>
