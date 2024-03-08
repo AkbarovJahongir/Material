@@ -67,7 +67,6 @@
                     '<li class="treeview"><a class="app-menu__item <?= $material_active ?>" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-book"></i><span class="app-menu__label">Материалы</span><i class="treeview-indicator fa fa-angle-right"></i></a>
                     <ul class="treeview-menu">
                         <li><a class="treeview-item" href="/material/get"><i class="icon fa fa-circle-o"></i> Все материалы</a></li>
-                        <li><a class="treeview-item" href="/material/add"><i class="icon fa fa-circle-o"></i> Добвить новый</a></li>
                     </ul>
                 </li>';
                 }
@@ -83,20 +82,25 @@
                         <ul class="treeview-menu">
                             <li><a class="treeview-item" href="/specialty"><i class="icon fa fa-circle-o"></i> Все специальности</a></li>
                             <li><a class="treeview-item" href="/specialty/add"><i class="icon fa fa-circle-o"></i> Добвить новый</a></li>
-                        </ul>
+                            <li><a class="treeview-item" href="/specialty/list_faculty"><i class="icon fa fa-circle-o"></i> Все факультеты</a></li>
+                            <li><a class="treeview-item" href="/subject/add"><i class="icon fa fa-circle-o"></i> Добвить новый факультет</a></li>
+                        </ul> 
                     </li>
                     <li class="treeview"><a class="app-menu__item <?= $subject_active ?>" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-leanpub"></i><span class="app-menu__label">Предметы</span><i class="treeview-indicator fa fa-angle-right"></i></a>
                         <ul class="treeview-menu">
                             <li><a class="treeview-item" href="/subject"><i class="icon fa fa-circle-o"></i> Все предметы</a></li>
                             <li><a class="treeview-item" href="/subject/add"><i class="icon fa fa-circle-o"></i> Добвить новый</a></li>
                         </ul>
-                    </li>
+                    </li>';
+                    if ($_SESSION["uid"]["role_id"] == 3) {
+                        echo '
                     <li class="treeview"><a class="app-menu__item <?= $user_active ?>" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-users"></i><span class="app-menu__label">Пользователи</span><i class="treeview-indicator fa fa-angle-right"></i></a>
                         <ul class="treeview-menu">
                             <li><a class="treeview-item" href="/user/index"><i class="icon fa fa-circle-o"></i> Все пользователи</a></li>
                             <li><a class="treeview-item" href="/user/add"><i class="icon fa fa-circle-o"></i> Добвить новый</a></li>
                         </ul>
-                    </li>
+                    </li>';}
+                    echo '
                     <li class="treeview"><a class="app-menu__item <?= $report_active ?>" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-file"></i><span class="app-menu__label">Отчеты</span><i class="treeview-indicator fa fa-angle-right"></i></a>
                         <ul class="treeview-menu">
                             <li><a class="treeview-item" href="/report/allReport"><i class="icon fa fa-circle-o"></i> Все отчеты</a></li>
@@ -122,7 +126,6 @@
     <script src="/assets/js/popper.min.js"></script>
     <script src="/assets/js/bootstrap.min.js"></script>
     <script src="/assets/js/main.js"></script>
-    <script type="text/javascript" src="/assets/js/sweetalert.js"></script>
     <!-- The javascript plugin to display page loading on top-->
     <script src="/assets/js/plugins/pace.min.js"></script>
     <script type="text/javascript" src="/assets/js/export/jquery.dataTables.min.js"></script>

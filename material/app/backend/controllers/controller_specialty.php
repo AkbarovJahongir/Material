@@ -91,5 +91,38 @@ class Controller_Specialty extends Controller{
 
         $this->view->generate('specialty/edit_view.php', 'template_view.php', $this->data);
     }
+    function action_list_faculty() {
+        $faculty = $this->model->get_facultys();
+        $this->data["faculty"] = $faculty;
+
+        //$this->print_array($specialties); die;
+
+		$this->view->generate('specialty/list_view_faculty.php', 'template_view.php', $this->data);
+	}
+    function action_addFaculty() {
+        if (isset($_POST["faculty"]) )
+        {
+            $this->print_array( $_POST ); die;
+            $name = $_POST["faculty"];
+
+            if ($name != "" )
+            {
+                $result = $this->model->add_faculty($name);
+
+                if ($result ) {
+                    $this->data["error"] = 0;
+                    $this->data["message"] = "Новый факудьтет успешно добавлен!";
+                } else {
+                    $this->data["error"] = 1;
+                    $this->data["message"] = "Не верные данные!";
+                }
+            } else {
+                $this->data["error"] = 1;
+                $this->data["message"] = "Некоторые данные пусты!";
+            }
+        }
+
+        $this->view->generate('specialty/list_view_faculty.php', 'template_view.php', $this->data);
+    }
 }
 ?>

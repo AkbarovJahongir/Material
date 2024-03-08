@@ -62,4 +62,16 @@
 <script type="text/javascript" src="/assets/js/plugins/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript">
     $('#sampleTable').DataTable();
+    var delayBeforeClose = 3000; // Например, 3000 миллисекунд = 3 секунды
+
+	// Функция для закрытия сообщения
+	function closeMessage() {
+		var messageBlock = document.getElementById('messageBlock');
+		if (messageBlock) {
+			messageBlock.style.display = 'none'; // Скрыть блок сообщения
+		}
+	}
+
+	// Запуск функции closeMessage() через указанное время
+	setTimeout(closeMessage, delayBeforeClose);
 </script>

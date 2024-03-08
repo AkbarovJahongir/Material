@@ -59,7 +59,7 @@
 														<td><?= $material['name'] ?></td>
 														<td><?= $material['authors'] ?></td>
 														<td><?= $material['type'] ?></td>
-														<td><?= $material['facultet'] ?></td>
+														<td><?= $material['faculty'] ?></td>
 														<td><?= $material['kafedra'] ?></td>
 														<td><?= $material['date_publish'] ?></td>
 															<td><?= $material['status'] ?></td>

@@ -1,3 +1,5 @@
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <style>
 	span.dropdown-item {
 		cursor: pointer;
@@ -130,6 +132,7 @@
 		</div>
 	</div>
 </div>
+<script type="text/javascript" src="/assets/js/plugins/sweetalert.min.js"></script>
 <script>
 	var $id = ''; 
 	function operation(id, typeOperation) {
@@ -187,9 +190,10 @@
 				if (response && !response.error) {
 					$id = id;
 					$('#nameUser').val(response["name"]);
+					alert(response["name"]);
 				} else {
 					console.log("Пользователь с идентификатором не найден: " + id);
-					//swal("ОШИБКА!", "Пользователь не найден!", "error");
+					swal("ОШИБКА!", "Пользователь не найден!", "error");
 				}
 			},
 			error: function(err) {
