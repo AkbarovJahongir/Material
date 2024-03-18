@@ -490,7 +490,6 @@ class Controller_Material extends Controller
     }
     function action_delete()
     {
-
         $user_role = $_SESSION["uid"]["role_id"];
 
         if ($user_role != 1) {

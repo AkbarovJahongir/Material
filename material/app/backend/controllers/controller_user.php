@@ -156,44 +156,33 @@ class Controller_User extends Controller
         $this->view->generate('user/edit_view.php', 'template_view.php', $this->data);
     }
 
-    function action_operation($id, $type_operation)
+    function action_operation()
     {
-        $this->print_array($id, $type_operation);
-        die;
+        // $this->print_array($id, $type_operation);
+        // die;
+        $id = $_POST["id"];
+        $type_operation =  $_POST["typeOperation"];
         if (isset($id) && isset($type_operation)) {
-            if($type_operation == "resetPassword"){
-                $result = $this->model->reset_password($id, $type_operation);
-                if ($result) {
-                    $this->data["error"] = 0;
-                    $this->data["message"] = "Пароль сброшен!";
-                } else {
-                    $this->data["error"] = 1;
-                    $this->data["message"] = "Не успешно!";
-                }
-            }
-            else if($type_operation == "blockUser"){
+            if($type_operation == "blockUser"){
                 $result = $this->model->access_user($id, 0);
                 if ($result) {
-                    $this->data["error"] = 0;
-                    $this->data["message"] = "Пользователь заблокирован!";
+                    $this->return_json($result);
+                    return;
                 } else {
-                    $this->data["error"] = 1;
-                    $this->data["message"] = "Не удалось заблокировать пользователя!";
+                    return json_encode(["error" => 1, "message" => "Неудалось заблокировать доспут пользователя!"]);
                 }
             }
             else if($type_operation == "unlockUser"){
                 $result = $this->model->access_user($id, 1);
                 if ($result) {
-                    $this->data["error"] = 0;
-                    $this->data["message"] = "Пользователь успешно разблокирован!";
+                    $this->return_json($result);
+                    return;
                 } else {
-                    $this->data["error"] = 1;
-                    $this->data["message"] = "Не удалось раблокировать пользователя!";
+                    return json_encode(["error" => 1, "message" => "Неудалось разблокировать доспут пользователя!"]);
                 }
             }
         }else {
-            $this->data["error"] = 1;
-            $this->data["message"] = "Неизвестная ошибка!";
+            return json_encode(["error" => 1, "message" => "Ошибка запроса!"]);
         }
     }
 
@@ -203,10 +192,27 @@ class Controller_User extends Controller
         if (!$user) {
             return json_encode(["error" => 1, "message" => "Пользователь не найден"]);
         }
-        $this->print_array($user);
-        die;
         $this->return_json($user);
         return;
+    }
+
+    function action_resetPassword()
+    {
+        $id = $_POST["id"];
+        $password =  $_POST["password"];
+
+        if (isset($id) && isset($password)) {
+                $result = $this->model->reset_password($id, $password);
+                if ($result) {
+                    $this->return_json($result);
+                    return;
+                } else {
+                    return json_encode(["error" => 1, "message" => "Неудалось сбросить пароль!"]);
+                }
+        }
+        else{
+            return json_encode(["error" => 1, "message" => "Неудалось сбросить пароль!"]);
+        }
     }
 }
 ?>

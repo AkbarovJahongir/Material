@@ -66,4 +66,23 @@ class Model_Specialty extends Model
             return false;
         }
     }
+    public function get_facultyById($id)
+    {
+        $result = $this->select(
+            "SELECT `id`"
+                . " ,`name`"
+                . " FROM `faculty` WHERE id=?",
+            [$id]
+        )[0];
+        return $result;
+    }
+    public function edit_faculty($id, $name)
+    {
+        return $this->update(
+            "UPDATE `faculty` SET `name`=? "
+                . " ,`date_edit`=?"
+                . " WHERE id=?",
+            [$name, $this->current_date, $id]
+        );
+    }
 }

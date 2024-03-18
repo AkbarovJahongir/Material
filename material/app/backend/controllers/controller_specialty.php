@@ -100,29 +100,60 @@ class Controller_Specialty extends Controller{
 		$this->view->generate('specialty/list_view_faculty.php', 'template_view.php', $this->data);
 	}
     function action_addFaculty() {
-        if (isset($_POST["faculty"]) )
+        
+        $user_role = $_SESSION["uid"]["role_id"];
+
+        if ($user_role != 3) {
+            $result = ["error" => 1, "message" => "У вас нет прав для добавления записи!"];
+        } else {
+            if (isset($_POST["faculty"])) {
+                $faculty = $_POST["faculty"];
+                if ($this->model->add_faculty($faculty)) {
+                    $result = ["error" => 0, "message" => "Новый факультет успешно добавлен!"];
+                } else {
+                    $result = ["error" => 1, "message" => "Не верные данные или факультет был уже добавлен!"];
+                }
+            } else {
+                $result = ["error" => 1, "message" => "Не верные параметры"];
+            }
+        }
+        $this->return_json($result);
+        return;
+    }
+
+    public function action_getSpecialtyById($id)
+    {
+        $faculty = $this->model->get_facultyById($id);
+        if (!$faculty) {
+            return json_encode(["error" => 1, "message" => "Факультет не найден"]);
+        }
+        $this->return_json($faculty);
+        return;
+    }
+    function action_editFaculty() {
+        
+        /* #Get specialty data by @id */
+        $id = $_POST["ID"];
+        $this->data["faculty"] = $this->model->get_facultyById($id);
+
+        if (isset($_POST["facultyName"]) )
         {
-            $this->print_array( $_POST ); die;
-            $name = $_POST["faculty"];
+            $name = $_POST["facultyName"];
 
             if ($name != "" )
             {
-                $result = $this->model->add_faculty($name);
-
-                if ($result ) {
-                    $this->data["error"] = 0;
-                    $this->data["message"] = "Новый факудьтет успешно добавлен!";
-                } else {
-                    $this->data["error"] = 1;
-                    $this->data["message"] = "Не верные данные!";
-                }
+                $result = $this->model->edit_faculty( $id, $name );
+                if ( !$result ) {
+                    $this->print_array( $_POST ); die;
+                    return json_encode(["error" => 1, "message" => "Ошибка при изменении"]);
+                    //$this->view->generate('specialty/success_view.php', 'template_view.php', $this->data);
+                    //return true;
+                } 
+                $this->return_json($result);
             } else {
-                $this->data["error"] = 1;
-                $this->data["message"] = "Некоторые данные пусты!";
+                return json_encode(["error" => 1, "message" => "Некоторые данные пусты!"]);
             }
         }
-
-        $this->view->generate('specialty/list_view_faculty.php', 'template_view.php', $this->data);
     }
 }
 ?>
