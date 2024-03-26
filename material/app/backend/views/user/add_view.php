@@ -3,7 +3,7 @@
     <ul class="app-breadcrumb breadcrumb">
       <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
       <li class="breadcrumb-item"><a href="/user">Пользователи</a></li>
-      <li class="breadcrumb-item active">Редактирование</li>
+      <li class="breadcrumb-item active">Добавление</li>
     </ul>
   </div>
 </div>

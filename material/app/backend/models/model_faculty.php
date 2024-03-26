@@ -5,8 +5,8 @@ class Model_Faculty extends Model
     {
         $result = $this->select(
             "SELECT `id`"
-                . " ,`name`"
-                . " FROM `faculty` ORDER BY `date_add` DESC"
+            . " ,`name`"
+            . " FROM `faculty` ORDER BY `date_add` DESC"
         );
         return $result;
     }
@@ -14,11 +14,11 @@ class Model_Faculty extends Model
     {
         $result = $this->select(
             "SELECT k.`id`"
-                . " ,k.`name`"
-                . " ,`f`.`name` AS `facultyName`"
-                . " FROM `kafedra` AS k"
-                . " INNER JOIN `faculty` AS `f` ON `f`.id = k.faculty_id"
-                . " ORDER BY k.`date_add` DESC"
+            . " ,k.`name`"
+            . " ,`f`.`name` AS `facultyName`"
+            . " FROM `kafedra` AS k"
+            . " INNER JOIN `faculty` AS `f` ON `f`.id = k.faculty_id"
+            . " ORDER BY k.`date_add` DESC"
         );
         return $result;
     }
@@ -27,10 +27,9 @@ class Model_Faculty extends Model
         if (!$this->select("SELECT * FROM `faculty` WHERE `name` = ?", [$name])) {
             return $this->insert(
                 "INSERT INTO `faculty` "
-                    . "SET `name`=?",
+                . "SET `name`=?",
                 [$name]
             );
-            return true;
         } else {
             return false;
         }
@@ -39,8 +38,8 @@ class Model_Faculty extends Model
     {
         $result = $this->select(
             "SELECT `id`"
-                . " ,`name`"
-                . " FROM `faculty` WHERE id=?",
+            . " ,`name`"
+            . " FROM `faculty` WHERE id=?",
             [$id]
         )[0];
         return $result;
@@ -61,11 +60,23 @@ class Model_Faculty extends Model
     }
     public function edit_faculty($id, $name)
     {
-        return $this->update(
-            "UPDATE `faculty` SET `name`=? "
+        if (!$this->select("SELECT * FROM `faculty` WHERE `name` = ?", [$name])) {
+            return $this->update(
+                "UPDATE `faculty` SET `name`=? "
                 . " ,`date_edit`=?"
                 . " WHERE id=?",
-            [$name, $this->current_date, $id]
+                [$name, $this->current_date, $id]
+            );
+        }
+        return false;
+    }
+    public function delete_faculty($id)
+    {
+        return $this->delete(
+            "DELETE FROM `faculty`"
+            . " WHERE id=?",
+            [$id]
         );
+
     }
 }

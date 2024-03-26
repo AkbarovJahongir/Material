@@ -235,11 +235,11 @@
             },
             cache: false,
             success: function (response) {
-                if (response.error === 1) {
-                    swal("ОШИБКА!", response.message, "error");
+                if (response && !response.error) {
+                    swal("Добавлено!", response.message, "success");
                     console.log(id);
                 } else {
-                    swal("Добавлено!", response.message, "success");
+                    swal("ОШИБКА!", response.message, "error");
                     location.reload();
                 }
             },

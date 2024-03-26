@@ -16,23 +16,16 @@ class Controller_Faculty extends Controller
     {
         $faculty = $this->model->get_facultys();
         $this->data["faculty"] = $faculty;
-
-        //$this->print_array($specialties); die;
-
         $this->view->generate('faculty/list_view.php', 'template_view.php', $this->data);
     }
     function action_index_kafedra()
     {
         $kafedra = $this->model->get_kafedra();
         $this->data["kafedra"] = $kafedra;
-
-        //$this->print_array($specialties); die;
-
         $this->view->generate('faculty/list_view_kafedra.php', 'template_view.php', $this->data);
     }
     function action_add()
     {
-
         $user_role = $_SESSION["uid"]["role_id"];
 
         if ($user_role != 3) {
@@ -74,38 +67,49 @@ class Controller_Faculty extends Controller
         if (!$faculty) {
             return json_encode(["error" => 1, "message" => "Кафедра не найдена"]);
         }
-        
-        // Дополнительная информация о факультете
         $faculty["faculty"] = $this->model->get_facultys();
-        
+
         $this->return_json($faculty);
         return;
     }
 
-    function action_editFaculty()
+    function action_edit()
     {
-
-        /* #Get specialty data by @id */
-        $id = $_POST["ID"];
+        $id = $_POST["id"];
         $this->data["faculty"] = $this->model->get_facultyById($id);
 
-        if (isset ($_POST["facultyName"])) {
+        if (isset ($_POST["facultyName"]) && isset ($_POST["id"])) {
             $name = $_POST["facultyName"];
-
-            if ($name != "") {
-                $result = $this->model->edit_faculty($id, $name);
-                if (!$result) {
-                    $this->print_array($_POST);
-                    die;
-                    return json_encode(["error" => 1, "message" => "Ошибка при изменении"]);
-                    //$this->view->generate('specialty/success_view.php', 'template_view.php', $this->data);
-                    //return true;
-                }
-                $this->return_json($result);
-            } else {
-                return json_encode(["error" => 1, "message" => "Некоторые данные пусты!"]);
+            $result = $this->model->edit_faculty($id, $name);
+            if (!$result) {
+                return json_encode(["error" => 1, "message" => "Ошибка при изменении"]);
             }
+            $this->return_json($result);
+
+        } else {
+            return json_encode(["error" => 1, "message" => "Некоторые данные пусты или факультет с таким именем существует!"]);
         }
+    }
+    function action_delete() {
+
+        $user_role = $_SESSION["uid"]["role_id"];
+
+        if ( $user_role == 3 ) {
+            if ( isset($_POST["id"]) ) {
+                $id = $_POST["id"];
+                if ( $this->model->delete_faculty( $id ) ) {
+                    $result = ["error" => 0, "message" => "Факультет успешно удален!"];
+                } else {
+                    $result = ["error" => 1, "message" => "Вы не можете удалить этот факультет!"];
+                }
+            } else {
+                $result = ["error" => 1, "message" => "Не верные параметры"];
+            }
+        } else {
+            $result = ["error" => 1, "message" => "У вас нет прав для удаление записи!"];
+        }
+        $this->return_json($result);
+        return;
     }
 }
 ?>

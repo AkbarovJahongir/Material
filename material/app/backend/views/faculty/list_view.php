@@ -32,12 +32,21 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php foreach ($data['faculty'] as $specialty) : ?>
+                                                <?php foreach ($data['faculty'] as $faculty): ?>
                                                     <tr>
-                                                        <td><?= $specialty['name'] ?></td>
+                                                        <td>
+                                                            <?= $faculty['name'] ?>
+                                                        </td>
                                                         <td>
                                                             <div class="btn-group">
-                                                                <a onclick="openModals(<?= $specialty['id'] ?>)" class="btn btn-primary btn-sm"><i class="fa fa-lg fa-edit"></i> Изменить</a>
+                                                                <a onclick="openModals(<?= $faculty['id'] ?>)"
+                                                                    class="btn btn-primary btn-sm"><i
+                                                                        class="fa fa-lg fa-edit"></i> Изменить</a>
+                                                            </div>
+                                                            <div class="btn-group">
+                                                                <a href="#" onclick="deleteFaculty(<?= $faculty["id"] ?>)"
+                                                                    class="btn btn-danger btn-sm del-author"><i
+                                                                        class="fa fa-lg fa-trash"></i> Удалить</a>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -67,7 +76,8 @@
                                     <div class="form-group">
                                         <label class="col-md-12" for="comment">Название факультета</label>
                                         <div class="col-md-12">
-                                            <textarea class="form-control" rows="3" name="faculty" id="faculty"></textarea>
+                                            <textarea class="form-control" rows="3" name="faculty"
+                                                id="faculty"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -77,13 +87,15 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" id="submit" onclick="addFaculty()" style="background-color:limegreen; color:white" class="btn btn-secondary" data-dismiss="modal">Добавить</button>
+                <button type="button" id="submit" onclick="add()" style="background-color:limegreen; color:white"
+                    class="btn btn-secondary" data-dismiss="modal">Добавить</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
             </div>
         </div>
     </div>
 </div>
-<div class="modal fade" id="myModals" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModals" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-body">
@@ -96,7 +108,8 @@
                                     <div class="form-group">
                                         <label class="col-md-12" for="comment">Название факультета</label>
                                         <div class="col-md-12">
-                                            <textarea class="form-control" rows="3" name="facultyName" id="facultyName"></textarea>
+                                            <textarea class="form-control" rows="3" name="facultyName"
+                                                id="facultyName"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -106,7 +119,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" id="submit" onclick="editSpecialty()" style="background-color:limegreen; color:white" class="btn btn-secondary" data-dismiss="modal">Изменить</button>
+                <button type="button" id="submit" onclick="edit()" style="background-color:limegreen; color:white"
+                    class="btn btn-secondary" data-dismiss="modal">Изменить</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
             </div>
         </div>
@@ -126,12 +140,12 @@
         $.ajax({
             url: "/faculty/getFacultyById/" + id,
             type: "GET",
-            dataType: "json", 
+            dataType: "json",
             cache: false,
-            success: function(response) {
+            success: function (response) {
                 if (response && !response.error) {
                     $id = id;
-                    $('#facultyName').val(response["name"]); 
+                    $('#facultyName').val(response["name"]);
                 } else {
                     swal("ОШИБКА!", response.message, "error");
                     console.log(id);
@@ -139,7 +153,7 @@
                     //location.reload();
                 }
             },
-            error: function(er) {
+            error: function (er) {
                 console.log(er);
                 swal("ОШИБКА!", "Что-то пошло не так!", "error");
             }
@@ -147,84 +161,111 @@
         $('#myModals').modal('show');
     }
 
-    function addFaculty() {
+    function add() {
         var facultyName = $('#faculty').val();
         $.ajax({
-            url: "/faculty/addFaculty",
+            url: "/faculty/add",
             type: "POST",
-            dataType: "json", 
+            dataType: "json",
             data: {
-                    faculty: facultyName
-                },
+                faculty: facultyName
+            },
             cache: false,
-            success: function(response) {
-                if (response.error === 1) {
-                    swal("ОШИБКА!", response.message, "error");
-                    console.log(id);
-                } else {
+            success: function (response) {
+                if (response && !response.error) {
                     swal("Добавлено!", response.message, "success");
-                    location.reload();
+                    //location.reload();
+                    //console.log(id);
+                } else {
+                    swal("ОШИБКА!", response.message, "error");
                 }
             },
-            error: function(er) {
+            error: function (er) {
                 console.log(er);
                 swal("ОШИБКА!", "Что-то пошло не так!", "error");
             }
         });
         $('#faculty').val('');
     };
-    function editSpecialty() {
-		// alert($("#comment").val());
-		// alert($id);
-		var $ID = $id;
-		var $facultyName = $("#facultyName").val();
-		swal({
-			title: "Вы действительно хотите изменить?",
-			type: "warning",
-			showCancelButton: true,
-			confirmButtonText: "ДА, изменить!",
-			cancelButtonText: "НЕТ, отменить!",
-			closeOnConfirm: false,
-			closeOnCancel: false
-		}, function(isConfirm) {
-			if (isConfirm) {
-				$.ajax({
-					url: "/specialty/editFaculty",
-					type: "POST",
-					dataType: "json",
-					data: {
-						id: $ID,
-						facultyName: $facultyName
-					},
-					cache: false,
-					success: function(response) {
+    function edit() {
+        // alert($("#comment").val());
+        // alert($id);
+        var $ID = $id;
+        var $facultyName = $("#facultyName").val();
+        swal({
+            title: "Вы действительно хотите изменить?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonText: "ДА, изменить!",
+            cancelButtonText: "НЕТ, отменить!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        }, function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url: "/faculty/edit",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        id: $ID,
+                        facultyName: $facultyName
+                    },
+                    cache: false,
+                    success: function (response) {
                         if (response && !response.error) {
-							swal("Изменено!", response.message, "success");
-							//location.reload();
-						} else {
-							swal("ОШИБКА!", response.message, "error");
-							console.log(id);
-						}
-					},
-					error: function(er) {
-						console.log(er);
-						swal("ОШИБКА!", "Что-то пошло не так!", "error");
-					}
-				});
-			} else {
-				swal("ОТМЕНЕН!", "Вы чуть не отклонили :)", "error");
-			}
-		});
-		$id = '';
-		$("#facultyName").val('');
-	}
-	var delayBeforeClose = 3000; // Например, 3000 миллисекунд = 3 секунды
+                            swal("Изменено!", response.message, "success");
+                            //location.reload();
+                        } else {
+                            swal("ОШИБКА!", response.message, "error");
+                            console.log(id);
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        swal("ОШИБКА!", "Некоторые данные пусты или факультет с таким именем существует!", "error");
+                    }
+                });
+            } else {
+                swal("ОТМЕНЕН!", "Вы чуть не изменили :)", "error");
+            }
+        });
+        $id = '';
+        $("#facultyName").val('');
+    }
 
-	// Функция для закрытия сообщения
-	function closeMessage() {
-		var messageBlock = document.getElementById('messageBlock');
-		if (messageBlock) {
-			messageBlock.style.display = 'none'; // Скрыть блок сообщения
-		}
-	}
+    function deleteFaculty(id) {
+        swal({
+            title: "Вы действительно хотите удалить?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonText: "ДА, удалить!",
+            cancelButtonText: "НЕТ, отменить!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        }, function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url: "/faculty/delete",
+                    type: "POST",
+                    dataType: "json",
+                    data: "id=" + id,
+                    cache: false,
+                    success: function (response) {
+                        if (response.error === 1) {
+                            swal("ОШИБКА!", response.message, "error");
+                        } else {
+                            swal("УДАЛЕНО!", response.message, "success");
+                            location.reload();
+                        }
+                    },
+                    error: function (er) {
+                        console.log(er);
+                        swal("ОШИБКА!", "Что то пошло не так!", "error");
+                    }
+                });
+            } else {
+                swal("ОТМЕНЕН!", "Вы чуть не удалили :)", "error");
+            }
+        });
+    }
 </script>
