@@ -34,6 +34,20 @@ class Model_Faculty extends Model
             return false;
         }
     }
+    public function add_kafedra($name, $faculty)
+    {
+        if (!$this->select("SELECT * FROM `kafedra` WHERE `name` = ? AND `faculty_id` = ?", [$name, $faculty])) {
+            return $this->insert(
+                "INSERT INTO `kafedra` "
+                . "SET `name`=?, "
+                . "`faculty_id` = ?",
+                [$name, $faculty]
+            );
+        } else {
+            return false;
+        }
+    }
+
     public function get_facultyById($id)
     {
         $result = $this->select(
@@ -70,10 +84,32 @@ class Model_Faculty extends Model
         }
         return false;
     }
+    public function edit_kafedra($id, $name,$faculty)
+    {
+        if (!$this->select("SELECT * FROM `kafedra` WHERE `name` = ? AND `faculty_id` = ?", [$name, $faculty])) {
+            return $this->update(
+                "UPDATE `kafedra` SET `name`=? "
+                . ", `faculty_id`=?"
+                . " ,`date_edit`=?"
+                . " WHERE id=?",
+                [$name, $faculty, $this->current_date, $id]
+            );
+        }
+        return false;
+    }
     public function delete_faculty($id)
     {
         return $this->delete(
             "DELETE FROM `faculty`"
+            . " WHERE id=?",
+            [$id]
+        );
+
+    }
+    public function delete_kafedra($id)
+    {
+        return $this->delete(
+            "DELETE FROM `kafedra`"
             . " WHERE id=?",
             [$id]
         );

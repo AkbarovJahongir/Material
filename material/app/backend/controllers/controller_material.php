@@ -59,8 +59,9 @@ class Controller_Material extends Controller
 
     function action_get()
     {
-        $materials = $this->model->get_materialByuserId($_SESSION["uid"]["role_id"]);
+        $materials = $this->model->get_materialByuserId($_SESSION["uid"]["role_id"],$_SESSION["uid"]["id"]);
         //$this->print_array($materials);die;
+       // $this->print_array( $this->model->get_kafedraById($_SESSION["uid"]["id"])); die;
         for ($i = 0; $i < count($materials); $i++) {
             $authors = $this->model->get_material_authors($materials[$i]['id']);
 
@@ -96,8 +97,6 @@ class Controller_Material extends Controller
             $materials[$i]['specialties'] = $specialties_str;
         }
         $this->data["materials"] = $materials;
-
-        //$this->print_array( $materials ); die;
 
         $this->view->generate('material/list_view.php', 'template_view.php', $this->data);
     }
@@ -171,7 +170,6 @@ class Controller_Material extends Controller
             isset($_POST["json_subjects"]) &&
             isset($_POST["json_specialties"])
         ) {
-            //$this->print_array($_FILES["fileToUpload"]);
             $name = $_POST["name"];
             $type = $_POST["type"];
             $language = $_POST["language"];
@@ -182,18 +180,6 @@ class Controller_Material extends Controller
             $json_authors = json_decode($_POST["json_authors"]);
             $json_subjects = json_decode($_POST["json_subjects"]);
             $json_specialties = json_decode($_POST["json_specialties"]);
-            // $this->print_array($_POST["name"]); 
-            // $this->print_array($_POST["type"]); 
-            // $this->print_array($_POST["language"]); 
-            // $this->print_array($_POST["date_publish"]); 
-            // $this->print_array($_POST["place"]); 
-            // $this->print_array($_POST["count"]); 
-            // $this->print_array($_POST["kafedra"]); 
-            // $this->print_array($json_authors); 
-            // $this->print_array($json_subjects); 
-            // $this->print_array($json_specialties);
-            // $this->print_array($_POST["kafedra"]);
-            //die;
 
             if (
                 $name != "" &&
@@ -382,9 +368,8 @@ class Controller_Material extends Controller
     }
     function action_confirm($id)
     {
-        // $this->print_array($id);
-        // die;
-        $result = $this->model->confirm_material($id);
+        $user_role = $_SESSION["uid"]["role_id"];
+        $result = $this->model->confirm_material($id, $user_role);
 
         if ($result) {
             $this->data["error"] = 0;
@@ -394,7 +379,7 @@ class Controller_Material extends Controller
             $this->data["message"] = "По каким то причинам материал не может быть подтвержден!";
         }
         //$this->return_json($result);
-        $materials = $this->model->get_materialByuserId($_SESSION["uid"]["role_id"]);
+        $materials = $this->model->get_materialByuserId($_SESSION["uid"]["role_id"],$_SESSION["uid"]["id"]);
         for ($i = 0; $i < count($materials); $i++) {
             $authors = $this->model->get_material_authors($materials[$i]['id']);
 
@@ -438,55 +423,17 @@ class Controller_Material extends Controller
     {
         $id = $_POST["id"];
         $comment =  $_POST["comment"];
-        $result = $this->model->decline_material($id, $comment);
+        $user_role = $_SESSION["uid"]["role_id"];
+        $result = $this->model->decline_material($id, $comment, $user_role);
 
         if ($result) {
-            $this->data["error"] = 0;
-            $this->data["message"] = "Материал отклонен!";
+            $result = ["error" => 0, "message" => "Материал отклонен!"];
         } else {
-            $this->data["error"] = 1;
-            $this->data["message"] = "По каким то причинам материал не может быть отклонен!";
+            $result = ["error" => 1, "message" => "По каким то причинам материал не может быть отклонен!"];
         }
-        $materials = $this->model->get_materialByuserId($_SESSION["uid"]["id"]);
-        for ($i = 0; $i < count($materials); $i++) {
-            $authors = $this->model->get_material_authors($materials[$i]['id']);
-
-            $authors_str = "";
-            for ($j = 0; $j < count($authors); $j++) {
-                if ($j == 0) {
-                    $authors_str = $authors[$j]["name"];
-                } else {
-                    $authors_str .= ", " . $authors[$j]["name"];
-                }
-            }
-            $materials[$i]['authors'] = $authors_str;
-            $subjects = $this->model->get_material_subjects($materials[$i]['id']);
-            $subjects_str = "";
-            for ($j = 0; $j < count($subjects); $j++) {
-                if ($j == 0) {
-                    $subjects_str = $subjects[$j]["name"];
-                } else {
-                    $subjects_str .= ", " . $subjects[$j]["name"];
-                }
-            }
-            $materials[$i]['subjects'] = $subjects_str;
-
-            $specialties = $this->model->get_material_specialties($materials[$i]['id']);
-            $specialties_str = "";
-            for ($j = 0; $j < count($specialties); $j++) {
-                if ($j == 0) {
-                    $specialties_str = $specialties[$j]["code"];
-                } else {
-                    $specialties_str .= ", " . $specialties[$j]["code"];
-                }
-            }
-            $materials[$i]['specialties'] = $specialties_str;
-        }
-        $this->data["materials"] = $materials;
-        $this->view->generate('material/list_view.php', 'template_view.php', $this->data);
         
-        // $this->return_json($materials);
-        // return;
+        $this->return_json($result);
+        return;
     }
     function action_delete()
     {
@@ -506,6 +453,7 @@ class Controller_Material extends Controller
                 $result = ["error" => 1, "message" => "Не верные параметры"];
             }
         }
+        
         $this->return_json($result);
         return;
     }

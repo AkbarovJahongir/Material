@@ -24,6 +24,10 @@ class Model_Common extends Model{
         $result = $this->select("SELECT `id`, `name` FROM `place`");
         return $result;
     }
+    public function get_faculty(){
+        $result = $this->select("SELECT `id`, `name` FROM `faculty`");
+        return $result;
+    }
     public function get_specialties(){
         $result = $this->select("SELECT `id`, `code`, `name` FROM `specialty`");
         return $result;

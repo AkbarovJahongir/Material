@@ -47,6 +47,11 @@
                                                                     class="btn btn-primary btn-sm"><i
                                                                         class="fa fa-lg fa-edit"></i> Изменить</a>
                                                             </div>
+                                                            <div class="btn-group">
+                                                                <a href="#" onclick="deleteKafedra(<?= $kafedra["id"] ?>)"
+                                                                    class="btn btn-danger btn-sm del-author"><i
+                                                                        class="fa fa-lg fa-trash"></i> Удалить</a>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 <?php endforeach; ?>
@@ -75,8 +80,8 @@
                                     <div class="form-group row">
                                         <label class="control-label col-md-12" for="comment">Название кафедры</label>
                                         <div class="col-md-12">
-                                            <textarea class="form-control" rows="3" name="faculty"
-                                                id="faculty"></textarea>
+                                            <textarea class="form-control" rows="3" name="kafedra"
+                                                id="kafedra"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -97,7 +102,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" id="submit" onclick="addFaculty()" style="background-color:limegreen; color:white"
+                <button type="button" id="submit" onclick="addKafedra()" style="background-color:limegreen; color:white"
                     class="btn btn-secondary" data-dismiss="modal">Добавить</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
             </div>
@@ -140,7 +145,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" id="submit" onclick="editSpecialty()"
+                <button type="button" id="submit" onclick="edit()"
                     style="background-color:limegreen; color:white" class="btn btn-secondary"
                     data-dismiss="modal">Изменить</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
@@ -152,6 +157,7 @@
 <script type="text/javascript" src="/assets/js/plugins/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="/assets/js/plugins/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript" src="/assets/js/plugins/sweetalert.min.js"></script>
+<script type="text/javascript" src="/assets/js/plugins/select2.min.js"></script>
 <script type="text/javascript">
     $('#sampleTable').DataTable();
     var $id = "";
@@ -195,7 +201,7 @@
                 if (!response.error) {
                     $('#kafedraName').val(response.name);
                     console.log(response);
-                    $id =response.id;
+                    $id = response.id;
                     var select = $('#facultySelected').find('optgroup');
                     select.empty();
                     // Проверяем, существует ли свойство faculty в объекте response
@@ -223,38 +229,44 @@
 
         $('#myModals').modal('show');
     }
-
-    function addFaculty() {
-        var facultyName = $('#faculty').val();
+    function addKafedra() {
+        var kafedraName = $('#kafedra').val();
+        var faculty =  document.getElementById('facultySelect').value;
+        if (!faculty) {
+            swal("Ошибка!", "Пожалуйста, выберите факультет", "error");
+            return;
+        }
         $.ajax({
-            url: "/faculty/addFaculty",
+            url: "/faculty/addKafedra",
             type: "POST",
             dataType: "json",
             data: {
-                faculty: facultyName
+                kafedra: kafedraName,
+                faculty: faculty
             },
             cache: false,
             success: function (response) {
                 if (response && !response.error) {
                     swal("Добавлено!", response.message, "success");
-                    console.log(id);
+                    console.log(response.id);
                 } else {
-                    swal("ОШИБКА!", response.message, "error");
-                    location.reload();
+                    swal("Ошибка!", response.message, "error");
                 }
             },
             error: function (er) {
                 console.log(er);
-                swal("ОШИБКА!", "Что-то пошло не так!", "error");
+                swal("Ошибка!", "Что-то пошло не так!", "error");
             }
         });
-        $('#faculty').val('');
-    };
-    function editSpecialty() {
+    }
+
+
+    function edit() {
         // alert($("#comment").val());
         // alert($id);
         var $ID = $id;
-        var $facultyName = $("#facultyName").val();
+        var $kafedra = $('#kafedraName').val();
+        var $faculty =  document.getElementById('facultySelected').value;
         swal({
             title: "Вы действительно хотите изменить?",
             type: "warning",
@@ -266,12 +278,13 @@
         }, function (isConfirm) {
             if (isConfirm) {
                 $.ajax({
-                    url: "/specialty/editFaculty",
+                    url: "/faculty/editKafedra",
                     type: "POST",
                     dataType: "json",
                     data: {
                         id: $ID,
-                        facultyName: $facultyName
+                        faculty: $faculty,
+                        kafedra :$kafedra
                     },
                     cache: false,
                     success: function (response) {
@@ -293,15 +306,41 @@
             }
         });
         $id = '';
-        $("#facultyName").val('');
+        $("#kafedraName").val('');
     }
-    var delayBeforeClose = 3000; // Например, 3000 миллисекунд = 3 секунды
-
-    // Функция для закрытия сообщения
-    function closeMessage() {
-        var messageBlock = document.getElementById('messageBlock');
-        if (messageBlock) {
-            messageBlock.style.display = 'none'; // Скрыть блок сообщения
-        }
+    function deleteKafedra(id) {
+        swal({
+            title: "Вы действительно хотите удалить?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonText: "ДА, удалить!",
+            cancelButtonText: "НЕТ, отменить!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        }, function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url: "/faculty/deleteKafedra",
+                    type: "POST",
+                    dataType: "json",
+                    data: "id=" + id,
+                    cache: false,
+                    success: function (response) {
+                        if (response.error === 1) {
+                            swal("ОШИБКА!", response.message, "error");
+                        } else {
+                            swal("УДАЛЕНО!", response.message, "success");
+                            location.reload();
+                        }
+                    },
+                    error: function (er) {
+                        console.log(er);
+                        swal("ОШИБКА!", "Что то пошло не так!", "error");
+                    }
+                });
+            } else {
+                swal("ОТМЕНЕН!", "Вы чуть не удалили :)", "error");
+            }
+        });
     }
 </script>
