@@ -143,6 +143,7 @@
     <script type="text/javascript" src="/assets/js/export/pdfmake.min.js"></script>
     <script type="text/javascript" src="/assets/js/export/vfs_fonts.js"></script>
 
+    <script type="text/javascript" src="/assets/js/plugins/chart.js"></script>
     <script type="text/javascript" src="/assets/js/export/buttons.html5.min.js"></script>
     <script type="text/javascript" src="/assets/js/export/buttons.print.min.js"></script>
 

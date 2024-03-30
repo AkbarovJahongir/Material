@@ -33,7 +33,11 @@
                           <th>Тип</th>
                           <th>Специальности</th>
                           <th>Дата публикации</th>
+                          <th>Статус</th>
+                          <th>Зав.кафедры</th>
+                          <th>Отдел науки</th>
                           <th>Файл</th>
+                          <th>Файл для скачивания</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -47,7 +51,21 @@
                             <td><?= $material["type_name"] ?></td>
                             <td><?= $material["specialties"] ?></td>
                             <td><?= $material["date_publish"] ?></td>
+                            <td><?= $material["desciption"] ?></td>
+                            <td><?= $material["user_k"] ?></td>
+                            <td><?= $material["user_d"] ?></td>
                             <td><?= $material['file_path'] ?></td>
+                            <td>
+															<div class="btn-group">
+																<?php if (!empty($material['file_path'])) : ?>
+																	<a href="/app/uploads/file/<?= $material['file_path'] ?>" download class="btn btn-primary btn-sm">
+																		<i class="fa fa-lg fa-book"></i> Скачать
+																	</a>
+																<?php else : ?>
+																	<p>Файл отсутствует</p>
+																<?php endif; ?>
+															</div>
+														</td>
                           </tr>
                         <?php endforeach; ?>
                       </tbody>
