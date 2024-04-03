@@ -7,7 +7,7 @@ class Model_Report extends Model
     }
     public function get_user()
 	{
-		$result = $this->select("SELECT * FROM `user`");
+		$result = $this->select("SELECT * FROM `user` WHERE role_id NOT IN (3,4)");
 		return $result;
 	}
     public function get_materials()
@@ -53,14 +53,14 @@ class Model_Report extends Model
     {
         if($users != 0){
             return $this->select("SELECT u.`name`, COUNT(m.id) AS `count`,YEAR(m.date_publish) AS `year` FROM `user` u"
-            ." LEFT JOIN `material` m ON m.user_id = u.id"
+            ." INNER JOIN `material` m ON m.user_id = u.id"
             ." WHERE u.id =? "
-            ." GROUP BY u.`name`,m.date_publish",[$users]);
+            ." GROUP BY u.`name`,YEAR(m.date_publish) ASC",[$users]);
         }
         else{
-            return $this->select("SELECT u.`name`, COUNT(m.id) AS `count`,YEAR(m.date_publish) AS `year` FROM `user` u"
+            return $this->select("SELECT COUNT(m.id) AS `count`,YEAR(m.date_publish) AS `year` FROM `user` u"
             ." LEFT JOIN `material` m ON m.user_id = u.id"
-            ." GROUP BY u.`name`,m.date_publish");
+            ." GROUP BY YEAR(m.date_publish) ASC");
         }
     }
     public function get_material_authors($id)

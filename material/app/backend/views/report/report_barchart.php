@@ -3,14 +3,6 @@
         cursor: pointer;
     }
 </style>
-<div class="app-title">
-    <div>
-        <ul class="app-breadcrumb breadcrumb">
-            <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-            <li class="breadcrumb-item"><a href="/<?= $data['controller_name'] ?>">Отчеты</a></li>
-        </ul>
-    </div>
-</div>
 <div class="row">
     <div class="col-md-12">
         <div class="tile">
@@ -72,8 +64,8 @@
                                         <select name="users" id="users" class="form-control">
                                             <option value='0'>Все</option>
                                             <?php
-                                            if (isset($data["user"])) {
-                                                foreach ($data['user'] as $row) {
+                                            if (isset($data["users"])) {
+                                                foreach ($data['users'] as $row) {
                                                     echo "<option value='" . $row["id"] . "'>" . $row['name'] . "</option>";
                                                 }
                                             }
@@ -240,51 +232,55 @@
 
 
     function drawDataUsersChart() {
-        var users =  document.getElementById('users').value;
-        $.ajax({
-            url: "/report/getUsers",
-            type: "POST",
-            dataType: "json",
-            data: "users=" + users,
-            cache: false,
-            success: function (response) {
-                if (response && !response.error) {
+    var users =  document.getElementById('users').value;
+    $.ajax({
+        url: "/report/getUsers",
+        type: "POST",
+        dataType: "json",
+        data: "users=" + users,
+        cache: false,
+        success: function (response) {
+            if (response && !response.error) {
+                console.log(response);
+                const userData = {
+                    labels: response.map(entry => entry.year),
+                    datasets: [{
+                        label: 'Добавлены материалы',
+                        data: response.map(entry => entry.count),
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }]
+                };
 
-                    const userData = {
-                        labels: response.map(entry => entry.year),
-                        datasets: [{
-                            label: 'Добавлены материалы',
-                            data: response.map(entry => entry.count),
-                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                            borderColor: 'rgba(255, 99, 132, 1)',
-                            borderWidth: 1
-                        }]
-                    };
-
-                    const ctx = document.getElementById('materialsChart').getContext('2d');
-                    const materialsChart = new Chart(ctx, {
-                        type: 'bar',
-                        data: userData,
-                        options: {
-                            scales: {
-                                yAxes: [{
-                                    ticks: {
-                                        beginAtZero: true
-                                    }
-                                }]
-                            }
-                        }
-                    });
-                } else {
-                    swal("ОШИБКА!", response.message || "Нет данных для отображения", "error");
+                const ctx = document.getElementById('materialsChart').getContext('2d');
+                if(window.materialsChart instanceof Chart){
+                    window.materialsChart.destroy();
                 }
-            },
-            error: function (xhr, status, error) {
-                console.error(xhr, status, error);
-                swal("ОШИБКА!", "Что-то пошло не так!", "error");
+                window.materialsChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: userData,
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+            } else {
+                swal("ОШИБКА!", response.message || "Нет данных для отображения", "error");
             }
-        });
-    }
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr, status, error);
+            swal("ОШИБКА!", "Что-то пошло не так!", "error");
+        }
+    });
+}
+
 
     $('#users').change(function(){
         drawDataUsersChart();

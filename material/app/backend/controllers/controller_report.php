@@ -12,7 +12,7 @@ class Controller_Report extends Controller
     }
     function action_report_barchart()
     {  
-        $this->data["user"] = $this->model->get_user();
+        $this->data["users"] = $this->model->get_user();
         $this->view->generate('report/report_barchart.php', 'template_view.php',$this->data);
         return;
     }
