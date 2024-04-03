@@ -31,6 +31,7 @@
 										<th style="width: 100px;">Имя</th>
 										<th style="width: 100px;">Роль</th>
 										<th style="width: 100px;">Логин</th>
+										<th style="width: 100px;">Кафедра</th>
 										<th style="width: 100px;">Фото пользователя</th>
 										<th style="width: 20px;">Доступ</th>
 										<th style="width: 70px;"></th>
@@ -58,6 +59,9 @@
 											<!--Логин-->
 											<td>
 												<?= $row['login']; ?>
+											</td>
+											<td>
+												<?= $row['kafedra']; ?>
 											</td>
 											<td>
 												<?= $row['image_url']; ?>

@@ -48,55 +48,89 @@
 													} else if ($_SESSION["uid"]["role_id"] == 4) {
 														echo '<th style="height: 10px;">Действие</th>';
 													}
+													else if ($_SESSION["uid"]["role_id"] == 3){
+														echo '
+															<th>Комментарий</th>';
+													}
 													?>
 													<th>Файл</th>
 												</tr>
 											</thead>
 											<tbody>
-												<?php foreach ($data['materials'] as $material) : ?>
+												<?php foreach ($data['materials'] as $material): ?>
 													<tr>
-														<td><?= $material['id'] ?></td>
-														<td><?= $material['name'] ?></td>
-														<td><?= $material['authors'] ?></td>
-														<td><?= $material['type'] ?></td>
-														<td><?= $material['faculty'] ?></td>
-														<td><?= $material['kafedra'] ?></td>
-														<td><?= $material['date_publish'] ?></td>
-															<td><?= $material['status'] ?></td>
-														<?php if ($_SESSION["uid"]["role_id"] == 2 || $_SESSION["uid"]["role_id"] == 1) : ?>
-															<td><?= $material['comment'] ?></td>
+														<td>
+															<?= $material['id'] ?>
+														</td>
+														<td>
+															<?= $material['name'] ?>
+														</td>
+														<td>
+															<?= $material['authors'] ?>
+														</td>
+														<td>
+															<?= $material['type'] ?>
+														</td>
+														<td>
+															<?= $material['faculty'] ?>
+														</td>
+														<td>
+															<?= $material['kafedra'] ?>
+														</td>
+														<td>
+															<?= $material['date_publish'] ?>
+														</td>
+														<td>
+															<?= $material['status'] ?>
+														</td>
+														<?php if ($_SESSION["uid"]["role_id"] == 2 || $_SESSION["uid"]["role_id"] == 1  || $_SESSION["uid"]["role_id"] == 3): ?>
+															<td>
+																<?= $material['comment'] ?>
+															</td>
 														<?php endif; ?>
-														<?php if ($_SESSION["uid"]["role_id"] == 1) : ?>
+														<?php if ($_SESSION["uid"]["role_id"] == 1): ?>
 															<td>
 																<div class="btn-group">
-																	<a href="/<?= $data['controller_name'] ?>/edit/<?= $material['id'] ?>" class="btn btn-primary btn-sm"><i class="fa fa-lg fa-edit"></i> Изменить</a>
+																	<a href="/<?= $data['controller_name'] ?>/edit/<?= $material['id'] ?>"
+																		class="btn btn-primary btn-sm"><i
+																			class="fa fa-lg fa-edit"></i> Изменить</a>
 																</div>
-																<div style="display:flex;justify-content:space-around;padding: 5px;">
+																<div
+																	style="display:flex;justify-content:space-around;padding: 5px;">
 																	<div class="btn-group">
-																		<a href="#" onclick="deleteMaterial(<?= $material['id'] ?>)" class="btn btn-danger btn-sm del-material"><i class="fa fa-lg fa-trash"></i> Удалить</a>
+																		<a href="#"
+																			onclick="deleteMaterial(<?= $material['id'] ?>)"
+																			class="btn btn-danger btn-sm del-material"><i
+																				class="fa fa-lg fa-trash"></i> Удалить</a>
 																	</div>
 																</div>
 															</td>
 														<?php endif; ?>
-														<?php if ($_SESSION["uid"]["role_id"] == 2 || $_SESSION["uid"]["role_id"] == 4) : ?>
+														<?php if ($_SESSION["uid"]["role_id"] == 2 || $_SESSION["uid"]["role_id"] == 4): ?>
 															<td>
-																<div style="display:flex;justify-content:space-around;padding: 5px;">
+																<div
+																	style="display:flex;justify-content:space-around;padding: 5px;">
 																	<div class="btn-group">
-																		<a href="/<?= $data['controller_name'] ?>/confirm/<?= $material['id'] ?>" class="btn btn-primary btn-sm"><i class="fa fa-lg fa-edit"></i> Подтвердить</a>
+																		<a href="/<?= $data['controller_name'] ?>/confirm/<?= $material['id'] ?>"
+																			class="btn btn-primary btn-sm"><i
+																				class="fa fa-lg fa-edit"></i> Подтвердить</a>
 																	</div>
 																	<div class="btn-group">
-																		<a href="#" onclick="openModal(<?= $material['id'] ?>)" class="btn btn-danger btn-sm del-material"><i class="fa fa-lg fa-trash"></i> Отклонить</a>
+																		<a href="#" onclick="openModal(<?= $material['id'] ?>)"
+																			class="btn btn-danger btn-sm del-material"><i
+																				class="fa fa-lg fa-trash"></i> Отклонить</a>
 																	</div>
 																</div>
 															</td>
 														<?php endif; ?>
 														<td>
 															<div class="btn-group">
-																<?php if (!empty($material['file_path'])) : ?>
-																	<a href="/app/uploads/file/<?= $material['file_path'] ?>" download class="btn btn-primary btn-sm">
+																<?php if (!empty($material['file_path'])): ?>
+																	<a href="/app/uploads/file/<?= $material['file_path'] ?>"
+																		download class="btn btn-primary btn-sm">
 																		<i class="fa fa-lg fa-book"></i> Скачать
 																	</a>
-																<?php else : ?>
+																<?php else: ?>
 																	<p>Файл отсутствует</p>
 																<?php endif; ?>
 															</div>
@@ -153,7 +187,9 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" id="submit" onclick="declineMaterial(<?php $material['id'] ?>)" style="background-color:limegreen; color:white" class="btn btn-secondary" data-dismiss="modal">Отклонить</button>
+				<button type="button" id="submit" onclick="declineMaterial(<?php $material['id'] ?>)"
+					style="background-color:limegreen; color:white" class="btn btn-secondary"
+					data-dismiss="modal">Отклонить</button>
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
 			</div>
 		</div>
@@ -178,7 +214,7 @@
 			cancelButtonText: "НЕТ, отменить!",
 			closeOnConfirm: false,
 			closeOnCancel: false
-		}, function(isConfirm) {
+		}, function (isConfirm) {
 			if (isConfirm) {
 				$.ajax({
 					url: "/material/delete",
@@ -186,7 +222,7 @@
 					dataType: "json",
 					data: "id=" + id,
 					cache: false,
-					success: function(response) {
+					success: function (response) {
 						if (response.error === 1) {
 							swal("ОШИБКА!", response.message, "error");
 							console.log(id);
@@ -195,7 +231,7 @@
 							location.reload();
 						}
 					},
-					error: function(er) {
+					error: function (er) {
 						console.log(er);
 						swal("ОШИБКА!", "Что то пошло не так!", "error");
 					}
@@ -214,7 +250,7 @@
 			type: "GET",
 			dataType: "json",
 			cache: false,
-			success: function(response) {
+			success: function (response) {
 				console.log(response);
 				if (response && !response.error) {
 					$id = id;
@@ -224,7 +260,7 @@
 					swal("ОШИБКА!", "Материал не найден!", "error");
 				}
 			},
-			error: function(err) {
+			error: function (err) {
 				console.log(err);
 				swal("ОШИБКА!", "Что-то пошло не так!", "error");
 			}
@@ -235,8 +271,6 @@
 
 
 	function declineMaterial() {
-		// alert($("#comment").val());
-		// alert($id);
 		var $ID = $id;
 		var $comment = $("#comment").val();
 		swal({
@@ -248,7 +282,7 @@
 			cancelButtonText: "НЕТ, отменить!",
 			closeOnConfirm: false,
 			closeOnCancel: false
-		}, function(isConfirm) {
+		}, function (isConfirm) {
 			if (isConfirm) {
 				$.ajax({
 					url: "/material/decline",
@@ -259,7 +293,7 @@
 						comment: $comment
 					},
 					cache: false,
-					success: function(response) {
+					success: function (response) {
 						if (response.error === 1) {
 							swal("ОШИБКА!", response.message, "error");
 							console.log(id);
@@ -268,7 +302,7 @@
 							location.reload();
 						}
 					},
-					error: function(er) {
+					error: function (er) {
 						console.log(er);
 						swal("ОШИБКА!", "Что-то пошло не так!", "error");
 					}
@@ -280,16 +314,13 @@
 		$id = '';
 		$("#comment").val('');
 	}
-	var delayBeforeClose = 3000; // Например, 3000 миллисекунд = 3 секунды
+	var delayBeforeClose = 3000;
 
-	// Функция для закрытия сообщения
 	function closeMessage() {
 		var messageBlock = document.getElementById('messageBlock');
 		if (messageBlock) {
-			messageBlock.style.display = 'none'; // Скрыть блок сообщения
+			messageBlock.style.display = 'none';
 		}
 	}
-
-	// Запуск функции closeMessage() через указанное время
 	setTimeout(closeMessage, delayBeforeClose);
 </script>

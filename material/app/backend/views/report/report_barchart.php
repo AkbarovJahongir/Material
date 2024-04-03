@@ -91,6 +91,7 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="/assets/js/plugins/select2.min.js"></script>
 <script type="text/javascript" src="/assets/js/plugins/sweetalert.min.js"></script>
 <script>
     function fetchDataAndDrawChart() {

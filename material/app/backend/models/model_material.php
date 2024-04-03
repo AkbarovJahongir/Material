@@ -21,7 +21,6 @@ class Model_Material extends Model
             . " INNER JOIN `kafedra` AS `kafedra` ON material.`kafedra_id` = `kafedra`.`id`"
             . " INNER JOIN `faculty` AS `faculty` ON kafedra.`faculty_id` = `faculty`.`id`"
             . " INNER JOIN `material_status` AS `material_status` ON material_status.`id` = `material`.`status`"
-            . " WHERE material.`status` = 3"
             . " ORDER BY material.`date_add` DESC");
         return $result;
     }
@@ -90,7 +89,7 @@ class Model_Material extends Model
             . " INNER JOIN `kafedra` AS `kafedra` ON material.`kafedra_id` = `kafedra`.`id`"
             . " INNER JOIN `faculty` AS `faculty` ON kafedra.`faculty_id` = `faculty`.`id`"
             . " INNER JOIN `material_status` AS `material_status` ON material_status.`id` = `material`.`status`"
-            . " WHERE material.`status` = 1 AND `material`.`kafedra_id` = (SELECT kafedra_id FROM `user` WHERE id = ?)"
+            . " WHERE material.`status` IN (1,5) AND `material`.`kafedra_id` = (SELECT kafedra_id FROM `user` WHERE id = ?)"
             . " ORDER BY material.`date_add` DESC", [$user_id]);
     }
 
@@ -210,7 +209,6 @@ class Model_Material extends Model
             . " ,`file_path`=?"
             . " ,`date_edit`=?"
             . " ,`kafedra_id`=?"
-            . " ,`user_id`=?"
             . " ,`status` = 1 WHERE id=?",
             [
                 $name,
@@ -222,7 +220,6 @@ class Model_Material extends Model
                 $file_path,
                 $this->current_date,
                 $kafedra,
-                $this->user_id,
                 $id
             ]
         );
@@ -284,23 +281,32 @@ class Model_Material extends Model
     public function decline_material($id, $comment, $user_role)
     {
         if ($user_role == "2") {
-            $status = 4;
+            return $this->update(
+                "UPDATE `material` SET `status`= 4"
+                . " ,`date_edit`=?"
+                . " ,`comment`=? "
+                . " ,`user_k`=?  WHERE id=?",
+                [
+                    $this->current_date,
+                    $comment,
+                    $this->user_id,
+                    $id
+                ]
+            );
         } else if ($user_role == "4") {
-            $status = 5;
-        }
         return $this->update(
-            "UPDATE `material` SET `status`= ?"
+            "UPDATE `material` SET `status`= 5"
             . " ,`date_edit`=?"
             . " ,`comment`=? "
-            . " ,`user_id`=?  WHERE id=?",
+            . " ,`user_d`=?  WHERE id=?",
             [
-                $status,
                 $this->current_date,
                 $comment,
                 $this->user_id,
                 $id
             ]
         );
+    }
     }
     public function delete_material($id)
     {

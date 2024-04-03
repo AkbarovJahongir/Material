@@ -225,7 +225,7 @@ CREATE TABLE `material` (
   CONSTRAINT `material_ibfk_4` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
   CONSTRAINT `material_ibfk_5` FOREIGN KEY (`kafedra_id`) REFERENCES `kafedra` (`id`),
   CONSTRAINT `material_ibfk_6` FOREIGN KEY (`status`) REFERENCES `material_status` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=253 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=254 DEFAULT CHARSET=utf8;
 
 /*Data for the table `material` */
 
@@ -476,7 +476,8 @@ insert  into `material`(`id`,`name`,`type_id`,`language_id`,`date_publish`,`pub_
 (249,'paradox293',1,3,'2024-02-21',1,5,3,'2024-02-21 13:40:09','2024-02-21 13:40:09','1553',1,2,'',NULL,NULL),
 (250,'paradox292',1,3,'2024-02-21',1,5,3,'2024-02-21 13:40:52','2024-02-21 13:40:52','0',1,2,'',NULL,NULL),
 (251,'Jahon',1,1,'2024-02-21',1,6,2,'2024-02-21 18:02:23','2024-02-21 18:02:23','3 цикл ним. 1 23-24 (1).pdf',1,2,'',NULL,NULL),
-(252,'sefsefsef',2,2,'2024-03-28',1,23,2,'2024-03-28 16:16:53','2024-03-28 14:06:08','ENSHC_lk#9.pdf',3,2,NULL,4,14);
+(252,'sefsefsef',2,2,'2024-03-28',1,23,2,'2024-03-28 16:16:53','2024-03-28 14:06:08','ENSHC_lk#9.pdf',3,2,NULL,4,14),
+(253,'wda',1,1,'2024-04-03',1,2,15,'2024-04-03 15:19:20','2024-04-03 14:20:37','2 сикл 2 ним. 23-24 с.т.pdf',2,6,'sefsef',16,17);
 
 UNLOCK TABLES;
 
@@ -493,7 +494,7 @@ CREATE TABLE `material_author` (
   KEY `material_id` (`material_id`),
   CONSTRAINT `material_author_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `author` (`id`),
   CONSTRAINT `material_author_ibfk_2` FOREIGN KEY (`material_id`) REFERENCES `material` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=345 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=349 DEFAULT CHARSET=utf8;
 
 /*Data for the table `material_author` */
 
@@ -786,7 +787,8 @@ insert  into `material_author`(`id`,`material_id`,`author_id`) values
 (340,237,2),
 (341,238,2),
 (342,239,2),
-(344,252,2);
+(344,252,2),
+(348,253,4);
 
 UNLOCK TABLES;
 
@@ -803,7 +805,7 @@ CREATE TABLE `material_specialty` (
   KEY `material_id` (`material_id`),
   CONSTRAINT `material_specialty_ibfk_1` FOREIGN KEY (`specialty_id`) REFERENCES `specialty` (`id`),
   CONSTRAINT `material_specialty_ibfk_2` FOREIGN KEY (`material_id`) REFERENCES `material` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=300 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=304 DEFAULT CHARSET=utf8;
 
 /*Data for the table `material_specialty` */
 
@@ -1058,7 +1060,8 @@ insert  into `material_specialty`(`id`,`material_id`,`specialty_id`) values
 (295,237,2),
 (296,238,2),
 (297,239,2),
-(299,252,3);
+(299,252,3),
+(303,253,3);
 
 UNLOCK TABLES;
 
@@ -1098,7 +1101,7 @@ CREATE TABLE `material_subject` (
   KEY `material_id` (`material_id`),
   CONSTRAINT `material_subject_ibfk_1` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`id`),
   CONSTRAINT `material_subject_ibfk_2` FOREIGN KEY (`material_id`) REFERENCES `material` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=286 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=290 DEFAULT CHARSET=utf8;
 
 /*Data for the table `material_subject` */
 
@@ -1351,7 +1354,8 @@ insert  into `material_subject`(`id`,`material_id`,`subject_id`) values
 (281,237,94),
 (282,238,94),
 (283,239,94),
-(285,252,42);
+(285,252,42),
+(289,253,94);
 
 UNLOCK TABLES;
 
@@ -1675,7 +1679,7 @@ CREATE TABLE `user` (
   KEY `kafedra_id` (`kafedra_id`),
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
   CONSTRAINT `user_ibfk_2` FOREIGN KEY (`kafedra_id`) REFERENCES `kafedra` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 /*Data for the table `user` */
 
@@ -1685,7 +1689,13 @@ insert  into `user`(`id`,`name`,`login`,`password`,`access`,`role_id`,`date_edit
 (2,'Razokov Abduhamid','admin12','fbb69ec840903ebcdc8f4b3023fd63ec17aba13bd0ca4950ac3ab7861be09a19',1,1,'2024-03-18 18:04:10','2020-04-16 02:18:34','Akbarov.drawio.png',2),
 (3,'Akbarov Jahongir Murotovich','admin','a4bf08e913584ca8e48324592fbfeae1c79f58fd63e4ee30afc20431d7c75b27',1,3,'2020-04-16 02:19:27','2020-04-16 02:19:27','photo_2024-01-20_14-54-23.jpg',NULL),
 (4,'Мудир','12345','fbb69ec840903ebcdc8f4b3023fd63ec17aba13bd0ca4950ac3ab7861be09a19',1,2,'2024-02-24 13:37:36','2020-04-16 02:20:19','photo_2024-02-23_15-00-291.jpg',2),
-(14,'Отдел науки','12345','a4bf08e913584ca8e48324592fbfeae1c79f58fd63e4ee30afc20431d7c75b27',1,4,'2024-02-22 13:56:44','2024-02-22 13:56:44','1A6A8114.JPG',NULL);
+(14,'Отдел науки','12345','a4bf08e913584ca8e48324592fbfeae1c79f58fd63e4ee30afc20431d7c75b27',1,4,'2024-02-22 13:56:44','2024-02-22 13:56:44','1A6A8114.JPG',NULL),
+(15,'Akbarov Jahon Murotovich','112022922','e2b1e6443f3285abec8c2292dc060c78dea8ba0fd717cf5ab895eb94b5150b85',1,1,'2024-04-03 15:18:17','2024-04-03 14:19:54','photo_2024-02-22_14-12-31.jpg',6),
+(16,'efsef Толстой sefs','sefs','34450c417f5e34a12dc32b8382c81feb6753685522780565f266abed32ddb353',1,2,'2024-04-03 14:21:36','2024-04-03 14:21:36','1A6A8114.JPG',6),
+(17,'sefsef paradox291 sefsef','sefsef','fbb69ec840903ebcdc8f4b3023fd63ec17aba13bd0ca4950ac3ab7861be09a19',1,1,'2024-04-03 16:37:13','2024-04-03 14:33:00','1A6A8114.JPG',2),
+(19,'sefse paradox291 sefsef','sefs','019baa8d59b034a2514357624f0367f3fba54bcf4c8ebb03fef28324326310ab',1,3,'2024-04-03 15:47:26','2024-04-03 15:47:26','1A6A8114.JPG',NULL),
+(20,'sefse paradox291 sefsef','sefs','019baa8d59b034a2514357624f0367f3fba54bcf4c8ebb03fef28324326310ab',1,3,'2024-04-03 15:48:24','2024-04-03 15:48:24','1A6A8114.JPG',NULL),
+(21,'sefse paradox291 sefsef','sefs','019baa8d59b034a2514357624f0367f3fba54bcf4c8ebb03fef28324326310ab',1,3,'2024-04-03 15:48:44','2024-04-03 15:48:44','1A6A8114.JPG',NULL);
 
 UNLOCK TABLES;
 

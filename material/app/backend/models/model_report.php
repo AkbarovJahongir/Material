@@ -54,7 +54,7 @@ class Model_Report extends Model
         if($users != 0){
             return $this->select("SELECT u.`name`, COUNT(m.id) AS `count`,YEAR(m.date_publish) AS `year` FROM `user` u"
             ." INNER JOIN `material` m ON m.user_id = u.id"
-            ." WHERE u.id =? "
+            ." WHERE u.id =? AND m.`status` = 3"
             ." GROUP BY u.`name`,YEAR(m.date_publish) ASC",[$users]);
         }
         else{

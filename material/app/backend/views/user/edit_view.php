@@ -14,28 +14,32 @@
 
       <?php
       if (isset($data["message"])) {
-        echo '<div class="card text-black bg-light"><div class="card-body">' . $data["message"] . '</div></div><br>';
-      }
+				echo '<div id="messageBlock" class="card text-black bg-light"><div class="card-body">' . $data["message"] . '</div></div><br>';
+			}
       ?>
 
-      <h3 class="tile-title">Редактирование: <?php echo "<span class='text-primary'> " . $data["user"][0]["name"] . "</span>"; ?></h3>
+      <h3 class="tile-title">Редактирование:
+        <?php echo "<span class='text-primary'> " . $data["user"][0]["name"] . "</span>"; ?>
+      </h3>
       <div class="tile-body">
         <form class="form-horizontal" method="POST">
           <div class="form-group row">
             <label class="control-label col-md-2">Имя *</label>
             <div class="col-md-10">
-              <input name="name" class="form-control" type="text" placeholder="Введите имя" value="<?= $data["user"][0]["name"] ?>">
+              <input name="name" class="form-control" type="text" placeholder="Введите имя"
+                value="<?= $data["user"][0]["name"] ?>">
             </div>
           </div>
 
           <div class="form-group row">
             <label class="control-label col-md-2">Логин (Телефон) *</label>
             <div class="col-md-10">
-              <input name="login" class="form-control" type="text" placeholder="Ввидите номер телефона" value="<?= $data["user"][0]["login"] ?>">
+              <input name="login" class="form-control" type="text" placeholder="Ввидите номер телефона"
+                value="<?= $data["user"][0]["login"] ?>">
             </div>
           </div>
 
-          <div class="form-group row" id="kafedra" style="display: none;">
+          <div class="form-group row" id="kafedra">
             <label class="control-label col-md-2">Кафедра*:</label>
             <div class="col-md-10">
               <select class="form-control" name="kafedra" id="select_kafedra">
@@ -68,7 +72,8 @@
             </div>
             <label class="control-label col-md-2 text-right">Выберите фото пользователя*:</label>
             <div class="col-md-2">
-              <input type="file" class="form-control" name="image_url" id="image_url" required accept="image/png, image/jpeg, image/jpg">
+              <input type="file" class="form-control" name="image_url" id="image_url" required
+                accept="image/png, image/jpeg, image/jpg">
             </div>
             <label class="control-label col-md-2 text-right">Доступ для входа *</label>
             <div class="col-md-2">
@@ -93,7 +98,7 @@
   </div>
 </div>
 <script>
-  $("#select_role").on('change', function() {
+  $("#select_role").on('change', function () {
     if (this.value == 5) {
       $("#deliver_block").css("display", "block");
     } else {
@@ -107,25 +112,33 @@
       $("#kafedra").hide();
     }
   });
-  document.addEventListener("DOMContentLoaded", function() {
+  document.addEventListener("DOMContentLoaded", function () {
     var roleSelect = document.getElementById("select_role");
     var kafedraDiv = document.getElementById("kafedra");
 
-    roleSelect.addEventListener("change", function() {
+    roleSelect.addEventListener("change", function () {
       var selectedRoleId = this.value;
-      if (selectedRoleId === "2") {
+      if (selectedRoleId === "2" || selectedRoleId === "1") {
         kafedraDiv.style.display = "block";
-      kafedraDiv.style.display = "flex";
+        kafedraDiv.style.display = "flex";
       } else {
         kafedraDiv.style.display = "none";
       }
     });
 
-    if (roleSelect.value === "2") {
+    if (roleSelect.value === "2" || roleSelect.value === "1") {
       kafedraDiv.style.display = "block";
       kafedraDiv.style.display = "flex";
     } else {
       kafedraDiv.style.display = "none";
     }
   });
+  var delayBeforeClose = 3000;
+  function closeMessage() {
+    var messageBlock = document.getElementById('messageBlock');
+    if (messageBlock) {
+      messageBlock.style.display = 'none';
+    }
+  }
+  setTimeout(closeMessage, delayBeforeClose);
 </script>

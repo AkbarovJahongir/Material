@@ -8,9 +8,13 @@ class Model_User extends Model
 	public function get_users()
 	{
 		if ($_SESSION["uid"]["role_id"] == 2) {
-			$result = $this->select("SELECT u.*, r.name AS role_name FROM `user` u, `role` r WHERE r.id=u.role_id AND u.role_id IN (2, 5) ORDER BY u.date_add");
+			$result = $this->select("SELECT u.*, r.name AS role_name, k.`name` AS kafedra FROM `user` u"
+			." INNER JOIN `role` r ON u.role_id = r.id "
+			." INNER JOIN kafedra k ON u.kafedra_id = k.`id` WHERE r.id=u.role_id AND u.role_id IN (2, 5) ORDER BY u.date_add");
 		} elseif ($_SESSION["uid"]["role_id"] == 3) {
-			$result = $this->select("SELECT u.*, r.name AS role_name FROM `user` u, `role` r WHERE r.id=u.role_id AND u.role_id <> (SELECT `id` FROM role where `name` = 'admin') ORDER BY u.date_add");
+			$result = $this->select("SELECT u.*, r.name AS role_name, k.`name` AS kafedra FROM `user` u"
+			." INNER JOIN `role` r ON u.role_id = r.id " 
+			." INNER JOIN kafedra k ON u.kafedra_id = k.`id` WHERE r.id=u.role_id AND u.role_id <> (SELECT `id` FROM role where `name` = 'admin') ORDER BY u.date_add");
 		}
 		return $result;
 	}
@@ -27,6 +31,9 @@ class Model_User extends Model
 	}
 	public function add_user($name, $login, $password, $access, $role, $unique_filename,$kafedra)
 	{
+		if($role == "3" || $role == "4") {
+			$kafedra = null;
+		}
 		$date_now = date('Y-m-d H:i:s', strtotime('+5 hours'));
 
 		// Хешируем пароль
@@ -41,7 +48,7 @@ class Model_User extends Model
 	public function edit_user($user_id, $name, $login, $kafedra, $access, $image_url, $role)
 	{
 		$date_now = date('Y-m-d H:i:s', strtotime('+5 hours'));
-		echo $user_id, $name, $login, $kafedra, $access, $role;	
+		//echo $user_id, $name, $login, $kafedra, $access, $role;	
 		return $this->update("UPDATE `user` SET name=?,login=?,kafedra_id=?,access=?,role_id=?,date_edit=?,image_url=? WHERE id=?", array($name, $login, $kafedra, $access, $role, $date_now, $image_url, $user_id));
 	}
 
