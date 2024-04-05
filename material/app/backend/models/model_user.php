@@ -8,13 +8,17 @@ class Model_User extends Model
 	public function get_users()
 	{
 		if ($_SESSION["uid"]["role_id"] == 2) {
-			$result = $this->select("SELECT u.*, r.name AS role_name, k.`name` AS kafedra FROM `user` u"
+			$result = $this->select("SELECT u.*, r.name AS role_name, k.`name` AS kafedra, f.`name` AS faculty FROM `user` u"
 			." INNER JOIN `role` r ON u.role_id = r.id "
-			." INNER JOIN kafedra k ON u.kafedra_id = k.`id` WHERE r.id=u.role_id AND u.role_id IN (2, 5) ORDER BY u.date_add");
+			." INNER JOIN kafedra k ON u.kafedra_id = k.`id`"
+			." INNER JOIN faculty f ON k.faculty_id = f.`id`"
+			." WHERE r.id=u.role_id AND u.role_id IN (2, 5) ORDER BY u.date_add");
 		} elseif ($_SESSION["uid"]["role_id"] == 3) {
-			$result = $this->select("SELECT u.*, r.name AS role_name, k.`name` AS kafedra FROM `user` u"
+			$result = $this->select("SELECT u.*, r.name AS role_name, k.`name` AS kafedra, f.`name` AS faculty FROM `user` u"
 			." INNER JOIN `role` r ON u.role_id = r.id " 
-			." INNER JOIN kafedra k ON u.kafedra_id = k.`id` WHERE r.id=u.role_id AND u.role_id <> (SELECT `id` FROM role where `name` = 'admin') ORDER BY u.date_add");
+			." INNER JOIN kafedra k ON u.kafedra_id = k.`id`"
+			." INNER JOIN faculty f ON k.faculty_id = f.`id`"
+			." WHERE r.id=u.role_id AND u.role_id <> (SELECT `id` FROM role where `name` = 'admin') ORDER BY u.date_add");
 		}
 		return $result;
 	}

@@ -10,7 +10,9 @@
 			<li class="breadcrumb-item"><a href="/<?= $data['controller_name'] ?>">Материалы</a></li>
 		</ul>
 	</div>
-	<a class="btn btn-primary btn-sm" href="/<?= $data['controller_name'] ?>/add/">Добавить</a>
+	<?php if ($_SESSION["uid"]["role_id"] == 2 || $_SESSION["uid"]["role_id"] == 1 ){
+		echo'
+	<a class="btn btn-primary btn-sm" href='. $data['controller_name'].'/add/">Добавить</a>';} ?>
 </div>
 
 <div class="row">

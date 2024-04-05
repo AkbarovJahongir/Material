@@ -60,8 +60,6 @@ class Controller_Material extends Controller
     function action_get()
     {
         $materials = $this->model->get_materialByuserId($_SESSION["uid"]["role_id"],$_SESSION["uid"]["id"]);
-        //$this->print_array($materials);die;
-       // $this->print_array( $this->model->get_kafedraById($_SESSION["uid"]["id"])); die;
         for ($i = 0; $i < count($materials); $i++) {
             $authors = $this->model->get_material_authors($materials[$i]['id']);
 

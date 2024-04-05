@@ -272,7 +272,7 @@
                     }
                 });
             } else {
-                swal("ОШИБКА!", response.message || "Нет данных для отображения", "error");
+                swal("Данные отсутствуют!", response.message || "Нет данных для отображения", "error");
             }
         },
         error: function (xhr, status, error) {
@@ -281,7 +281,7 @@
         }
     });
 }
-
+$('#users').select2();
 
     $('#users').change(function(){
         drawDataUsersChart();
