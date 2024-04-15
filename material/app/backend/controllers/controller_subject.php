@@ -18,6 +18,14 @@ class Controller_Subject extends Controller{
 
 		$this->view->generate('subject/list_view.php', 'template_view.php', $this->data);
 	}
+    function action_type() {
+        $types = $this->model->get_types();
+        $this->data["type"] = $types;
+
+        //$this->print_array($types); die;
+
+		$this->view->generate('subject/list_view_type.php', 'template_view.php', $this->data);
+	}
     function action_add() {
 
         if ( isset($_POST["name"]) )
@@ -82,6 +90,54 @@ class Controller_Subject extends Controller{
         }
 
         $this->view->generate('subject/edit_view.php', 'template_view.php', $this->data);
+    }
+    function action_addType()
+    {
+        $user_role = $_SESSION["uid"]["role_id"];
+
+        if ($user_role != 3) {
+            $result = ["error" => 1, "message" => "У вас нет прав для добавления записи!"];
+        } else {
+            if (isset ($_POST["type"])) {
+                $type = $_POST["type"];
+                if ($this->model->add_type($type)) {
+                    $result = ["error" => 0, "message" => "Новый тип успешно добавлен!"];
+                } else {
+                    $result = ["error" => 1, "message" => "Не верные данные или тип был уже добавлен!"];
+                }
+            } else {
+                $result = ["error" => 1, "message" => "Не верные параметры"];
+            }
+        }
+        $this->return_json($result);
+        return;
+
+    }
+    function action_editType()
+    {
+        $id = $_POST["id"];
+        $this->data["type"] = $this->model->get_typeById($id);
+
+        if (isset ($_POST["typeName"]) && isset ($_POST["id"])) {
+            $name = $_POST["typeName"];
+            $result = $this->model->edit_type($id, $name);
+            if (!$result) {
+                return json_encode(["error" => 1, "message" => "Ошибка при изменении"]);
+            }
+            $this->return_json($result);
+
+        } else {
+            return json_encode(["error" => 1, "message" => "Некоторые данные пусты или тип с таким именем существует!"]);
+        }
+    }
+    public function action_getTypeById($id)
+    {
+        $type = $this->model->get_typeById($id);
+        if (!$type) {
+            return json_encode(["error" => 1, "message" => "Тип не найден"]);
+        }
+        $this->return_json($type);
+        return;
     }
 }
 ?>

@@ -96,6 +96,7 @@
                         <ul class="treeview-menu">
                             <li><a class="treeview-item" href="/subject"><i class="icon fa fa-circle-o"></i> Все предметы</a></li>
                             <li><a class="treeview-item" href="/subject/add"><i class="icon fa fa-circle-o"></i> Добвить новый</a></li>
+                            <li><a class="treeview-item" href="/subject/type"><i class="icon fa fa-circle-o"></i> Тип предмета</a></li>
                         </ul>
                     </li>';
                     if ($_SESSION["uid"]["role_id"] == 3) {
