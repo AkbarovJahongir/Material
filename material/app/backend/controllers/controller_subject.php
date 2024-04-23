@@ -2,12 +2,23 @@
 class Controller_Subject extends Controller{
 
     private $data = [];
+    private $language_ = [];
 
     function __construct() {
         $this->model_common = new Model_Common();
         $this->model = new Model_Subject();
         $this->view = new View();
         $this->data['controller_name'] = "subject";
+        if ($_SESSION["local"] == "ru") {
+            $this->language_ = [];
+            include_once './app/language/messageRU.php';
+            $this->language_ = $language;
+        }
+        else{
+            $this->language_ = [];
+            include_once './app/language/messageTJ.php';
+            $this->language_ = $language;
+        }
     }
 
     function action_index() {
@@ -39,14 +50,14 @@ class Controller_Subject extends Controller{
 
                 if ( $result ) {
                     $this->data["error"] = 0;
-                    $this->data["message"] = "Новый предмет успешно добавлен!";
+                    $this->data["message"] = $this->language_["successMessageSubject"];
                 } else {
                     $this->data["error"] = 1;
-                    $this->data["message"] = "Не верные данные!";
+                    $this->data["message"] = $this->language_["errorMessageAll"];
                 }
             } else {
                 $this->data["error"] = 1;
-                $this->data["message"] = "Некоторые данные пусты!";
+                $this->data["message"] = $this->language_["errorMessageAuthorAll"];
             }
         }
 
@@ -74,18 +85,18 @@ class Controller_Subject extends Controller{
 
                 if ( $result ) {
                     $this->data["error"] = 0;
-                    $this->data["message"] = "Предмет успешно изменен!";
+                    $this->data["message"] = $this->language_["successeditMessageSubject"];
                     /* #Get subject data by @id */
                     $this->data["subject"] = $this->model->get_subject( $id );
                     //$this->view->generate('subject/success_view.php', 'template_view.php', $this->data);
                     //return true;
                 } else {
                     $this->data["error"] = 1;
-                    $this->data["message"] = "Не верные данные!";
+                    $this->data["message"] = $this->language_["errorMessageAll"];
                 }
             } else {
                 $this->data["error"] = 1;
-                $this->data["message"] = "Некоторые данные пусты!";
+                $this->data["message"] = $this->language_["errorMessageAuthorAll"];
             }
         }
 
@@ -96,17 +107,17 @@ class Controller_Subject extends Controller{
         $user_role = $_SESSION["uid"]["role_id"];
 
         if ($user_role != 3) {
-            $result = ["error" => 1, "message" => "У вас нет прав для добавления записи!"];
+            $result = ["error" => 1, "message" => $this->language_["erroraccessMessageAddAll"]];
         } else {
             if (isset ($_POST["type"])) {
                 $type = $_POST["type"];
                 if ($this->model->add_type($type)) {
-                    $result = ["error" => 0, "message" => "Новый тип успешно добавлен!"];
+                    $result = ["error" => 0, "message" => $this->language_["successMessageType"]];
                 } else {
-                    $result = ["error" => 1, "message" => "Не верные данные или тип был уже добавлен!"];
+                    $result = ["error" => 1, "message" => $this->language_["errorMessageType"]];
                 }
             } else {
-                $result = ["error" => 1, "message" => "Не верные параметры"];
+                $result = ["error" => 1, "message" => $this->language_["errorMessageAuthorAll"]];
             }
         }
         $this->return_json($result);
@@ -122,19 +133,19 @@ class Controller_Subject extends Controller{
             $name = $_POST["typeName"];
             $result = $this->model->edit_type($id, $name);
             if (!$result) {
-                return json_encode(["error" => 1, "message" => "Ошибка при изменении"]);
+                return json_encode(["error" => 1, "message" => $this->language_["erroreditMessageFaculty"]]);
             }
             $this->return_json($result);
 
         } else {
-            return json_encode(["error" => 1, "message" => "Некоторые данные пусты или тип с таким именем существует!"]);
+            return json_encode(["error" => 1, "message" => $this->language_["erroreditMessageType"]]);
         }
     }
     public function action_getTypeById($id)
     {
         $type = $this->model->get_typeById($id);
         if (!$type) {
-            return json_encode(["error" => 1, "message" => "Тип не найден"]);
+            return json_encode(["error" => 1, "message" => $this->language_["errorMessageGetType"]]);
         }
         $this->return_json($type);
         return;

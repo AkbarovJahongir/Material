@@ -3,19 +3,30 @@ class Controller_Material extends Controller
 {
 
     private $data = [];
-
+    private $language_ = [];
+    
     function __construct()
     {
         $this->model_common = new Model_Common();
         $this->model = new Model_Material();
         $this->view = new View();
         $this->data['controller_name'] = "material";
+        if ($_SESSION["local"] == "ru") {
+            $this->language_ = [];
+            include_once './app/language/messageRU.php';
+            $this->language_ = $language;
+        }
+        else{
+            $this->language_ = [];
+            include_once './app/language/messageTJ.php';
+            $this->language_ = $language;
+        }
     }
 
     function action_index()
     {
         $materials = $this->model->get_materials();
-
+        //$this->print_array($materials);die;
         for ($i = 0; $i < count($materials); $i++) {
             $authors = $this->model->get_material_authors($materials[$i]['id']);
 
@@ -60,6 +71,7 @@ class Controller_Material extends Controller
     function action_get()
     {
         $materials = $this->model->get_materialByuserId($_SESSION["uid"]["role_id"],$_SESSION["uid"]["id"]);
+        //$this->print_array($materials);die;
         for ($i = 0; $i < count($materials); $i++) {
             $authors = $this->model->get_material_authors($materials[$i]['id']);
 
@@ -114,19 +126,15 @@ class Controller_Material extends Controller
         $this->data["places"] = $this->model_common->get_places();
         $this->data["kafedra"] = $this->model_common->get_kafedra();
 
-        // Check if "fileToUpload" key is set in $_FILES
         if (isset($_FILES["fileToUpload"])) {
             $target_dir = "./app/uploads/file/";
 
-            // Create the target directory if it doesn't exist
             if (!file_exists($target_dir) && !mkdir($target_dir, 0755, true)) {
-                //echo 'Failed to create the target directory';
                 $error_message = 'Не удалось создать целевой каталог.';
             }
 
             $file_type = strtolower(pathinfo($_FILES["fileToUpload"]["name"], PATHINFO_EXTENSION));
 
-            // Генерация уникального имени для файла
             $unique_filename =  $_FILES["fileToUpload"]["name"]; // uniqid() . "." . $file_type;
 
             $target_file = $target_dir . $unique_filename;
@@ -201,21 +209,21 @@ class Controller_Material extends Controller
 
                 if ($result) {
                     $this->data["error"] = 0;
-                    $this->data["message"] = "Новый материал успешно добавлен!";
+                    $this->data["message"] = $this->language_["successMessageMaterial"];
                 } else {
                     $this->data["error"] = 1;
-                    $this->data["message"] = "Неверные данные или материал был уже добавлен!";
+                    $this->data["message"] = $this->language_["errorMessageMaterial"];
                 }
             } else {
                 $this->data["error"] = 1;
-                $this->data["message"] = "Некоторые данные пусты!";
+                $this->data["message"] = $this->language_["errorMessageMaterialAll"];
             }
         }
         $this->view->generate('material/create_view.php', 'template_view.php', $this->data);
 
         $fd = fopen("./log/materials_log.txt", "a") or die("Не удалось открыть файл журнала");
-        $date_time_now = date("Y-m-d H:i:s",strtotime('+5 hours')); // Get current date and time in the format YYYY-MM-DD HH:MM:SS
-        fwrite($fd, $date_time_now . ": " . $error_message . "\n"); // Append date and time to the error message
+        $date_time_now = date("Y-m-d H:i:s",strtotime('+5 hours')); 
+        fwrite($fd, $date_time_now . ": " . $error_message . "\n"); 
         fclose($fd);
     }
 
@@ -228,9 +236,7 @@ class Controller_Material extends Controller
         if (isset($_FILES["fileToUpload"])) {
             $target_dir = "./app/uploads/file/";
 
-            // Create the target directory if it doesn't exist
             if (!file_exists($target_dir) && !mkdir($target_dir, 0755, true)) {
-                //echo 'Failed to create the target directory';
                 $error_message = 'Не удалось создать целевой каталог.';
             }
 
@@ -338,7 +344,7 @@ class Controller_Material extends Controller
 
                 if ($result) {
                     $this->data["error"] = 0;
-                    $this->data["message"] = "Материал успешно изменен!";
+                    $this->data["message"] = $this->language_["successeditMessageMaterial"];
 
                     /* #Get material data by @id */
                     $this->data["material"] = $this->model->get_material($id);
@@ -350,11 +356,11 @@ class Controller_Material extends Controller
                     // return true;
                 } else {
                     $this->data["error"] = 1;
-                    $this->data["message"] = "Не верные данные!";
+                    $this->data["message"] = $this->language_["errorMessageAll"];
                 }
             } else {
                 $this->data["error"] = 1;
-                $this->data["message"] = "Некоторые данные пусты!";
+                $this->data["message"] = $this->language_["errorMessageMaterialAll"];
             }
         }
 
@@ -371,10 +377,10 @@ class Controller_Material extends Controller
 
         if ($result) {
             $this->data["error"] = 0;
-            $this->data["message"] = "Материал успешно подтвержден!";
+            $this->data["message"] = "successMessageConfirMaterial";
         } else {
             $this->data["error"] = 1;
-            $this->data["message"] = "По каким то причинам материал не может быть подтвержден!";
+            $this->data["message"] = "errorConfirmMessageMaterial";
         }
         //$this->return_json($result);
         $materials = $this->model->get_materialByuserId($_SESSION["uid"]["role_id"],$_SESSION["uid"]["id"]);
@@ -425,11 +431,10 @@ class Controller_Material extends Controller
         $result = $this->model->decline_material($id, $comment, $user_role);
 
         if ($result) {
-            $result = ["error" => 0, "message" => "Материал отклонен!"];
+            $result = ["error" => 0, "message" => $this->language_["successDeclineMessageMaterial"]];
         } else {
-            $result = ["error" => 1, "message" => "По каким то причинам материал не может быть отклонен!"];
+            $result = ["error" => 1, "message" => $this->language_["errorDecliMessageMaterial"]];
         }
-        
         $this->return_json($result);
         return;
     }
@@ -438,17 +443,17 @@ class Controller_Material extends Controller
         $user_role = $_SESSION["uid"]["role_id"];
 
         if ($user_role != 1) {
-            $result = ["error" => 1, "message" => "У вас нет прав для удаление записи!"];
+            $result = ["error" => 1, "message" => $this->language_["erroraccessMessageDeleteAll"]];
         } else {
             if (isset($_POST["id"])) {
                 $id = $_POST["id"];
                 if ($this->model->delete_material($id)) {
-                    $result = ["error" => 0, "message" => "Метериал успешно удален!"];
+                    $result = ["error" => 0, "message" => $this->language_["successDelateMessageMaterial"]];
                 } else {
-                    $result = ["error" => 1, "message" => "Невозможно удалить материал!"];
+                    $result = ["error" => 1, "message" => $this->language_["errorDeleteMessageMaterial"]];
                 }
             } else {
-                $result = ["error" => 1, "message" => "Не верные параметры"];
+                $result = ["error" => 1, "message" => $this->language_["errorMessageAll"]];
             }
         }
         
@@ -596,7 +601,7 @@ class Controller_Material extends Controller
     {
         $material = $this->model->get_material($id);
         if (!$material) {
-            return json_encode(["error" => 1, "message" => "Материал не найден"]);
+            return json_encode(["error" => 1, "message" => $this->language_["errorMessageGetMaterial"]]);
         }
         $this->return_json($material);
         return;

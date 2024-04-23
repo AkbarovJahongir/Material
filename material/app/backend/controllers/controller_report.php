@@ -2,6 +2,7 @@
 class Controller_Report extends Controller
 {
     private $data = [];
+    private $language_ = [];
 
     function __construct()
     {
@@ -9,6 +10,16 @@ class Controller_Report extends Controller
         $this->model = new Model_Report();
         $this->view = new View();
         $this->data['controller_name'] = "user";
+        if ($_SESSION["local"] == "ru") {
+            $this->language_ = [];
+            include_once './app/language/messageRU.php';
+            $this->language_ = $language;
+        }
+        else{
+            $this->language_ = [];
+            include_once './app/language/messageTJ.php';
+            $this->language_ = $language;
+        }
     }
     function action_report_barchart()
     {  
@@ -21,11 +32,11 @@ class Controller_Report extends Controller
         $user_role = $_SESSION["uid"]["role_id"];
 
         if ($user_role != 3) {
-            $result = ["error" => 1, "message" => "У вас нет прав!"];
+            $result = ["error" => 1, "message" => $this->language_["accessMessageAll"]];
         } else {
             $result = $this->model->get_dataFaculty();
             if (!$result) {
-                $result = ["error" => 1, "message" => "Не верные данные или кафедра была уже добавлена!"];
+                $result = ["error" => 1, "message" => $this->language_["errorMessageAll"]];
             }
         }
         $this->return_json($result);
@@ -36,11 +47,11 @@ class Controller_Report extends Controller
         $user_role = $_SESSION["uid"]["role_id"];
 
         if ($user_role != 3) {
-            $result = ["error" => 1, "message" => "У вас нет прав!"];
+            $result = ["error" => 1, "message" => $this->language_["accessMessageAll"]];
         } else {
             $result = $this->model->getFacultyByYear();
             if (!$result) {
-                $result = ["error" => 1, "message" => "Не верные данные или кафедра была уже добавлена!"];
+                $result = ["error" => 1, "message" => $this->language_["errorMessageAll"]];
             }
         }
         $this->return_json($result);
@@ -51,11 +62,11 @@ class Controller_Report extends Controller
         $user_role = $_SESSION["uid"]["role_id"];
         $users = $_POST["users"];
         if ($user_role != 3) {
-            $result = ["error" => 1, "message" => "У вас нет прав!"];
+            $result = ["error" => 1, "message" => $this->language_["accessMessageAll"]];
         } else {
             $result = $this->model->get_dataUsers($users);
             if (!$result) {
-                $result = ["error" => 1, "message" => "Неудалось получить данные о пользователе!"];
+                $result = ["error" => 1, "message" => $this->language_["errorMessageUser"]];
             }
         }
         $this->return_json($result);
@@ -66,11 +77,11 @@ class Controller_Report extends Controller
         $user_role = $_SESSION["uid"]["role_id"];
 
         if ($user_role != 3) {
-            $result = ["error" => 1, "message" => "У вас нет прав!"];
+            $result = ["error" => 1, "message" => $this->language_["accessMessageAll"]];
         } else {
             $result = $this->model->get_dataKafedra();
             if (!$result) {
-                $result = ["error" => 1, "message" => "Не верные данные или кафедра была уже добавлена!"];
+                $result = ["error" => 1, "message" => $this->language_["errorMessageGetKafedra"]];
             }
         }
         $this->return_json($result);

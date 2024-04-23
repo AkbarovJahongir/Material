@@ -2,12 +2,23 @@
 class Controller_Specialty extends Controller{
 
     private $data = [];
+    private $language_ = [];
 
     function __construct() {
         $this->model_common = new Model_Common();
         $this->model = new Model_Specialty();
         $this->view = new View();
         $this->data['controller_name'] = "specialty";
+        if ($_SESSION["local"] == "ru") {
+            $this->language_ = [];
+            include_once './app/language/messageRU.php';
+            $this->language_ = $language;
+        }
+        else{
+            $this->language_ = [];
+            include_once './app/language/messageTJ.php';
+            $this->language_ = $language;
+        }
     }
 
     function action_index() {
@@ -37,14 +48,14 @@ class Controller_Specialty extends Controller{
 
                 if ( $result ) {
                     $this->data["error"] = 0;
-                    $this->data["message"] = "Новый специальность успешно добавлен!";
+                    $this->data["message"] = $this->language_["successMessageSpecialty"];
                 } else {
                     $this->data["error"] = 1;
-                    $this->data["message"] = "Не верные данные!";
+                    $this->data["message"] = $this->language_["errorMessageAll"];
                 }
             } else {
                 $this->data["error"] = 1;
-                $this->data["message"] = "Некоторые данные пусты!";
+                $this->data["message"] = $this->language_["errorMessageAuthorAll"];
             }
         }
 
@@ -74,18 +85,18 @@ class Controller_Specialty extends Controller{
 
                 if ( $result ) {
                     $this->data["error"] = 0;
-                    $this->data["message"] = "Специальность успешно изменен!";
+                    $this->data["message"] = $this->language_["successeditMessageSpecialty"];
                     /* #Get specialty data by @id */
                     $this->data["specialty"] = $this->model->get_specialty( $id );
                     //$this->view->generate('specialty/success_view.php', 'template_view.php', $this->data);
                     //return true;
                 } else {
                     $this->data["error"] = 1;
-                    $this->data["message"] = "Не верные данные!";
+                    $this->data["message"] = $this->language_["errorMessageAll"];
                 }
             } else {
                 $this->data["error"] = 1;
-                $this->data["message"] = "Некоторые данные пусты!";
+                $this->data["message"] = $this->language_["errorMessageAuthorAll"];
             }
         }
 

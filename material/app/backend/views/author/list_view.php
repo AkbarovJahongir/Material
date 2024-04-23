@@ -1,3 +1,15 @@
+<?php
+$language_ = [];
+if ($_SESSION["local"] == "ru") {
+    $language_ = [];
+    include_once './app/language/Author/authorLanguageRU.php';
+    $language_ = $language;
+} else {
+    $language_ = [];
+    include_once './app/language/Author/authorLanguageTJ.php';
+    $language_ = $language;
+}
+?>
 <style>
     span.dropdown-item{
         cursor: pointer;
@@ -7,16 +19,16 @@
     <div>
         <ul class="app-breadcrumb breadcrumb">
             <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-            <li class="breadcrumb-item"><a href="/<?= $data['controller_name'] ?>">Авторы (Учителя)</a></li>
+            <li class="breadcrumb-item"><a href="/<?= $data['controller_name'] ?>"><?= $language_["authors"] ?></a></li>
         </ul>
     </div>
-    <a class="btn btn-primary btn-sm" href="/<?= $data['controller_name'] ?>/add/">Добавить</a>
+    <a class="btn btn-primary btn-sm" href="/<?= $data['controller_name'] ?>/add/"><?= $language_["add"] ?></a>
 </div>
 
 <div class="row">
     <div class="col-md-12">
         <div class="tile">
-            <h3 class="tile-title">Все авторы</h3>
+            <h3 class="tile-title"><?= $language_["allAuthors"] ?></h3>
             <div class="tile-body">
                 <div id="sampleTable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
                     <div class="row">
@@ -26,9 +38,9 @@
                                     <table class="table table-hover table-bordered" id="sampleTable">
                                         <thead>
                                         <tr>
-                                            <th>Имя</th>
-                                            <th>Ученая степень</th>
-                                            <th>Действие</th>
+                                            <th><?= $language_["authorsName"] ?></th>
+                                            <th><?= $language_["academicDegree"] ?></th>
+                                            <th><?= $language_["action"] ?></th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -39,11 +51,11 @@
                                                 <td>
                                                     <div class="btn-group">
                                                         <a href="/<?= $data['controller_name'] ?>/edit/<?= $author['id'] ?>"
-                                                           class="btn btn-primary btn-sm"><i class="fa fa-lg fa-edit"></i> Изменить</a>
+                                                           class="btn btn-primary btn-sm"><i class="fa fa-lg fa-edit"></i> <?= $language_["change"] ?></a>
                                                     </div>
                                                     <div class="btn-group">
                                                         <a href="#" onclick="deleteAuthor(<?= $author["id"] ?>)"
-                                                           class="btn btn-danger btn-sm del-author"><i class="fa fa-lg fa-trash"></i> Удалить</a>
+                                                           class="btn btn-danger btn-sm del-author"><i class="fa fa-lg fa-trash"></i> <?= $language_["delete"] ?></a>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -65,18 +77,22 @@
 <script type="text/javascript" src="/assets/js/plugins/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript" src="/assets/js/plugins/sweetalert.min.js"></script>
 <script type="text/javascript">
+  //  var test
     $('#sampleTable').DataTable({
         columnDefs: [
             { width: 200, targets: 2 }
         ],
         fixedColumns: true,
-        autoWidth: false
+        autoWidth: false,        
+        language:{           
+            url: '<?=$_SESSION['local']?>'=='tj'?'/assets/json/tg.json':'/assets/json/ru.json',
+        }
     });
 
     function deleteAuthor( id ) {
         swal({
             title: "Вы действительно хотите удалить?",
-            text: "ВАЖНО! Вы не сможете удалить тех кто уже связаны матералами",
+            text: "ВАЖНО! Вы не сможете удалить тех кто уже связаны с научными матералами",
             type: "warning",
             showCancelButton: true,
             confirmButtonText: "ДА, удалить!",

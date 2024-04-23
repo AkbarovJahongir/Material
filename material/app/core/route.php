@@ -43,7 +43,7 @@ class Route
 			if($controller_name == "Controller_auth"){
 				Route::MainPage();
 			}else{
-				$arr = explode(",",$_SESSION["roles"]["controllers"].",auth,main,profile,address,error,opa");
+				$arr = explode(",",$_SESSION["roles"]["controllers"].",auth,main,address,error,opa");
 				//echo $_SESSION["roles"]["controllers"];
 				if (!in_array($routes[1],$arr) && !empty($routes[1])) {
 					//Route::ErrorPage403();

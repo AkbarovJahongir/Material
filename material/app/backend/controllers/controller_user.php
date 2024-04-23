@@ -2,6 +2,7 @@
 class Controller_User extends Controller
 {
     private $data = [];
+    private $language_ = [];
 
     function __construct()
     {
@@ -9,6 +10,16 @@ class Controller_User extends Controller
         $this->model = new Model_User();
         $this->view = new View();
         $this->data['controller_name'] = "user";
+        if ($_SESSION["local"] == "ru") {
+            $this->language_ = [];
+            include_once './app/language/messageRU.php';
+            $this->language_ = $language;
+        }
+        else{
+            $this->language_ = [];
+            include_once './app/language/messageTJ.php';
+            $this->language_ = $language;
+        }
     }
 
     function action_index()
@@ -87,14 +98,14 @@ class Controller_User extends Controller
 
                 if ($result) {
                     $this->data["error"] = 0;
-                    $this->data["message"] = "Добавлен новый пользователь!";
+                    $this->data["message"] = $this->language_["successMessageUser"];
                 } else {
                     $this->data["error"] = 1;
-                    $this->data["message"] = "Неверные данные!";
+                    $this->data["message"] = $this->language_["errorMessageAll"];
                 }
             } else {
                 $this->data["error"] = 1;
-                $this->data["message"] = "Некоторые данные пусты!";
+                $this->data["message"] = $this->language_["errorMessageAuthorAll"];
             }
         }
 
@@ -136,18 +147,18 @@ class Controller_User extends Controller
 
                 if ($result) {
                     $this->data["error"] = 0;
-                    $this->data["message"] = "Пользователь успешно изменен!";
+                    $this->data["message"] = $this->language_["successeditMessageUser"];
                     /* #Get specialty data by @id */
                     $this->data["user"] = $this->model->get_user($id);
                     //$this->view->generate('user/index.php', 'template_view.php', $this->data);
                     //return true;
                 } else {
                     $this->data["error"] = 1;
-                    $this->data["message"] = "Не верные данные!";
+                    $this->data["message"] = $this->language_["errorMessageAll"];
                 }
             } else {
                 $this->data["error"] = 1;
-                $this->data["message"] = "Некоторые данные пусты!";
+                $this->data["message"] = $this->language_["errorMessageAuthorAll"];
             }
         }
         //$this->data["user"] = $this->model->get_user($id);
@@ -169,7 +180,7 @@ class Controller_User extends Controller
                     $this->return_json($result);
                     return;
                 } else {
-                    return json_encode(["error" => 1, "message" => "Неудалось заблокировать доспут пользователя!"]);
+                    return json_encode(["error" => 1, "message" => $this->language_["errorblockMessageUser"]]);
                 }
             }
             else if($type_operation == "unlockUser"){
@@ -178,11 +189,11 @@ class Controller_User extends Controller
                     $this->return_json($result);
                     return;
                 } else {
-                    return json_encode(["error" => 1, "message" => "Неудалось разблокировать доспут пользователя!"]);
+                    return json_encode(["error" => 1, "message" => $this->language_["errorunblockMessageUser"]]);
                 }
             }
         }else {
-            return json_encode(["error" => 1, "message" => "Ошибка запроса!"]);
+            return json_encode(["error" => 1, "message" => $this->language_["errorOperationMessageUser"]]);
         }
     }
 
@@ -190,7 +201,7 @@ class Controller_User extends Controller
     {
         $user = $this->model->get_user($id);
         if (!$user) {
-            return json_encode(["error" => 1, "message" => "Пользователь не найден"]);
+            return json_encode(["error" => 1, "message" => $this->language_["errorMessageGetUser"]]);
         }
         $this->return_json($user);
         return;
@@ -207,11 +218,11 @@ class Controller_User extends Controller
                     $this->return_json($result);
                     return;
                 } else {
-                    return json_encode(["error" => 1, "message" => "Неудалось сбросить пароль!"]);
+                    return json_encode(["error" => 1, "message" => $this->language_["errorMessageResetPasswordUser"]]);
                 }
         }
         else{
-            return json_encode(["error" => 1, "message" => "Неудалось сбросить пароль!"]);
+            return json_encode(["error" => 1, "message" => $this->language_["errorMessageResetPasswordUser"]]);
         }
     }
 }

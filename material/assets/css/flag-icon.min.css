@@ -1,0 +1,40 @@
+.flag-icon-background {
+    background-size: contain;
+    background-position: 50%;
+    background-repeat: no-repeat;
+}
+
+.flag-icon {
+    background-size: contain;
+    background-position: 50%;
+    background-repeat: no-repeat;
+    position: relative;
+    display: inline-block;
+    width: 1.33333333em;
+    line-height: 1em;
+}
+
+.flag-icon:before {
+    content: "\00a0";
+}
+
+.flag-icon.flag-icon-squared {
+    width: 1em;
+}
+
+
+.flag-icon-tj {
+    background-image: url(../images/Flag_of_Tajikistan.svg.png);
+}
+
+.flag-icon-tj.flag-icon-squared {
+    background-image: url(../images/Flag_of_Tajikistan.svg.png);
+}
+
+.flag-icon-ru {
+    background-image: url(../images/flag-ru.svg);
+}
+
+.flag-icon-ru.flag-icon-squared {
+    background-image: url(../images/flag-ru.svg);
+}

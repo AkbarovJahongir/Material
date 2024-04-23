@@ -74,7 +74,7 @@ class Model_Faculty extends Model
     }
     public function edit_faculty($id, $name)
     {
-        if (!$this->select("SELECT * FROM `faculty` WHERE `name` = ?", [$name])) {
+        if ($this->select("SELECT * FROM `faculty` WHERE `name` = ?", [$name])) {
             return $this->update(
                 "UPDATE `faculty` SET `name`=? "
                 . " ,`date_edit`=?"
@@ -86,7 +86,7 @@ class Model_Faculty extends Model
     }
     public function edit_kafedra($id, $name,$faculty)
     {
-        if (!$this->select("SELECT * FROM `kafedra` WHERE `name` = ? AND `faculty_id` = ?", [$name, $faculty])) {
+        if ($this->select("SELECT * FROM `kafedra` WHERE `name` = ? AND `faculty_id` = ?", [$name, $faculty])) {
             return $this->update(
                 "UPDATE `kafedra` SET `name`=? "
                 . ", `faculty_id`=?"

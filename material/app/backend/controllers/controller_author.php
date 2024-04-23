@@ -2,12 +2,23 @@
 class Controller_Author extends Controller{
 
     private $data = [];
+    private $language_ = [];
 
     function __construct() {
         $this->model_common = new Model_Common();
         $this->model = new Model_Author();
         $this->view = new View();
         $this->data['controller_name'] = "author";
+        if ($_SESSION["local"] == "ru") {
+            $this->language_ = [];
+            include_once './app/language/messageRU.php';
+            $this->language_ = $language;
+        }
+        else{
+            $this->language_ = [];
+            include_once './app/language/messageTJ.php';
+            $this->language_ = $language;
+        }
     }
 
     function action_index() {
@@ -37,14 +48,14 @@ class Controller_Author extends Controller{
 
                 if ( $result ) {
                     $this->data["error"] = 0;
-                    $this->data["message"] = "Новый автор успешно добавлен!";
+                    $this->data["message"] = $this->language_["successMessageAuthor"];
                 } else {
                     $this->data["error"] = 1;
-                    $this->data["message"] = "Не верные данные!";
+                    $this->data["message"] = $this->language_["errorMessageAuthor"];
                 }
             } else {
                 $this->data["error"] = 1;
-                $this->data["message"] = "Некоторые данные пусты!";
+                $this->data["message"] = $this->language_["errorMessageAuthorAll"];
             }
         }
 
@@ -74,17 +85,17 @@ class Controller_Author extends Controller{
 
                 if ( $result ) {
                     $this->data["error"] = 0;
-                    $this->data["message"] = "Автор успешно изменен!";
+                    $this->data["message"] = $this->language_["editsuccessMessageAuthor"];
 
                     /* #Get author data by @id */
                     $this->data["author"] = $this->model->get_author( $id );
                 } else {
                     $this->data["error"] = 1;
-                    $this->data["message"] = "Не верные данные!";
+                    $this->data["message"] = $this->language_["errorMessageAuthor"];
                 }
             } else {
                 $this->data["error"] = 1;
-                $this->data["message"] = "Некоторые данные пусты!";
+                $this->data["message"] = $this->language_["errorMessageAuthorAll"];
             }
         }
 
@@ -96,17 +107,17 @@ class Controller_Author extends Controller{
         $user_role = $_SESSION["uid"]["role_id"];
 
         if ( $user_role != 1 ) {
-            $result = ["error" => 1, "message" => "У вас нет прав для удаление записи!"];
+            $result = ["error" => 1, "message" => $this->language_["erroraccessMessageDeleteAll"]];
         } else {
             if ( isset($_POST["id"]) ) {
                 $id = $_POST["id"];
                 if ( $this->model->delete_author( $id ) ) {
-                    $result = ["error" => 0, "message" => "Автор успешно удален!"];
+                    $result = ["error" => 0, "message" => $this->language_["deletesuccessMessageAuthor"]];
                 } else {
-                    $result = ["error" => 1, "message" => "Вы не можете удалить этого автора! Так как он есть в списке материалов!"];
+                    $result = ["error" => 1, "message" => $this->language_["deleteerrorMessageAuthor"]];
                 }
             } else {
-                $result = ["error" => 1, "message" => "Не верные параметры"];
+                $result = ["error" => 1, "message" => $this->language_["errorMessageAuthor"]];
             }
         }
         $this->return_json($result);

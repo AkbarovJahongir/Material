@@ -3,13 +3,24 @@ class Controller_Faculty extends Controller
 {
 
     private $data = [];
+    private $language_ = [];
 
     function __construct()
     {
         $this->model_common = new Model_Common();
         $this->model = new Model_Faculty();
         $this->view = new View();
-        $this->data['controller_name'] = "faculty";
+        $this->data['controller_name'] = "faculty"; 
+        if ($_SESSION["local"] == "ru") {
+            $this->language_ = [];
+            include_once './app/language/messageRU.php';
+            $this->language_ = $language;
+        }
+        else{
+            $this->language_ = [];
+            include_once './app/language/messageTJ.php';
+            $this->language_ = $language;
+        }
     }
 
     function action_index()
@@ -29,17 +40,17 @@ class Controller_Faculty extends Controller
         $user_role = $_SESSION["uid"]["role_id"];
 
         if ($user_role != 3) {
-            $result = ["error" => 1, "message" => "У вас нет прав для добавления записи!"];
+            $result = ["error" => 1, "message" => $this->language_["erroraccessMessageAddAll"]];
         } else {
             if (isset ($_POST["faculty"])) {
                 $faculty = $_POST["faculty"];
                 if ($this->model->add_faculty($faculty)) {
-                    $result = ["error" => 0, "message" => "Новый факультет успешно добавлен!"];
+                    $result = ["error" => 0, "message" => $this->language_["successMessageFaculty"]];
                 } else {
-                    $result = ["error" => 1, "message" => "Не верные данные или факультет был уже добавлен!"];
+                    $result = ["error" => 1, "message" => $this->language_["errorMessageFaculty"]];
                 }
             } else {
-                $result = ["error" => 1, "message" => "Не верные параметры"];
+                $result = ["error" => 1, "message" => $this->language_["errorMessageAll"]];
             }
         }
         $this->return_json($result);
@@ -56,7 +67,7 @@ class Controller_Faculty extends Controller
     {
         $faculty = $this->model->get_facultyById($id);
         if (!$faculty) {
-            return json_encode(["error" => 1, "message" => "Факультет не найден"]);
+            return json_encode(["error" => 1, "message" => $this->language_["errorMessageGetFaculty"]]);
         }
         $this->return_json($faculty);
         return;
@@ -65,7 +76,7 @@ class Controller_Faculty extends Controller
     {
         $faculty = $this->model->get_kafedraById($id);
         if (!$faculty) {
-            return json_encode(["error" => 1, "message" => "Кафедра не найдена"]);
+            return json_encode(["error" => 1, "message" => $this->language_["errorMessageGetKafedra"]]);
         }
         $faculty["faculty"] = $this->model->get_facultys();
 
@@ -82,12 +93,12 @@ class Controller_Faculty extends Controller
             $name = $_POST["facultyName"];
             $result = $this->model->edit_faculty($id, $name);
             if (!$result) {
-                return json_encode(["error" => 1, "message" => "Ошибка при изменении"]);
+                return json_encode(["error" => 1, "message" => $this->language_["erroreditMessageFaculty"]]);
             }
             $this->return_json($result);
 
         } else {
-            return json_encode(["error" => 1, "message" => "Некоторые данные пусты или факультет с таким именем существует!"]);
+            return json_encode(["error" => 1, "message" => $this->language_["errorMessageFacultyedit"]]);
         }
     }
     function action_editKafedra()
@@ -100,12 +111,12 @@ class Controller_Faculty extends Controller
             $faculty = $_POST["faculty"];
             $result = $this->model->edit_kafedra($id, $name, $faculty);
             if (!$result) {
-                return json_encode(["error" => 1, "message" => "Ошибка при изменении"]);
+                return json_encode(["error" => 1, "message" => $this->language_["erroreditMessageFaculty"]]);
             }
             $this->return_json($result);
 
         } else {
-            return json_encode(["error" => 1, "message" => "Некоторые данные пусты или кафедра с таким именем существует!"]);
+            return json_encode(["error" => 1, "message" => $this->language_["errorMessageKafedraedit"]]);
         }
     }
     function action_delete() {
@@ -116,15 +127,15 @@ class Controller_Faculty extends Controller
             if ( isset($_POST["id"]) ) {
                 $id = $_POST["id"];
                 if ( $this->model->delete_faculty( $id ) ) {
-                    $result = ["error" => 0, "message" => "Факультет успешно удален!"];
+                    $result = ["error" => 0, "message" => $this->language_["successDeleteMessageFaculty"]];
                 } else {
-                    $result = ["error" => 1, "message" => "Вы не можете удалить этот факультет!"];
+                    $result = ["error" => 1, "message" => $this->language_["errorDeleteMessageFaculty"]];
                 }
             } else {
-                $result = ["error" => 1, "message" => "Не верные параметры"];
+                $result = ["error" => 1, "message" => $this->language_["errorMessageAll"]];
             }
         } else {
-            $result = ["error" => 1, "message" => "У вас нет прав для удаление записи!"];
+            $result = ["error" => 1, "message" => $this->language_["erroraccessMessageDeleteAll"]];
         }
         $this->return_json($result);
         return;
@@ -134,18 +145,18 @@ class Controller_Faculty extends Controller
         $user_role = $_SESSION["uid"]["role_id"];
 
         if ($user_role != 3) {
-            $result = ["error" => 1, "message" => "У вас нет прав для добавления записи!"];
+            $result = ["error" => 1, "message" => $this->language_["erroraccessMessageAddAll"]];
         } else {
             if (isset ($_POST["kafedra"]) && isset($_POST["faculty"])) {
                 $kafedra = $_POST["kafedra"];
                 $facilty = $_POST["faculty"];
                 if ($this->model->add_kafedra($kafedra,$facilty)) {
-                    $result = ["error" => 0, "message" => "Новая кафедра успешно добавлен!"];
+                    $result = ["error" => 0, "message" => $this->language_["successMessageKafedra"]];
                 } else {
-                    $result = ["error" => 1, "message" => "Не верные данные или кафедра была уже добавлена!"];
+                    $result = ["error" => 1, "message" => $this->language_["errorMessageKafedraedit"]];
                 }
             } else {
-                $result = ["error" => 1, "message" => "Не верные параметры"];
+                $result = ["error" => 1, "message" => $this->language_["errorMessageAll"]];
             }
         }
         $this->return_json($result);
@@ -160,15 +171,15 @@ class Controller_Faculty extends Controller
             if ( isset($_POST["id"]) ) {
                 $id = $_POST["id"];
                 if ( $this->model->delete_kafedra( $id ) ) {
-                    $result = ["error" => 0, "message" => "Кафедра успешно удалена!"];
+                    $result = ["error" => 0, "message" => $this->language_["successDeleteMessageKafedra"]];
                 } else {
-                    $result = ["error" => 1, "message" => "Вы не можете удалить этоту кафедру!"];
+                    $result = ["error" => 1, "message" => $this->language_["errorDeleteMessageKafedra"]];
                 }
             } else {
-                $result = ["error" => 1, "message" => "Не верные параметры"];
+                $result = ["error" => 1, "message" => $this->language_["errorMessageAll"]];
             }
         } else {
-            $result = ["error" => 1, "message" => "У вас нет прав для удаление записи!"];
+            $result = ["error" => 1, "message" => $this->language_["erroraccessMessageDeleteAll"]];
         }
         $this->return_json($result);
         return;

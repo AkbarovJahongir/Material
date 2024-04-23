@@ -10,9 +10,10 @@
 			<li class="breadcrumb-item"><a href="/<?= $data['controller_name'] ?>">Материалы</a></li>
 		</ul>
 	</div>
-	<?php if ($_SESSION["uid"]["role_id"] == 2 || $_SESSION["uid"]["role_id"] == 1 ){
-		echo'
-	<a class="btn btn-primary btn-sm" href='. $data['controller_name'].'/add/">Добавить</a>';} ?>
+	<?php if ($_SESSION["uid"]["role_id"] == 2 || $_SESSION["uid"]["role_id"] == 1) {
+		echo '
+	<a class="btn btn-primary btn-sm" href=' . $data['controller_name'] . '/add/">Добавить</a>';
+	} ?>
 </div>
 
 <div class="row">
@@ -42,17 +43,14 @@
 													<th>Кафедра</th>
 													<th>Дата публикации</th>
 													<th>Статус</th>
+													<th>Комментарий</th>
 													<?php
-													if ($_SESSION["uid"]["role_id"] == 2 || $_SESSION["uid"]["role_id"] == 1) {
-														echo '
-															<th>Комментарий</th>
-														<th style="height: 10px;">Действие</th>';
-													} else if ($_SESSION["uid"]["role_id"] == 4) {
+													if (
+														($_SESSION["uid"]["role_id"] == 2) ||
+														($_SESSION["uid"]["role_id"] != 1) ||
+														($_SESSION["uid"]["role_id"] == 4)
+													) {
 														echo '<th style="height: 10px;">Действие</th>';
-													}
-													else if ($_SESSION["uid"]["role_id"] == 3){
-														echo '
-															<th>Комментарий</th>';
 													}
 													?>
 													<th>Файл</th>
@@ -61,35 +59,15 @@
 											<tbody>
 												<?php foreach ($data['materials'] as $material): ?>
 													<tr>
-														<td>
-															<?= $material['id'] ?>
-														</td>
-														<td>
-															<?= $material['name'] ?>
-														</td>
-														<td>
-															<?= $material['authors'] ?>
-														</td>
-														<td>
-															<?= $material['type'] ?>
-														</td>
-														<td>
-															<?= $material['faculty'] ?>
-														</td>
-														<td>
-															<?= $material['kafedra'] ?>
-														</td>
-														<td>
-															<?= $material['date_publish'] ?>
-														</td>
-														<td>
-															<?= $material['status'] ?>
-														</td>
-														<?php if ($_SESSION["uid"]["role_id"] == 2 || $_SESSION["uid"]["role_id"] == 1  || $_SESSION["uid"]["role_id"] == 3): ?>
-															<td>
-																<?= $material['comment'] ?>
-															</td>
-														<?php endif; ?>
+														<td><?= $material['id'] ?></td>
+														<td><?= $material['name'] ?></td>
+														<td><?= $material['authors'] ?></td>
+														<td><?= $material['type'] ?></td>
+														<td><?= $material['faculty'] ?></td>
+														<td><?= $material['kafedra'] ?></td>
+														<td><?= $material['date_publish'] ?></td>
+														<td><?= $material['status'] ?></td>
+														<td><?= $material['comment'] ?></td>
 														<?php if ($_SESSION["uid"]["role_id"] == 1): ?>
 															<td>
 																<div class="btn-group">
@@ -107,29 +85,35 @@
 																	</div>
 																</div>
 															</td>
-														<?php endif; ?>
-														<?php if ($_SESSION["uid"]["role_id"] == 2 || $_SESSION["uid"]["role_id"] == 4): ?>
+														<?php elseif (
+															($_SESSION["uid"]["role_id"] == 2 && $material["status_id"] == 1 && $material["status_id"] != 2) ||
+															($_SESSION["uid"]["role_id"] == 4 && $material["status_id"] != 1 && $material["status_id"] == 2)
+														): ?>
 															<td>
 																<div
-																	style="display:flex;justify-content:space-around;padding: 5px;">
+																	style="display: flex; justify-content: space-around; padding: 5px;">
 																	<div class="btn-group">
 																		<a href="/<?= $data['controller_name'] ?>/confirm/<?= $material['id'] ?>"
-																			class="btn btn-primary btn-sm"><i
-																				class="fa fa-lg fa-edit"></i> Подтвердить</a>
+																			class="btn btn-primary btn-sm">
+																			<i class="fa fa-lg fa-edit"></i> Подтвердить
+																		</a>
 																	</div>
 																	<div class="btn-group">
 																		<a href="#" onclick="openModal(<?= $material['id'] ?>)"
-																			class="btn btn-danger btn-sm del-material"><i
-																				class="fa fa-lg fa-trash"></i> Отклонить</a>
+																			class="btn btn-danger btn-sm del-material">
+																			<i class="fa fa-lg fa-trash"></i> Отклонить
+																		</a>
 																	</div>
 																</div>
 															</td>
+														<?php else: ?>
+															<td>Материал в обработке</td>
 														<?php endif; ?>
 														<td>
 															<div class="btn-group">
 																<?php if (!empty($material['file_path'])): ?>
 																	<a href="/app/uploads/file/<?= $material['file_path'] ?>"
-																		download class="btn btn-primary btn-sm">
+																		class="btn btn-primary btn-sm" target="_blank">
 																		<i class="fa fa-lg fa-book"></i> Скачать
 																	</a>
 																<?php else: ?>
@@ -139,7 +123,6 @@
 														</td>
 													</tr>
 												<?php endforeach; ?>
-
 											</tbody>
 										</table>
 									</div>
@@ -316,13 +299,15 @@
 		$id = '';
 		$("#comment").val('');
 	}
-	var delayBeforeClose = 3000;
+	var delayBeforeClose = 3000; // Например, 3000 миллисекунд = 3 секунды
 
+	// Функция для закрытия сообщения
 	function closeMessage() {
 		var messageBlock = document.getElementById('messageBlock');
 		if (messageBlock) {
-			messageBlock.style.display = 'none';
+			messageBlock.style.display = 'none'; // Скрыть блок сообщения
 		}
 	}
+
 	setTimeout(closeMessage, delayBeforeClose);
 </script>
