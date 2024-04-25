@@ -4,7 +4,6 @@ class Controller_Main extends Controller
 	private $data = [];
 	function action_index()
 	{
-		
 		$this->view->generate('main_view.php', 'template_view.php');
 	}
 	public function action_setLanguage()
