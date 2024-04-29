@@ -167,31 +167,21 @@ class Model_Material extends Model
         return $result;
     }
 
-    public function add_material($name, $type_id, $language_id, $date_publish, $pub_place_id, $count, $jsons, $unique_filename, $kafedra)
+    public function add_material($name, $type_id, $language_id, $date_publish, $pub_place_id, $count, $jsons, $unique_filename, $kafedra,$nameOfTheConference, $namejurnal, $direction)
     {
         try {
             if (!$this->select("SELECT * FROM `material` WHERE `name` = ? AND `language_id` = ?", [$name, $language_id])) {
                 $id = $this->insert_get_id(
                     "INSERT INTO `material` SET `name`=?,`type_id`=?,`language_id`=?,"
-                    . "`date_publish`=?,`pub_place_id`=?,`count`=?,`user_id`=?,`file_path`=?,`kafedra_id`=?",
-                    [$name, $type_id, $language_id, $date_publish, $pub_place_id, $count, $this->user_id, $unique_filename, $kafedra]
+                    . "`date_publish`=?,`pub_place_id`=?,`count`=?,`user_id`=?,`file_path`=?,`kafedra_id`=?, `nameOfTheConference`=?, `namejurnal`=?, `direction`=?",
+                    [$name, $type_id, $language_id, $date_publish, $pub_place_id, $count, $this->user_id, $unique_filename, $kafedra,$nameOfTheConference, $namejurnal, $direction]
                 );
                 if ($id) {
                     $authors = $jsons["authors"];
-                    $subjects = $jsons["subjects"];
-                    $specialties = $jsons["specialties"];
 
                     foreach ($authors as $author) {
                         $this->insert("INSERT INTO `material_author` (`material_id`, `author_id`)"
                             . " VALUES (?, ?)", [$id, $author]);
-                    }
-                    foreach ($subjects as $subject) {
-                        $this->insert("INSERT INTO `material_subject` (`material_id`, `subject_id`)"
-                            . " VALUES (?, ?)", [$id, $subject]);
-                    }
-                    foreach ($specialties as $specialty) {
-                        $this->insert("INSERT INTO `material_specialty` (`material_id`, `specialty_id`)"
-                            . " VALUES (?, ?)", [$id, $specialty]);
                     }
                 }
                 return true;

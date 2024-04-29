@@ -173,8 +173,9 @@ class Controller_Material extends Controller
             isset($_POST["kafedra"]) &&
             isset($unique_filename) &&
             isset($_POST["json_authors"]) &&
-            isset($_POST["json_subjects"]) &&
-            isset($_POST["json_specialties"])
+            isset($_POST["nameOfTheConference"]) &&
+            isset($_POST["namejurnal"]) &&
+            isset($_POST["direction"])
         ) {
             $name = $_POST["name"];
             $type = $_POST["type"];
@@ -184,8 +185,9 @@ class Controller_Material extends Controller
             $count = $_POST["count"];
             $kafedra = $_POST["kafedra"];
             $json_authors = json_decode($_POST["json_authors"]);
-            $json_subjects = json_decode($_POST["json_subjects"]);
-            $json_specialties = json_decode($_POST["json_specialties"]);
+            $nameOfTheConference = $_POST["nameOfTheConference"];
+            $namejurnal = $_POST["namejurnal"];
+            $direction = $_POST["direction"];
 
             if (
                 $name != "" &&
@@ -197,15 +199,14 @@ class Controller_Material extends Controller
                 $kafedra != "" &&
                 $unique_filename != "" &&
                 $json_authors != null &&
-                $json_subjects != null &&
-                $json_specialties != null
+                $nameOfTheConference != "" &&
+                $namejurnal != "" &&
+                $direction != ""
             ) {
                 $jsons = [
-                    "authors" => $json_authors,
-                    "subjects" => $json_subjects,
-                    "specialties" => $json_specialties,
+                    "authors" => $json_authors
                 ];
-                $result = $this->model->add_material($name, $type, $language, $date_publish, $place, $count, $jsons, $unique_filename, $kafedra);
+                $result = $this->model->add_material($name, $type, $language, $date_publish, $place, $count, $jsons, $unique_filename, $kafedra, $nameOfTheConference, $namejurnal, $direction);
 
                 if ($result) {
                     $this->data["error"] = 0;

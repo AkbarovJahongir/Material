@@ -70,34 +70,29 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="control-label col-md-3">Выберите предмет*:</label>
+                        <label class="control-label col-md-3">Название конфиренции*:</label>
                         <div class="col-md-9">
-                            <select id="subjectSelect" class="form-control" multiple="">
-                                <optgroup label="Выберите предмет">
-                                    <?php
-                                    if (isset($data["subjects"])) {
-                                        foreach ($data['subjects'] as $row) {
-                                            echo "<option value='" . $row["id"] . "'>" . $row['name'] . "</option>";
-                                        }
-                                    }
-                                    ?>
-                                </optgroup>
-                            </select>
+                            <input name="nameOfTheConference" id="nameOfTheConference" class="form-control" type="text" placeholder="Введите название конфиренции">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="control-label col-md-3">Выберите специальностей*:</label>
+                        <label class="control-label col-md-3">Название журнала*:</label>
                         <div class="col-md-9">
-                            <select id="specialtySelect" class="form-control" multiple="">
-                                <optgroup label="Выберите специальностей">
-                                    <?php
-                                    if (isset($data["specialties"])) {
-                                        foreach ($data['specialties'] as $row) {
-                                            echo "<option value='" . $row["id"] . "'>" . $row['code'] . " - " . $row['name'] . "</option>";
-                                        }
+                            <input name="namejurnal" id="namejurnal" class="form-control" type="text" placeholder="Введите название журнала">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                    <label class="control-label col-md-3">Выберите направление*:</label>
+                    <div class="col-md-9">
+                            <select name="direction" class="form-control">
+                                <option value=''>Выберите направление</option>
+                                <?php
+                                if (isset($data["direction"])) {
+                                    foreach ($data['direction'] as $row) {
+                                        echo "<option value='" . $row["id"] . "'>" . $row['code'] . " - " . $row['name'] . "</option>";
                                     }
-                                    ?>
-                                </optgroup>
+                                }
+                                ?>
                             </select>
                         </div>
                     </div>
@@ -148,8 +143,6 @@
                     </div>
                     <div class="d-none">
                         <textarea id="json_authors" name="json_authors"></textarea>
-                        <textarea id="json_subjects" name="json_subjects"></textarea>
-                        <textarea id="json_specialties" name="json_specialties"></textarea>
                     </div>
                 </div>
                 <div class="tile-footer">
