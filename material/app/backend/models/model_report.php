@@ -7,7 +7,12 @@ class Model_Report extends Model
     }
     public function get_user()
 	{
-		$result = $this->select("SELECT * FROM `user` WHERE role_id NOT IN (3,4)");
+		$result = $this->select("SELECT `user`.*"
+        . " FROM `user`"
+        . " INNER JOIN `material` ON `user`.`id` = `material`.`user_id`"
+        . " WHERE `user`.`role_id` NOT IN (3,4)"
+        . " GROUP BY `user`.`id`"
+        . " HAVING COUNT(`material`.`id`) > 0;");
 		return $result;
 	}
     public function get_materials()
@@ -23,10 +28,14 @@ class Model_Report extends Model
             . " ,mt.desciption"
             . " ,m.`file_path`"
             . " ,uk.name AS user_k"
-            . " ,ud.name AS user_d"
+            . " ,ud.name AS user_d" 
+            . " ,m.`conference_name`"
+            . " ,m.`name_jurnal`"
+            . " ,md.`name` AS direction"
             . " FROM `material` m"
             . " LEFT JOIN `type` t ON t.`id`=m.`type_id`"
             . " INNER JOIN `material_status` mt ON m.`status` = mt.id"
+            . " INNER JOIN `material_direction` AS `md` ON m.`material_direction_id` = `md`.`id`"
             . " LEFT JOIN `user` uk ON m.user_k = uk.id"
             . " LEFT JOIN `user` ud ON m.user_d = ud.id"
             . " ORDER BY m.`date_add` DESC"
@@ -55,12 +64,12 @@ class Model_Report extends Model
             return $this->select("SELECT u.`name`, COUNT(m.id) AS `count`,YEAR(m.date_publish) AS `year` FROM `user` u"
             ." INNER JOIN `material` m ON m.user_id = u.id"
             ." WHERE u.id =? AND m.`status` = 3"
-            ." GROUP BY u.`name`,YEAR(m.date_publish) ASC",[$users]);
+            ." GROUP BY u.`name`,YEAR(m.date_publish) ASC HAVING COUNT(m.id) > 0",[$users]);
         }
         else{
             return $this->select("SELECT COUNT(m.id) AS `count`,YEAR(m.date_publish) AS `year` FROM `user` u"
             ." LEFT JOIN `material` m ON m.user_id = u.id"
-            ." GROUP BY YEAR(m.date_publish) ASC");
+            ." GROUP BY YEAR(m.date_publish) ASC HAVING COUNT(m.id) > 0");
         }
     }
     public function get_material_authors($id)
@@ -68,20 +77,6 @@ class Model_Report extends Model
         $result = $this->select("SELECT a.`id`, a.`name` FROM `material_author` m_a "
             . " LEFT JOIN `author` a ON a.`id` = m_a.`author_id`"
             . " WHERE m_a.`material_id`=?", [$id]);
-        return $result;
-    }
-    public function get_material_subjects($id)
-    {
-        $result = $this->select("SELECT s.`id`, s.`name` FROM `material_subject` m_s "
-            . " LEFT JOIN `subject` s ON s.`id` = m_s.`subject_id`"
-            . " WHERE m_s.`material_id`=?", [$id]);
-        return $result;
-    }
-    public function get_material_specialties($id)
-    {
-        $result = $this->select("SELECT s.`id`, s.`code`, s.`name` FROM `material_specialty` m_s "
-            . " LEFT JOIN `specialty` s ON s.`id` = m_s.`specialty_id`"
-            . " WHERE m_s.`material_id`=?", [$id]);
         return $result;
     }
 

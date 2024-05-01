@@ -50,6 +50,13 @@ $language = array(
     "errorMessageGetUser" => "Пользователь не найден",
     "errorMessageResetPasswordUser" => "Неудалось сбросить пароль!",
     "successMessageConfirMaterial" => "Научный материал успешно подтвержден!",
-    "errorConfirmMessageMaterial" => "По каким то причинам научный материал не может быть подтвержден!"
+    "errorConfirmMessageMaterial" => "По каким то причинам научный материал не может быть подтвержден!",
+    "successMessageDirection" => "Новый тип напрвления успешно добавлен!",
+    "errorMessageDirection" => "Не верные данные или тип напрвления был уже добавлен!",
+    "errorMessageGetDirection" => "Тип направления не найден",
+    "erroreditMessageDirection" => "Ошибка при изменении",
+    "errorMessageDirectionedit" => "Некоторые данные пусты или тип напрвления с таким именем существует!",
+    "successDeleteMessageDirection" => "Тип направления успешно удален!",
+    "errorDeleteMessageDirection" => "Вы не можете удалить этот тип напрвления!",
 );
 ?>

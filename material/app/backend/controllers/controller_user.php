@@ -73,7 +73,7 @@ class Controller_User extends Controller
         } else {
             $error_message = "File was not uploaded.";
         }
-        //$this->print_array($_POST);
+        //$this->print_array($_POST);die;
         //$this->print_array($unique_filename);die;
         if (
             !empty($_POST["login"]) &&
@@ -82,7 +82,8 @@ class Controller_User extends Controller
             //isset($unique_filename) &&
             !empty($_POST["role"]) &&
             !empty($_POST["kafedra"]) &&
-            !empty($_POST["access"])
+            !empty($_POST["access"]) &&
+            !empty($_POST["author"])
         ) {
             $login = $_POST["login"];
             $name = $_POST["name"];
@@ -93,8 +94,9 @@ class Controller_User extends Controller
             $kafedra = $_POST["kafedra"];
             $access = $_POST["access"] == 'on' ? 1 : 0;
             $full_name = $surname . ' ' . $name . ' ' . $father_name;
-            if ($login != "" && $full_name != "" && $password != "" && $role_id != "" && $unique_filename != "" && $access != "" && $kafedra != "") {
-                $result = $this->model->add_user($full_name, $login, $password, $access, $role_id, $unique_filename, $kafedra);
+            $author_id = $_POST["author"];
+            if ($login != "" && $full_name != "" && $password != "" && $role_id != "" && $unique_filename != "" && $access != "" && $kafedra != "" && $author_id != "") {
+                $result = $this->model->add_user($full_name, $login, $password, $access, $role_id, $unique_filename, $kafedra,$author_id);
 
                 if ($result) {
                     $this->data["error"] = 0;
@@ -111,6 +113,9 @@ class Controller_User extends Controller
 
         $this->data["role"] = $this->model_common->get_roles();
         $this->data["kafedra"] = $this->model_common->get_kafedra();
+        $this->data["author"] = $this->model_common->get_authors();
+        //$this->data["users"] = $this->model->get_user();
+        //$this->print_array($this->data["author"]);die;
         $this->view->generate('user/add_view.php', 'template_view.php', $this->data);
 
         // Logging error messages
@@ -128,12 +133,13 @@ class Controller_User extends Controller
 
         $this->data["user"] = $this->model->get_user($id);
         $this->data["kafedra"] = $this->model_common->get_kafedra();
+        $this->data["author"] = $this->model_common->get_authors();
 
         $this->data["role"] = $this->model_common->get_roles();
-
+        //$this->print_array($_POST);die;
         if (
             isset($_POST["login"]) && isset($_POST["name"]) &&
-            !empty($_POST["kafedra"]) && isset($_POST["role"]) && isset($_POST["image_url"]) && isset($_POST["access"])
+            !empty($_POST["kafedra"]) && isset($_POST["role"]) && isset($_POST["image_url"]) && isset($_POST["access"]) && isset($_POST["author"])
         ) {
             $login = $_POST["login"];
             $name = $_POST["name"];
@@ -141,9 +147,10 @@ class Controller_User extends Controller
             $role_id = $_POST["role"];
             $image_url = $_POST["image_url"];
             $access = $_POST["access"] == 'on' ? 1 : 0;
+            $author_id = $_POST["author"];
 
-            if ($login != "" && $name != "" && $kafedra != "" && $role_id != "" && $image_url != "" && $access != "") {
-                $result = $this->model->edit_user($id, $name, $login, $kafedra, $access, $image_url, $role_id);
+            if ($login != "" && $name != "" && $kafedra != "" && $role_id != "" && $image_url != "" && $access != "" && $author_id != "") {
+                $result = $this->model->edit_user($id, $name, $login, $kafedra, $access, $image_url, $role_id,$author_id);
 
                 if ($result) {
                     $this->data["error"] = 0;

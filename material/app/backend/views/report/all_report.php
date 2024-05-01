@@ -20,9 +20,10 @@
                           <th>№</th>
                           <th>Имя</th>
                           <th>Авторы</th>
-                          <th>Предметы</th>
+                          <th>Название конфиренции</th>
                           <th>Тип</th>
-                          <th>Специальности</th>
+                          <th>Направление</th>
+                          <th>Название журнала</th>
                           <th>Дата публикации</th>
                           <th>Статус</th>
                           <th>Зав.кафедры</th>
@@ -38,9 +39,10 @@
                             <td><?= $i++ ?></td>
                             <td><?= $material["name"] ?></td>
                             <td><?= $material["authors"] ?></td>
-                            <td><?= $material["subjects"] ?></td>
+                            <td><?= $material["conference_name"] ?></td>
                             <td><?= $material["type_name"] ?></td>
-                            <td><?= $material["specialties"] ?></td>
+                            <td><?= $material["direction"] ?></td>
+                            <td><?= $material["name_jurnal"] ?></td>
                             <td><?= $material["date_publish"] ?></td>
                             <td><?= $material["desciption"] ?></td>
                             <td><?= $material["user_k"] ?></td>

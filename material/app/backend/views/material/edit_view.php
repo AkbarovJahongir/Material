@@ -12,8 +12,8 @@
     <div class="col-md-12 content">
         <div class="tile">
             <?php
-            if (isset($data["message"])){
-                echo '<div class="card text-black bg-light"><div class="card-body">'.$data["message"].'</div></div><br>';
+            if (isset($data["message"])) {
+                echo '<div class="card text-black bg-light"><div class="card-body">' . $data["message"] . '</div></div><br>';
             }
             ?>
 
@@ -24,7 +24,7 @@
                         <label class="control-label col-md-3">Название материала*:</label>
                         <div class="col-md-9">
                             <input name="name" class="form-control" type="text" placeholder="Введите название"
-                                   value='<?= $data["material"]["name"] ?>'>
+                                value='<?= $data["material"]["name"] ?>'>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -33,9 +33,9 @@
                             <select id="authorSelect" class="form-control" multiple="">
                                 <optgroup label="Выберите автора">
                                     <?php
-                                    if(isset($data["authors"])){
+                                    if (isset($data["authors"])) {
                                         foreach ($data['authors'] as $row) {
-                                            echo "<option value='".$row["id"]."'>".$row['name']."</option>";
+                                            echo "<option value='" . $row["id"] . "'>" . $row['name'] . "</option>";
                                         }
                                     }
                                     ?>
@@ -49,12 +49,12 @@
                             <select name="type" class="form-control">
                                 <option value=''>Выберите тип материала</option>
                                 <?php
-                                if(isset($data["types"])){
+                                if (isset($data["types"])) {
                                     foreach ($data['types'] as $row) {
-                                        if ( $row["id"] == $data["material"]["type_id"] )
-                                            echo "<option value='".$row["id"]."' selected>".$row['name']."</option>";
+                                        if ($row["id"] == $data["material"]["type_id"])
+                                            echo "<option value='" . $row["id"] . "' selected>" . $row['name'] . "</option>";
                                         else
-                                            echo "<option value='".$row["id"]."'>".$row['name']."</option>";
+                                            echo "<option value='" . $row["id"] . "'>" . $row['name'] . "</option>";
                                     }
                                 }
                                 ?>
@@ -64,12 +64,12 @@
                             <select name="language" class="form-control">
                                 <option value=''>Выберите язык</option>
                                 <?php
-                                if(isset($data["languages"])) {
+                                if (isset($data["languages"])) {
                                     foreach ($data['languages'] as $row) {
-                                        if ( $row["id"] == $data["material"]["type_id"] )
-                                            echo "<option value='".$row["id"]."' selected>".$row['code']." - ".$row['name']."</option>";
+                                        if ($row["id"] == $data["material"]["type_id"])
+                                            echo "<option value='" . $row["id"] . "' selected>" . $row['code'] . " - " . $row['name'] . "</option>";
                                         else
-                                            echo "<option value='".$row["id"]."'>".$row['code']." - ".$row['name']."</option>";
+                                            echo "<option value='" . $row["id"] . "'>" . $row['code'] . " - " . $row['name'] . "</option>";
                                     }
                                 }
                                 ?>
@@ -77,34 +77,35 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="control-label col-md-3">Выберите предмет*:</label>
+                        <label class="control-label col-md-3">Название конфиренции*:</label>
                         <div class="col-md-9">
-                            <select id="subjectSelect" class="form-control" multiple="">
-                                <optgroup label="Выберите предмет">
-                                    <?php
-                                    if(isset($data["subjects"])){
-                                        foreach ($data['subjects'] as $row) {
-                                            echo "<option value='".$row["id"]."'>".$row['name']."</option>";
-                                        }
-                                    }
-                                    ?>
-                                </optgroup>
-                            </select>
+                            <input name="nameOfTheConference" id="nameOfTheConference" class="form-control" type="text"
+                                placeholder="Введите название конфиренции"
+                                value="<?= $data["material"]["conference_name"] ?>">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="control-label col-md-3">Выберите специальностей*:</label>
+                        <label class="control-label col-md-3">Название журнала*:</label>
                         <div class="col-md-9">
-                            <select id="specialtySelect" class="form-control" multiple="">
-                                <optgroup label="Выберите специальностей">
-                                    <?php
-                                    if(isset($data["specialties"])){
-                                        foreach ($data['specialties'] as $row) {
-                                            echo "<option value='".$row["id"]."'>".$row['code']." - ".$row['name']."</option>";
-                                        }
+                            <input name="namejurnal" id="namejurnal" class="form-control" type="text"
+                                placeholder="Введите название журнала" value="<?= $data["material"]["name_jurnal"] ?>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-md-3">Выберите направление*:</label>
+                        <div class="col-md-9">
+                            <select name="direction" class="form-control">
+                                <option value=''>Выберите направление</option>
+                                <?php
+                                if (isset($data["direction"])) {
+                                    foreach ($data['direction'] as $row) {
+                                        if ($row["id"] == $data["material"]["material_direction_id"])
+                                            echo "<option value='" . $row["id"] . "' selected>" . $row['code'] . $row['name'] . "</option>";
+                                        else
+                                            echo "<option value='" . $row["id"] . "'>" . $row['code'] . $row['name'] . "</option>";
                                     }
-                                    ?>
-                                </optgroup>
+                                }
+                                ?>
                             </select>
                         </div>
                     </div>
@@ -112,11 +113,12 @@
                         <label class="control-label col-md-3">Дата публикации*:</label>
                         <div class="col-md-3">
                             <input id="demoDate" name="date_publish" class="form-control" type="text"
-                                   placeholder="Выберите дату" value="<?= $data["material"]["date_publish"] ?>">
+                                placeholder="Выберите дату" value="<?= $data["material"]["date_publish"] ?>">
                         </div>
                         <label class="control-label col-md-3 text-right">Выберите файл для публикации*:</label>
                         <div class="col-md-3">
-                            <input type="file" class="form-control" value="Выбрать" name="fileToUpload" id="fileToUpload" required>
+                            <input type="file" class="form-control" value="Выбрать" name="fileToUpload"
+                                id="fileToUpload" required>
                         </div>
                     </div>
 
@@ -126,12 +128,12 @@
                             <select name="place" class="form-control">
                                 <option value=''>Выберите место</option>
                                 <?php
-                                if( isset($data["places"]) ) {
+                                if (isset($data["places"])) {
                                     foreach ($data['places'] as $row) {
-                                        if ( $row["id"] == $data["material"]["pub_place_id"] )
-                                            echo "<option value='".$row["id"]."' selected>".$row['name']."</option>";
+                                        if ($row["id"] == $data["material"]["pub_place_id"])
+                                            echo "<option value='" . $row["id"] . "' selected>" . $row['name'] . "</option>";
                                         else
-                                            echo "<option value='".$row["id"]."'>".$row['name']."</option>";
+                                            echo "<option value='" . $row["id"] . "'>" . $row['name'] . "</option>";
                                     }
                                 }
                                 ?>
@@ -140,10 +142,10 @@
                         <label class="control-label col-md-3 text-right">Количество*:</label>
                         <div class="col-md-3">
                             <input name="count" class="form-control" type="number" placeholder="Введите количеству"
-                                   value="<?= $data["material"]["count"] ?>">
+                                value="<?= $data["material"]["count"] ?>">
                         </div>
                     </div>
-                        <div class="form-group row">
+                    <div class="form-group row">
                         <label class="control-label col-md-3">Выберите кафедру*:</label>
                         <div class="col-md-9">
                             <select name="kafedra" class="form-control">
@@ -151,7 +153,7 @@
                                 <?php
                                 if (isset($data["kafedra"])) {
                                     foreach ($data['kafedra'] as $row) {
-                                        if($row["id"] == $data["material"]["kafedra_id"])
+                                        if ($row["id"] == $data["material"]["kafedra_id"])
                                             echo "<option value='" . $row["id"] . "'selected>" . $row['name'] . "</option>";
                                         else
                                             echo "<option value='" . $row["id"] . "'>" . $row['name'] . "</option>";
@@ -163,8 +165,6 @@
                     </div>
                     <div class="d-none">
                         <textarea id="json_authors" name="json_authors"><?= $data["json_authors"] ?></textarea>
-                        <textarea id="json_subjects" name="json_subjects"><?= $data["json_subjects"] ?></textarea>
-                        <textarea id="json_specialties" name="json_specialties"><?= $data["json_specialties"] ?></textarea>
                     </div>
                 </div>
                 <div class="tile-footer">
@@ -187,7 +187,7 @@
     $('#demoDate').datepicker({
         format: "yyyy/mm/dd",
         todayBtn: "linked",
-        todayHighlight : true,
+        todayHighlight: true,
         orientation: "top",
         autoclose: true,
         todayHighlight: true

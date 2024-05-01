@@ -30,8 +30,8 @@ class Controller_Report extends Controller
     public function action_getFaculty()
     {
         $user_role = $_SESSION["uid"]["role_id"];
-
-        if ($user_role != 3) {
+        //$this->print_array($user_role);die;
+        if ($user_role != 3 && $user_role != 4) {
             $result = ["error" => 1, "message" => $this->language_["accessMessageAll"]];
         } else {
             $result = $this->model->get_dataFaculty();
@@ -46,7 +46,7 @@ class Controller_Report extends Controller
     {
         $user_role = $_SESSION["uid"]["role_id"];
 
-        if ($user_role != 3) {
+        if ($user_role != 3 && $user_role != 4) {
             $result = ["error" => 1, "message" => $this->language_["accessMessageAll"]];
         } else {
             $result = $this->model->getFacultyByYear();
@@ -61,7 +61,7 @@ class Controller_Report extends Controller
     {
         $user_role = $_SESSION["uid"]["role_id"];
         $users = $_POST["users"];
-        if ($user_role != 3) {
+        if ($user_role != 3 && $user_role != 4) {
             $result = ["error" => 1, "message" => $this->language_["accessMessageAll"]];
         } else {
             $result = $this->model->get_dataUsers($users);
@@ -76,7 +76,7 @@ class Controller_Report extends Controller
     {
         $user_role = $_SESSION["uid"]["role_id"];
 
-        if ($user_role != 3) {
+        if ($user_role != 3 && $user_role != 4) {
             $result = ["error" => 1, "message" => $this->language_["accessMessageAll"]];
         } else {
             $result = $this->model->get_dataKafedra();
@@ -103,29 +103,27 @@ class Controller_Report extends Controller
                 }
             }
             $materials[$i]['authors'] = $authors_str;
-
-            $subjects = $this->model->get_material_subjects($materials[$i]['id']);
-            $subjects_str = "";
-            for ($j = 0; $j < count($subjects); $j++) {
-                if ($j == 0) {
-                    $subjects_str = $subjects[$j]["name"];
-                } else {
-                    $subjects_str .= ", " . $subjects[$j]["name"];
-                }
+        }$subjects = $this->model->get_material_subjects($materials[$i]['id']);
+        $subjects_str = "";
+        for ($j = 0; $j < count($subjects); $j++) {
+            if ($j == 0) {
+                $subjects_str = $subjects[$j]["name"];
+            } else {
+                $subjects_str .= ", " . $subjects[$j]["name"];
             }
-            $materials[$i]['subjects'] = $subjects_str;
-
-            $specialties = $this->model->get_material_specialties($materials[$i]['id']);
-            $specialties_str = "";
-            for ($j = 0; $j < count($specialties); $j++) {
-                if ($j == 0) {
-                    $specialties_str = $specialties[$j]["code"];
-                } else {
-                    $specialties_str .= ", " . $specialties[$j]["code"];
-                }
-            }
-            $materials[$i]['specialties'] = $specialties_str;
         }
+        $materials[$i]['subjects'] = $subjects_str;
+
+        $specialties = $this->model->get_material_specialties($materials[$i]['id']);
+        $specialties_str = "";
+        for ($j = 0; $j < count($specialties); $j++) {
+            if ($j == 0) {
+                $specialties_str = $specialties[$j]["code"];
+            } else {
+                $specialties_str .= ", " . $specialties[$j]["code"];
+            }
+        }
+        $materials[$i]['specialties'] = $specialties_str;
         $this->data["materials"] = $materials;
 
         //$this->print_array( $materials ); die;

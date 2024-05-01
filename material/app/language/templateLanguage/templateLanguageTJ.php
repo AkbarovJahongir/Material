@@ -23,6 +23,8 @@ $language = array(
     "allUsers" => "Ҳамаи корбарон",
     "reports" => "Ҳисоботҳо",
     "allReports" => "Ҳама гузоришҳо",
-    "graphicReport" => "Ҳисоботи графикӣ"
+    "graphicReport" => "Ҳисоботи графикӣ",
+    "direction" => "Самти навиштан",
+    "allDirection" => "Ҳама самт"
 );
 ?>

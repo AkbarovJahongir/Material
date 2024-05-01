@@ -93,6 +93,22 @@
               </select>
             </div>
           </div>
+          <div class="form-group row">
+            <label class="control-label col-md-3">Если пользователь явялется автором выберите автора*</label>
+            <div class="col-md-9">
+              <select class="form-control" name="author" id="select_author">
+                <?php if (isset($data["author"])) {
+                  foreach ($data['author'] as $row) {
+                    if ($row == $data["user"][0]["author_id"])
+                      echo "<option selected value='" . $row["id"] . "'>" . $row['name'] . "</option>";
+                    else
+                      echo "<option value='" . $row["id"] . "'>" . $row['name'] . "</option>";
+                  }
+                }
+                ?>
+              </select>
+            </div>
+          </div>
           <div class="tile-footer">
             <div class="row">
               <div class="col-md-9 col-md-offset-3">
@@ -107,7 +123,9 @@
     </div>
   </div>
 </div>
+<script type="text/javascript" src="/assets/js/plugins/select2.min.js"></script>
 <script>
+$('#select_author').select2();
   $("#select_role").on('change', function () {
     if (this.value == 5) {
       $("#deliver_block").css("display", "block");

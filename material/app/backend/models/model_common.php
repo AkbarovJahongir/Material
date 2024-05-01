@@ -20,6 +20,10 @@ class Model_Common extends Model{
         $result = $this->select("SELECT `id`, `name` FROM `kafedra`");
         return $result;
     }
+    public function get_direction(){
+        $result = $this->select("SELECT `id`, `name` FROM `material_direction`");
+        return $result;
+    }
     public function get_places(){
         $result = $this->select("SELECT `id`, `name` FROM `place`");
         return $result;

@@ -89,7 +89,7 @@
                                 <?php
                                 if (isset($data["direction"])) {
                                     foreach ($data['direction'] as $row) {
-                                        echo "<option value='" . $row["id"] . "'>" . $row['code'] . " - " . $row['name'] . "</option>";
+                                        echo "<option value='" . $row["id"] . "'>" . $row['code'] . $row['name'] . "</option>";
                                     }
                                 }
                                 ?>
@@ -130,7 +130,7 @@
                     <label class="control-label col-md-3">Выберите кафедру*:</label>
                         <div class="col-md-9">
                             <select name="kafedra" class="form-control">
-                                <option value=''></option>
+                                <option value=''>Выберите кафедру</option>
                                 <?php
                                 if (isset($data["kafedra"])) {
                                     foreach ($data['kafedra'] as $row) {

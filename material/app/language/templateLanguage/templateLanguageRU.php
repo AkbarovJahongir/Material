@@ -23,6 +23,8 @@ $language = array(
     "allUsers" => "Все пользователи",
     "reports" => "Отчеты",
     "allReports" => "Все отчеты",
-    "graphicReport" => "Графический отчет"
+    "graphicReport" => "Графический отчет",
+    "direction" => "Тип направление",
+    "allDirection" => "Все направление"
 );
 ?>

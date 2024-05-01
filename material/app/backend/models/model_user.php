@@ -13,7 +13,7 @@ class Model_User extends Model
 			." INNER JOIN kafedra k ON u.kafedra_id = k.`id`"
 			." INNER JOIN faculty f ON k.faculty_id = f.`id`"
 			." WHERE r.id=u.role_id AND u.role_id IN (2, 5) ORDER BY u.date_add");
-		} elseif ($_SESSION["uid"]["role_id"] == 3) {
+		} elseif ($_SESSION["uid"]["role_id"] == 3 || $_SESSION["uid"]["role_id"] == 4) {
 			$result = $this->select("SELECT u.*, r.name AS role_name, k.`name` AS kafedra, f.`name` AS faculty FROM `user` u"
 			." INNER JOIN `role` r ON u.role_id = r.id " 
 			." INNER JOIN kafedra k ON u.kafedra_id = k.`id`"
@@ -33,7 +33,7 @@ class Model_User extends Model
 		$result = $this->select("SELECT login FROM `user` WHERE id=?", array($user_id));
 		return $result[0]['login'];
 	}
-	public function add_user($name, $login, $password, $access, $role, $unique_filename,$kafedra)
+	public function add_user($name, $login, $password, $access, $role, $unique_filename,$kafedra,$author_id)
 	{
 		if($role == "3" || $role == "4") {
 			$kafedra = null;
@@ -44,16 +44,16 @@ class Model_User extends Model
 		$hashed_password = hash_hmac('SHA256',$password, 'p0l!t3kh');
 		//echo $name,' \n', $login,'  \n', $hashed_password,'  \n', $access,' \n ', $role,'  \n', $date_now,'  \n', $unique_filename,'  \n',$kafedra,'  \n';
 		return $this->insert_get_Id(
-			"INSERT INTO `user` SET name=?,login=?,password=?,access=?,role_id=?,date_add=?,image_url=?,kafedra_id=?",
-			array($name, $login, $hashed_password, $access, $role, $date_now, $unique_filename,$kafedra)
+			"INSERT INTO `user` SET name=?,login=?,password=?,access=?,role_id=?,date_add=?,image_url=?,kafedra_id=?,`author_id`=?",
+			array($name, $login, $hashed_password, $access, $role, $date_now, $unique_filename,$kafedra,$author_id)
 		);
 	}
 
-	public function edit_user($user_id, $name, $login, $kafedra, $access, $image_url, $role)
+	public function edit_user($user_id, $name, $login, $kafedra, $access, $image_url, $role,$author_id)
 	{
 		$date_now = date('Y-m-d H:i:s', strtotime('+5 hours'));
 		//echo $user_id, $name, $login, $kafedra, $access, $role;	
-		return $this->update("UPDATE `user` SET name=?,login=?,kafedra_id=?,access=?,role_id=?,date_edit=?,image_url=? WHERE id=?", array($name, $login, $kafedra, $access, $role, $date_now, $image_url, $user_id));
+		return $this->update("UPDATE `user` SET name=?,login=?,kafedra_id=?,access=?,role_id=?,date_edit=?,image_url=?, `author_id`=? WHERE id=?", array($name, $login, $kafedra, $access, $role, $date_now, $image_url,$author_id, $user_id));
 	}
 
 	public function reset_password($user_id, $password)
@@ -74,5 +74,4 @@ class Model_User extends Model
 		}
 		return $result;
 	}
-	
 }

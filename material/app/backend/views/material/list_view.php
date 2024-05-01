@@ -39,6 +39,9 @@
 													<th>Название</th>
 													<th>Авторы</th>
 													<th>Тип</th>
+													<th>Название конфиренции</th>
+													<th>Название журнала</th>
+													<th>Направление научного материала</th>
 													<th>Факультет</th>
 													<th>Кафедра</th>
 													<th>Дата публикации</th>
@@ -52,6 +55,9 @@
 													) {
 														echo '<th style="height: 10px;">Действие</th>';
 													}
+													else if ($_SESSION["uid"]["role_id"] == 1){
+														echo '<th style="height: 10px;">Действие</th>';
+													}
 													?>
 													<th>Файл</th>
 												</tr>
@@ -63,6 +69,9 @@
 														<td><?= $material['name'] ?></td>
 														<td><?= $material['authors'] ?></td>
 														<td><?= $material['type'] ?></td>
+														<td><?= $material['conference_name'] ?></td>
+														<td><?= $material['name_jurnal'] ?></td>
+														<td><?= $material['direction'] ?></td>
 														<td><?= $material['faculty'] ?></td>
 														<td><?= $material['kafedra'] ?></td>
 														<td><?= $material['date_publish'] ?></td>

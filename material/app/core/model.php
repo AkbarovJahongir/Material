@@ -10,7 +10,7 @@ class Model{
 		try {
 		  $this->pdo = new PDO(
 		    "mysql:host=localhost;dbname=material;charset=utf8",
-		    "root", "root", [
+		    "root", "", [
 		      PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
 		      PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
 		      PDO::ATTR_EMULATE_PREPARES => false,
@@ -46,7 +46,6 @@ class Model{
 		  return $this->stmt->execute($cond);
 		} catch (Exception $ex) {
 			die($ex->getMessage());
-			return false;
 		}
 		return false;
 	}
@@ -59,7 +58,6 @@ class Model{
 		  return $this->pdo->lastInsertId();
 		} catch (Exception $ex) {
 			die($ex->getMessage());
-			return false;
 		}
 		return false;
 	}
@@ -70,7 +68,6 @@ class Model{
 		  return $this->stmt->execute($cond);
 		} catch (Exception $ex) {
 			die($ex->getMessage());
-			return false;
 		}
 		return false;
 	}
@@ -81,7 +78,6 @@ class Model{
             return $this->stmt->execute($cond);
         } catch (Exception $ex) {
             die($ex->getMessage());
-            return false;
         }
         return false;
     }

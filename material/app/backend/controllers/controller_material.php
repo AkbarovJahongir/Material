@@ -93,21 +93,9 @@ class Controller_Material extends Controller
                     $subjects_str .= ", " . $subjects[$j]["name"];
                 }
             }
-            $materials[$i]['subjects'] = $subjects_str;
-
-            $specialties = $this->model->get_material_specialties($materials[$i]['id']);
-            $specialties_str = "";
-            for ($j = 0; $j < count($specialties); $j++) {
-                if ($j == 0) {
-                    $specialties_str = $specialties[$j]["code"];
-                } else {
-                    $specialties_str .= ", " . $specialties[$j]["code"];
-                }
-            }
-            $materials[$i]['specialties'] = $specialties_str;
         }
         $this->data["materials"] = $materials;
-
+        //$this->print_array($materials);die;
         $this->view->generate('material/list_view.php', 'template_view.php', $this->data);
     }
 
@@ -125,6 +113,7 @@ class Controller_Material extends Controller
         $this->data["types"] = $this->model_common->get_types();
         $this->data["places"] = $this->model_common->get_places();
         $this->data["kafedra"] = $this->model_common->get_kafedra();
+        $this->data["direction"] = $this->model_common->get_direction();
 
         if (isset($_FILES["fileToUpload"])) {
             $target_dir = "./app/uploads/file/";
@@ -162,6 +151,8 @@ class Controller_Material extends Controller
             //echo "Файл не был загружен.";
             $error_message = "Файл не был загружен.";
         }
+
+        //$this->print_array($_POST);die;
 
         if (
             isset($_POST["name"]) &&
@@ -274,16 +265,13 @@ class Controller_Material extends Controller
         $this->data["authors"] = $this->model_common->get_authors();
         $this->data["kafedra"] = $this->model_common->get_kafedra();
         $this->data["languages"] = $this->model_common->get_languages();
-        $this->data["specialties"] = $this->model_common->get_specialties();
-        $this->data["subjects"] = $this->model_common->get_subjects();
         $this->data["types"] = $this->model_common->get_types();
         $this->data["places"] = $this->model_common->get_places();
+        $this->data["direction"] = $this->model_common->get_direction();
         //$this->print_array($_FILES["fileToUpload"]); die;
 
         $this->data["material"] = $this->model->get_material($id);
         $this->data["json_authors"] = json_encode($this->model->get_material_authors_id($id));
-        $this->data["json_subjects"] = json_encode($this->model->get_material_subjects_id($id));
-        $this->data["json_specialties"] = json_encode($this->model->get_material_specialties_id($id));
         //
         if (
             isset($_POST["name"]) &&
@@ -295,8 +283,9 @@ class Controller_Material extends Controller
             isset($_POST["kafedra"]) &&
             isset($unique_filename) &&
             isset($_POST["json_authors"]) &&
-            isset($_POST["json_subjects"]) &&
-            isset($_POST["json_specialties"])
+            isset($_POST["nameOfTheConference"]) &&
+            isset($_POST["namejurnal"]) &&
+            isset($_POST["direction"])
         ) {
            
             $name = $_POST["name"];
@@ -307,8 +296,10 @@ class Controller_Material extends Controller
             $count = $_POST["count"];
             $kafedra = $_POST["kafedra"];
             $json_authors = json_decode($_POST["json_authors"]);
-            $json_subjects = json_decode($_POST["json_subjects"]);
-            $json_specialties = json_decode($_POST["json_specialties"]);
+            $nameOfTheConference = $_POST["nameOfTheConference"];
+            $namejurnal = $_POST["namejurnal"];
+            $direction = $_POST["direction"];
+            
 
             if (
                 $name != "" &&
@@ -320,13 +311,12 @@ class Controller_Material extends Controller
                 $kafedra != "" &&
                 $unique_filename != "" &&
                 $json_authors != null &&
-                $json_subjects != null &&
-                $json_specialties != null
+                $nameOfTheConference != "" &&
+                $namejurnal != "" &&
+                $direction != ""
             ) {
                 $jsons = [
                     "authors" => $json_authors,
-                    "subjects" => $json_subjects,
-                    "specialties" => $json_specialties,
                 ];
 
                 $date = str_replace('/', '-', $date_publish);
@@ -341,7 +331,7 @@ class Controller_Material extends Controller
                 //     ,"count" => $count
                 //     ,"jsons" => $jsons ]); die;
 
-                $result = $this->model->edit_material($id, $name, $type, $language, $date_publish, $place, $count, $unique_filename, $jsons, $kafedra);
+                $result = $this->model->edit_material($id, $name, $type, $language, $date_publish, $place, $count, $unique_filename, $jsons, $kafedra, $nameOfTheConference, $namejurnal, $direction);
 
                 if ($result) {
                     $this->data["error"] = 0;
@@ -350,8 +340,6 @@ class Controller_Material extends Controller
                     /* #Get material data by @id */
                     $this->data["material"] = $this->model->get_material($id);
                     $this->data["json_authors"] = json_encode($this->model->get_material_authors_id($id));
-                    $this->data["json_subjects"] = json_encode($this->model->get_material_subjects_id($id));
-                    $this->data["json_specialties"] = json_encode($this->model->get_material_specialties_id($id));
 
                     // $this->view->generate('material/success_view.php', 'template_view.php', $this->data);
                     // return true;
@@ -396,28 +384,6 @@ class Controller_Material extends Controller
                     $authors_str .= ", " . $authors[$j]["name"];
                 }
             }
-            $materials[$i]['authors'] = $authors_str;
-            $subjects = $this->model->get_material_subjects($materials[$i]['id']);
-            $subjects_str = "";
-            for ($j = 0; $j < count($subjects); $j++) {
-                if ($j == 0) {
-                    $subjects_str = $subjects[$j]["name"];
-                } else {
-                    $subjects_str .= ", " . $subjects[$j]["name"];
-                }
-            }
-            $materials[$i]['subjects'] = $subjects_str;
-
-            $specialties = $this->model->get_material_specialties($materials[$i]['id']);
-            $specialties_str = "";
-            for ($j = 0; $j < count($specialties); $j++) {
-                if ($j == 0) {
-                    $specialties_str = $specialties[$j]["code"];
-                } else {
-                    $specialties_str .= ", " . $specialties[$j]["code"];
-                }
-            }
-            $materials[$i]['specialties'] = $specialties_str;
         }
         $this->data["materials"] = $materials;
         // $this->print_array($this->data["materials"]); die;
@@ -605,6 +571,62 @@ class Controller_Material extends Controller
             return json_encode(["error" => 1, "message" => $this->language_["errorMessageGetMaterial"]]);
         }
         $this->return_json($material);
+        return;
+    }
+    function action_type() {
+        $types = $this->model->get_types();
+        $this->data["type"] = $types;
+
+        //$this->print_array($types); die;
+
+		$this->view->generate('material/list_view_type.php', 'template_view.php', $this->data);
+	}
+    function action_addType()
+    {
+        $user_role = $_SESSION["uid"]["role_id"];
+
+        if ($user_role != 3) {
+            $result = ["error" => 1, "message" => $this->language_["erroraccessMessageAddAll"]];
+        } else {
+            if (isset ($_POST["type"])) {
+                $type = $_POST["type"];
+                if ($this->model->add_type($type)) {
+                    $result = ["error" => 0, "message" => $this->language_["successMessageType"]];
+                } else {
+                    $result = ["error" => 1, "message" => $this->language_["errorMessageType"]];
+                }
+            } else {
+                $result = ["error" => 1, "message" => $this->language_["errorMessageAuthorAll"]];
+            }
+        }
+        $this->return_json($result);
+        return;
+
+    }
+    function action_editType()
+    {
+        $id = $_POST["id"];
+        $this->data["type"] = $this->model->get_typeById($id);
+
+        if (isset ($_POST["typeName"]) && isset ($_POST["id"])) {
+            $name = $_POST["typeName"];
+            $result = $this->model->edit_type($id, $name);
+            if (!$result) {
+                return json_encode(["error" => 1, "message" => $this->language_["erroreditMessageFaculty"]]);
+            }
+            $this->return_json($result);
+
+        } else {
+            return json_encode(["error" => 1, "message" => $this->language_["erroreditMessageType"]]);
+        }
+    }
+    public function action_getTypeById($id)
+    {
+        $type = $this->model->get_typeById($id);
+        if (!$type) {
+            return json_encode(["error" => 1, "message" => $this->language_["errorMessageGetType"]]);
+        }
+        $this->return_json($type);
         return;
     }
 }
