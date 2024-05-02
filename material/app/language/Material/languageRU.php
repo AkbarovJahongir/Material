@@ -1,0 +1,32 @@
+<?php
+$language = array(
+    "materials" => "Научные материалы",
+    "addingNewMaterial" => "Добавление нового научного материала",
+    "nameOfScientificMaterial" => "Название научного материала",
+    "enterTheTitle" => "Введите название",
+    "selectAuthors" => "Выберите авторов",
+    "SelectAuthor" => "Выберите автора",
+    "typeofscientificmaterial" => "Тип научного материала",
+    "selectTheTypeOfScientificMaterial" => "Выберите тип научного материала",
+    "chooseLanguage" => "Выберите язык",
+    "conferenceTitle" => "Название конфиренции",
+    "enterTheNameOfTheConference" => "Введите название конфиренции",
+    "magazineName" => "Название журнала",
+    "enterTheTitleOfTheMagazine" => "Введите название журнала",
+    "chooseaDirection" => "Выберите направление",
+    "publicationDate" => "Дата публикации",
+    "selectDate" => "Выберите дату",
+    "selectaFileToPublish" => "Выберите файл для публикации",
+    "choose" => "Выбрать",
+    "placeOfPublication" => "Место публикации",
+    "selectaLocation" => "Выберите место",
+    "quantity" => "Количество страниц",
+    "enterQuantity" => "Введите количество",
+    "selectDepartment" => "Выберите кафедру",
+    "add" => "Добавить",
+    "change" => "Изменить",
+    "changeOfScientificMaterial" => "Изменение научного материала",
+    "action" => "Действие",
+    "delete" => "Удалить"
+);
+?>

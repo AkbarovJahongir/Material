@@ -2,7 +2,7 @@
     <div>
         <ul class="app-breadcrumb breadcrumb">
             <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-            <li class="breadcrumb-item"><a href="/<?= $data['controller_name'] ?>">Предметы</a></li>
+            <li class="breadcrumb-item"><a href="/<?= $data['controller_name'] ?>"><?= $language_["specialties"] ?>Предметы</a></li>
         </ul>
     </div>
 </div>
@@ -16,11 +16,11 @@
             }
             ?>
 
-            <h3 class="tile-title">Изменение предмета</h3>
+            <h3 class="tile-title"><?= $language_["specialties"] ?>Изменение предмета</h3>
             <form class="form-horizontal" method="POST">
                 <div class="tile-body">
                     <div class="form-group row">
-                        <label class="control-label col-md-3">Предмет*:</label>
+                        <label class="control-label col-md-3"><?= $language_["specialties"] ?>Предмет*:</label>
                         <div class="col-md-9">
                             <input name="name" class="form-control" type="text" placeholder="Введите предметы"
                                    value="<?= $data["subject"]["name"] ?>">
@@ -30,7 +30,7 @@
                 <div class="tile-footer">
                     <div class="row">
                         <div class="col-md-8 col-md-offset-3">
-                            <input value="Изменить" class="btn btn-primary" type="submit">
+                            <input value="<?= $language_["specialties"] ?>Изменить" class="btn btn-primary" type="submit">
                         </div>
                     </div>
                 </div>

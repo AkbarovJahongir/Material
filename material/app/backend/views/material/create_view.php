@@ -1,8 +1,20 @@
+<?php
+$language_ = [];
+if ($_SESSION["local"] == "ru") {
+    $language_ = [];
+    include_once './app/language/Material/languageRU.php';
+    $language_ = $language;
+} else {
+    $language_ = [];
+    include_once './app/language/Material/languageTJ.php';
+    $language_ = $language;
+}
+?>
 <div class="app-title">
     <div>
         <ul class="app-breadcrumb breadcrumb">
             <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-            <li class="breadcrumb-item"><a href="/<?= $data['controller_name'] ?>">Материалы</a></li>
+            <li class="breadcrumb-item"><a href="/<?= $data['controller_name'] ?>"><?= $language_["materials"] ?></a></li>
         </ul>
     </div>
 </div>
@@ -17,20 +29,20 @@
             }
             ?>
 
-            <h3 class="tile-title">Добавление нового материала</h3>
+            <h3 class="tile-title"><?= $language_["addingNewMaterial"] ?></h3>
             <form class="form-horizontal" method="POST" enctype="multipart/form-data">
                 <div class="tile-body">
                     <div class="form-group row">
-                        <label class="control-label col-md-3">Название материала*:</label>
+                        <label class="control-label col-md-3"><?= $language_["nameOfScientificMaterial"] ?>*:</label>
                         <div class="col-md-9">
-                            <input name="name" class="form-control" type="text" placeholder="Введите название">
+                            <input name="name" class="form-control" type="text" placeholder="<?= $language_["enterTheTitle"] ?>">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="control-label col-md-3">Выберите авторов*:</label>
+                        <label class="control-label col-md-3"><?= $language_["selectAuthors"] ?>*:</label>
                         <div class="col-md-9">
                             <select id="authorSelect" class="form-control" multiple="">
-                                <optgroup label="Выберите автора">
+                                <optgroup label="<?= $language_["SelectAuthor"] ?>">
                                     <?php
                                     if (isset($data["authors"])) {
                                         foreach ($data['authors'] as $row) {
@@ -43,10 +55,10 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="control-label col-md-3">Тип материала*:</label>
+                        <label class="control-label col-md-3"><?= $language_["typeofscientificmaterial"] ?>*:</label>
                         <div class="col-md-6">
                             <select name="type" class="form-control">
-                                <option value=''>Выберите тип материала</option>
+                                <option value=''><?= $language_["selectTheTypeOfScientificMaterial"] ?></option>
                                 <?php
                                 if (isset($data["types"])) {
                                     foreach ($data['types'] as $row) {
@@ -58,7 +70,7 @@
                         </div>
                         <div class="col-md-3">
                             <select name="language" class="form-control">
-                                <option value=''>Выберите язык</option>
+                                <option value=''><?= $language_["chooseLanguage"] ?></option>
                                 <?php
                                 if (isset($data["languages"])) {
                                     foreach ($data['languages'] as $row) {
@@ -70,22 +82,22 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="control-label col-md-3">Название конфиренции*:</label>
+                        <label class="control-label col-md-3"><?= $language_["conferenceTitle"] ?>*:</label>
                         <div class="col-md-9">
-                            <input name="nameOfTheConference" id="nameOfTheConference" class="form-control" type="text" placeholder="Введите название конфиренции">
+                            <input name="nameOfTheConference" id="nameOfTheConference" class="form-control" type="text" placeholder="<?= $language_["enterTheNameOfTheConference"] ?>">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="control-label col-md-3">Название журнала*:</label>
+                        <label class="control-label col-md-3"><?= $language_["magazineName"] ?>*:</label>
                         <div class="col-md-9">
-                            <input name="namejurnal" id="namejurnal" class="form-control" type="text" placeholder="Введите название журнала">
+                            <input name="namejurnal" id="namejurnal" class="form-control" type="text" placeholder="<?= $language_["enterTheTitleOfTheMagazine"] ?>">
                         </div>
                     </div>
                     <div class="form-group row">
-                    <label class="control-label col-md-3">Выберите направление*:</label>
+                    <label class="control-label col-md-3"><?= $language_["chooseaDirection"] ?>*:</label>
                     <div class="col-md-9">
                             <select name="direction" class="form-control">
-                                <option value=''>Выберите направление</option>
+                                <option value=''><?= $language_["chooseaDirection"] ?></option>
                                 <?php
                                 if (isset($data["direction"])) {
                                     foreach ($data['direction'] as $row) {
@@ -97,21 +109,21 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="control-label col-md-3">Дата публикации*:</label>
+                        <label class="control-label col-md-3"><?= $language_["publicationDate"] ?>*:</label>
                         <div class="col-md-3">
-                            <input id="date_publish" name="date_publish" class="form-control" type="text" placeholder="Выберите дату">
+                            <input id="date_publish" name="date_publish" class="form-control" type="text" placeholder="<?= $language_["selectDate"] ?>">
                         </div>
-                        <label class="control-label col-md-3 text-right">Выберите файл для публикации*:</label>
+                        <label class="control-label col-md-3 text-right"><?= $language_["selectaFileToPublish"] ?>*:</label>
                         <div class="col-md-3">
-                            <input type="file" class="form-control" value="Выбрать" name="fileToUpload" id="fileToUpload" required accept="file/pdf">
+                            <input type="file" class="form-control" lang="" value="<?= $language_["choose"] ?>" name="fileToUpload" id="fileToUpload" required accept="file/pdf">
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label class="control-label col-md-3">Место публикации*:</label>
+                        <label class="control-label col-md-3"><?= $language_["placeOfPublication"] ?>*:</label>
                         <div class="col-md-3">
                             <select name="place" class="form-control">
-                                <option value=''>Выберите место</option>
+                                <option value=''><?= $language_["selectaLocation"] ?></option>
                                 <?php
                                 if (isset($data["places"])) {
                                     foreach ($data['places'] as $row) {
@@ -121,16 +133,16 @@
                                 ?>
                             </select>
                         </div>
-                        <label class="control-label col-md-3 text-right">Количество*:</label>
+                        <label class="control-label col-md-3 text-right"><?= $language_["quantity"] ?>*:</label>
                         <div class="col-md-3">
-                            <input name="count" class="form-control" type="number" placeholder="Введите количество">
+                            <input name="count" class="form-control" type="number" placeholder="<?= $language_["enterQuantity"] ?>">
                         </div>
                     </div>
                     <div class="form-group row">
-                    <label class="control-label col-md-3">Выберите кафедру*:</label>
+                    <label class="control-label col-md-3"><?= $language_["selectDepartment"] ?>*:</label>
                         <div class="col-md-9">
                             <select name="kafedra" class="form-control">
-                                <option value=''>Выберите кафедру</option>
+                                <option value=''><?= $language_["selectDepartment"] ?></option>
                                 <?php
                                 if (isset($data["kafedra"])) {
                                     foreach ($data['kafedra'] as $row) {
@@ -148,7 +160,7 @@
                 <div class="tile-footer">
                     <div class="row">
                         <div class="col-md-8 col-md-offset-3">
-                            <input value="Добавить" class="btn btn-primary" type="submit" name="submit">
+                            <input value="<?= $language_["add"] ?>" class="btn btn-primary" type="submit" name="submit">
                         </div>
                     </div>
                 </div>
