@@ -91,12 +91,12 @@ if ($_SESSION["local"] == "ru") {
 
     function deleteAuthor( id ) {
         swal({
-            title: "Вы действительно хотите удалить?",
-            text: "ВАЖНО! Вы не сможете удалить тех кто уже связаны с научными матералами",
+            title: "<?= $language_["titileErrorAuthor"] ?>",
+            text: "<?= $language_["textErrorAuthor"] ?>",
             type: "warning",
             showCancelButton: true,
-            confirmButtonText: "ДА, удалить!",
-            cancelButtonText: "НЕТ, отменить!",
+            confirmButtonText: "<?= $language_["confirmDeleteAuthor"] ?>",
+            cancelButtonText: "<?= $language_["rejectDeleteAuthor"] ?>",
             closeOnConfirm: false,
             closeOnCancel: false
         }, function(isConfirm) {
@@ -110,20 +110,20 @@ if ($_SESSION["local"] == "ru") {
                     success: function(response)
                     {
                         if(response.error===1){
-                            swal("ОШИБКА!", response.message, "error");
+                            swal("<?= $language_["error"] ?>!", response.message, "error");
                         }else{
-                            swal("УДАЛЕНО!", response.message, "success");
+                            swal("<?= $language_["success"] ?>!", response.message, "success");
                             location.reload();
                         }
                     },
                     error: function(er)
                     {
                         console.log(er);
-                        swal("ОШИБКА!", "Что то пошло не так!", "error");
+                        swal("<?= $language_["error"] ?>!", "<?= $language_["errorMessage"] ?>", "error");
                     }
                 });
             } else {
-                swal("ОТМЕНЕН!", "Вы чуть не удалили :)", "error");
+                swal("<?= $language_["canceled"] ?>!", "<?= $language_["declineError"] ?>", "error");
             }
         });
     }

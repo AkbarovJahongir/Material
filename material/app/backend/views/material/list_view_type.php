@@ -1,3 +1,15 @@
+<?php
+$language_ = [];
+if ($_SESSION["local"] == "ru") {
+    $language_ = [];
+    include_once './app/language/Material/languageRU.php';
+    $language_ = $language;
+} else {
+    $language_ = [];
+    include_once './app/language/Material/languageTJ.php';
+    $language_ = $language;
+}
+?>
 <style>
     span.dropdown-item{
         cursor: pointer;
@@ -7,16 +19,16 @@
     <div>
         <ul class="app-breadcrumb breadcrumb">
             <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-            <li class="breadcrumb-item"><a href="/<?= $data['controller_name'] ?>">Научные материалы</a></li>
+            <li class="breadcrumb-item"><a href="/<?= $data['controller_name'] ?>"><?= $language_["materials"] ?></a></li>
         </ul>
     </div>
-    <a class="btn btn-primary btn-sm" onclick="openModal()" ?>Добавить</a>
+    <a class="btn btn-primary btn-sm" onclick="openModal()" ?><?= $language_["add"] ?></a>
 </div>
 
 <div class="row">
     <div class="col-md-12">
         <div class="tile">
-            <h3 class="tile-title">Все типы научных материалов</h3>
+            <h3 class="tile-title"><?= $language_["allTypesOfScientificMaterials"] ?></h3>
             <div class="tile-body">
                 <div id="sampleTable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
                     <div class="row">
@@ -26,8 +38,8 @@
                                     <table class="table table-hover table-bordered" id="sampleTable">
                                         <thead>
                                         <tr>
-                                            <th>Тип</th>
-                                            <th>Действие</th>
+                                            <th><?= $language_["type"] ?></th>
+                                            <th><?= $language_["action"] ?></th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -36,7 +48,7 @@
                                                 <td><?= $type['name'] ?></td>
                                                 <td>
                                                     <div class="btn-group">
-                                                    <a onclick="openModals(<?= $type['id'] ?>)" class="btn btn-primary btn-sm"><i class="fa fa-lg fa-edit"></i> Изменить</a>
+                                                    <a onclick="openModals(<?= $type['id'] ?>)" class="btn btn-primary btn-sm"><i class="fa fa-lg fa-edit"></i> <?= $language_["change"] ?></a>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -63,7 +75,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="col-md-12" for="comment">Название типа</label>
+                                        <label class="col-md-12" for="comment"><?= $language_["typeName"] ?></label>
                                         <div class="col-md-12">
                                             <textarea class="form-control" rows="3" name="type" id="type"></textarea>
                                         </div>
@@ -75,8 +87,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" id="submit" onclick="addType()" style="background-color:limegreen; color:white" class="btn btn-secondary" data-dismiss="modal">Добавить</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                <button type="button" id="submit" onclick="addType()" style="background-color:limegreen; color:white" class="btn btn-secondary" data-dismiss="modal"><?= $language_["add"] ?></button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?= $language_["close"] ?></button>
             </div>
         </div>
     </div>
@@ -92,7 +104,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="col-md-12" for="comment">Название типа</label>
+                                        <label class="col-md-12" for="comment"><?= $language_["typeName"] ?></label>
                                         <div class="col-md-12">
                                             <textarea class="form-control" rows="3" name="typeName" id="typeName"></textarea>
                                         </div>
@@ -104,8 +116,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" id="submit" onclick="editType()" style="background-color:limegreen; color:white" class="btn btn-secondary" data-dismiss="modal">Изменить</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                <button type="button" id="submit" onclick="editType()" style="background-color:limegreen; color:white" class="btn btn-secondary" data-dismiss="modal"><?= $language_["add"] ?></button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?= $language_["close"] ?></button>
             </div>
         </div>
     </div>
@@ -115,7 +127,11 @@
 <script type="text/javascript" src="/assets/js/plugins/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript" src="/assets/js/plugins/sweetalert.min.js"></script>
 <script type="text/javascript">
-    $('#sampleTable').DataTable();
+    $('#sampleTable').DataTable({
+        language:{           
+            url: '<?=$_SESSION['local']?>'=='tj'?'/assets/json/tg.json':'/assets/json/ru.json',
+        }
+    });
     function openModal() {
         $('#myModal').modal('show');
     }

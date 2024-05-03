@@ -163,7 +163,7 @@ if ($_SESSION["local"] == "ru") {
                     $id = id;
                     $('#directionName').val(response["name"]);
                 } else {
-                    swal("ОШИБКА!", response.message, "error");
+                    swal("<?= $language_["error"] ?>!", response.message, "error");
                     console.log(id);
                     //swal("Добавлено!", response.message, "success");
                     //location.reload();
@@ -171,7 +171,7 @@ if ($_SESSION["local"] == "ru") {
             },
             error: function (er) {
                 console.log(er);
-                swal("ОШИБКА!", "Что-то пошло не так!", "error");
+                swal("<?= $language_["error"] ?>!", "<?= $language_["errorMessage"] ?>", "error");
             }
         });
         $('#myModals').modal('show');
@@ -189,16 +189,16 @@ if ($_SESSION["local"] == "ru") {
             cache: false,
             success: function (response) {
                 if (response && !response.error) {
-                    swal("Добавлено!", response.message, "success");
+                    swal("<?= $language_["added"] ?>!", response.message, "success");
                     //location.reload();
                     //console.log(id);
                 } else {
-                    swal("ОШИБКА!", response.message, "error");
+                    swal("<?= $language_["error"] ?>!", response.message, "error");
                 }
             },
             error: function (er) {
                 console.log(er);
-                swal("ОШИБКА!", "Что-то пошло не так!", "error");
+                swal("<?= $language_["error"] ?>!", "<?= $language_["errorMessage"] ?>", "error");
             }
         });
         $('#direction').val('');
@@ -209,11 +209,11 @@ if ($_SESSION["local"] == "ru") {
         var $ID = $id;
         var $directionName = $("#directionName").val();
         swal({
-            title: "Вы действительно хотите изменить?",
+            title: "<?= $language_["titleErrorDirection"] ?>",
             type: "warning",
             showCancelButton: true,
-            confirmButtonText: "ДА, изменить!",
-            cancelButtonText: "НЕТ, отменить!",
+            confirmButtonText: "<?= $language_["confirmEdit"] ?>",
+            cancelButtonText: "<?= $language_["rejectEdit"] ?>",
             closeOnConfirm: false,
             closeOnCancel: false
         }, function (isConfirm) {
@@ -229,20 +229,20 @@ if ($_SESSION["local"] == "ru") {
                     cache: false,
                     success: function (response) {
                         if (response && !response.error) {
-                            swal("Изменено!", response.message, "success");
+                            swal("<?= $language_["changed"] ?>", response.message, "success");
                             //location.reload();
                         } else {
-                            swal("ОШИБКА!", response.message, "error");
+                            swal("<?= $language_["error"] ?>!", response.message, "error");
                             console.log(id);
                         }
                     },
                     error: function (error) {
                         console.log(error);
-                        swal("ОШИБКА!", "Некоторые данные пусты или факультет с таким именем существует!", "error");
+                        swal("<?= $language_["error"] ?>!", "<?= $language_["textErrorDirection"] ?>", "error");
                     }
                 });
             } else {
-                swal("ОТМЕНЕН!", "Вы чуть не изменили :)", "error");
+                swal("<?= $language_["canceled"] ?>!", "<?= $language_["declineErrorEdit"] ?>", "error");
             }
         });
         $id = '';
@@ -251,11 +251,11 @@ if ($_SESSION["local"] == "ru") {
 
     function deleteDirection(id) {
         swal({
-            title: "Вы действительно хотите удалить?",
+            title: "<?= $language_["titleError"] ?>",
             type: "warning",
             showCancelButton: true,
-            confirmButtonText: "ДА, удалить!",
-            cancelButtonText: "НЕТ, отменить!",
+            confirmButtonText: "<?= $language_["confirmDelete"] ?>",
+            cancelButtonText: "<?= $language_["rejectDelete"] ?>",
             closeOnConfirm: false,
             closeOnCancel: false
         }, function (isConfirm) {
@@ -268,19 +268,19 @@ if ($_SESSION["local"] == "ru") {
                     cache: false,
                     success: function (response) {
                         if (response.error === 1) {
-                            swal("ОШИБКА!", response.message, "error");
+                            swal("<?= $language_["error"] ?>!", response.message, "error");
                         } else {
-                            swal("УДАЛЕНО!", response.message, "success");
+                            swal("<?= $language_["deleted"] ?>", response.message, "success");
                             location.reload();
                         }
                     },
                     error: function (er) {
                         console.log(er);
-                        swal("ОШИБКА!", "Что то пошло не так!", "error");
+                        swal("<?= $language_["error"] ?>!", "<?= $language_["errorMessage"] ?>", "error");
                     }
                 });
             } else {
-                swal("ОТМЕНЕН!", "Вы чуть не удалили :)", "error");
+                swal("<?= $language_["canceled"] ?>!", "<?= $language_["declineError"] ?>", "error");
             }
         });
     }

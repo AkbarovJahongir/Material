@@ -89,7 +89,7 @@ if ($_SESSION["local"] == "ru") {
                                         <label class="col-md-12" for="comment"><?= $language_["facultyName"] ?></label>
                                         <div class="col-md-12">
                                             <textarea class="form-control" rows="3" name="faculty"
-                                                id="faculty"></textarea>
+                                                id="faculty" required></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -121,7 +121,7 @@ if ($_SESSION["local"] == "ru") {
                                         <label class="col-md-12" for="comment"><?= $language_["facultyName"] ?></label>
                                         <div class="col-md-12">
                                             <textarea class="form-control" rows="3" name="facultyName"
-                                                id="facultyName"></textarea>
+                                                id="facultyName" required></textarea>
                                         </div>
                                     </div>
                                 </div>

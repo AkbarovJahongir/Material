@@ -57,6 +57,6 @@ $language = array(
     "erroreditMessageDirection" => "Ошибка при изменении",
     "errorMessageDirectionedit" => "Некоторые данные пусты или тип напрвления с таким именем существует!",
     "successDeleteMessageDirection" => "Тип направления успешно удален!",
-    "errorDeleteMessageDirection" => "Вы не можете удалить этот тип напрвления!",
+    "errorDeleteMessageDirection" => "Вы не можете удалить этот тип напрвления!"
 );
 ?>

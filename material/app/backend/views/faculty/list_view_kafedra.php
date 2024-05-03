@@ -93,7 +93,7 @@ if ($_SESSION["local"] == "ru") {
                                         <label class="control-label col-md-12" for="comment"><?= $language_["departmentName"] ?></label>
                                         <div class="col-md-12">
                                             <textarea class="form-control" rows="3" name="kafedra"
-                                                id="kafedra"></textarea>
+                                                id="kafedra" required></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -101,7 +101,7 @@ if ($_SESSION["local"] == "ru") {
                                     <div class="form-group row">
                                         <label class="control-label col-md-12"><?= $language_["selectFaculty"] ?>*:</label>
                                         <div class="col-md-12">
-                                            <select id="facultySelect" class="form-control">
+                                            <select id="facultySelect" class="form-control" required>
                                                 <optgroup label="<?= $language_["selectFaculty"] ?>">
                                                 </optgroup>
                                             </select>
@@ -136,7 +136,7 @@ if ($_SESSION["local"] == "ru") {
                                         <label class="control-label col-md-12" for="comment"><?= $language_["departmentName"] ?></label>
                                         <div class="col-md-12">
                                             <textarea class="form-control" rows="3" name="kafedraName"
-                                                id="kafedraName"></textarea>
+                                                id="kafedraName" required></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -144,7 +144,7 @@ if ($_SESSION["local"] == "ru") {
                                     <div class="form-group row">
                                         <label class="control-label col-md-12"><?= $language_["selectFaculty"] ?>*:</label>
                                         <div class="col-md-12">
-                                            <select id="facultySelected" class="form-control">
+                                            <select id="facultySelected" class="form-control" required>
                                                 <optgroup label="<?= $language_["selectFaculty"] ?>">
                                                 </optgroup>
                                             </select>

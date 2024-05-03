@@ -1,3 +1,15 @@
+<?php
+$language_ = [];
+if ($_SESSION["local"] == "ru") {
+    $language_ = [];
+    include_once './app/language/Material/languageRU.php';
+    $language_ = $language;
+} else {
+    $language_ = [];
+    include_once './app/language/Material/languageTJ.php';
+    $language_ = $language;
+}
+?>
 <style>
 	span.dropdown-item {
 		cursor: pointer;
@@ -7,12 +19,12 @@
 	<div>
 		<ul class="app-breadcrumb breadcrumb">
 			<li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-			<li class="breadcrumb-item"><a href="/<?= $data['controller_name'] ?>">Материалы</a></li>
+			<li class="breadcrumb-item"><a href="/<?= $data['controller_name'] ?>"><?= $language_["materials"] ?></a></li>
 		</ul>
 	</div>
 	<?php if ($_SESSION["uid"]["role_id"] == 2 || $_SESSION["uid"]["role_id"] == 1) {
 		echo '
-	<a class="btn btn-primary btn-sm" href=' . $data['controller_name'] . '/add/">Добавить</a>';
+	<a class="btn btn-primary btn-sm" href=' . $data['controller_name'] . '/add/"><?= $language_["add"] ?></a>';
 	} ?>
 </div>
 
@@ -24,7 +36,7 @@
 				echo '<div id="messageBlock" class="card text-black bg-light"><div class="card-body">' . $data["message"] . '</div></div><br>';
 			}
 			?>
-			<h3 class="tile-title">Все материалы</h3>
+			<h3 class="tile-title"><?= $language_["allScientificMaterials"] ?></h3>
 			<div class="tile-body">
 				<div id="sampleTable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
 					<div class="row">
@@ -36,30 +48,30 @@
 											<thead>
 												<tr>
 													<th>ID</th>
-													<th>Название</th>
-													<th>Авторы</th>
-													<th>Тип</th>
-													<th>Название конфиренции</th>
-													<th>Название журнала</th>
-													<th>Направление научного материала</th>
-													<th>Факультет</th>
-													<th>Кафедра</th>
-													<th>Дата публикации</th>
-													<th>Статус</th>
-													<th>Комментарий</th>
+													<th><?= $language_["name"] ?></th>
+													<th><?= $language_["authors"] ?></th>
+													<th><?= $language_["typeOfScientific"] ?></th>
+													<th><?= $language_["conferenceTitle"] ?></th>
+													<th><?= $language_["magazineName"] ?></th>
+													<th><?= $language_["directionOfScientificMaterial"] ?></th>
+													<th><?= $language_["faculty"] ?></th>
+													<th><?= $language_["department"] ?></th>
+													<th><?= $language_["publicationDate"] ?></th>
+													<th><?= $language_["status"] ?></th>
+													<th><?= $language_["comment"] ?></th>
 													<?php
 													if (
 														($_SESSION["uid"]["role_id"] == 2) ||
 														($_SESSION["uid"]["role_id"] != 1) ||
 														($_SESSION["uid"]["role_id"] == 4)
 													) {
-														echo '<th style="height: 10px;">Действие</th>';
+														echo '<th style="height: 10px;">'. $language_["action"] .'</th>';
 													}
-													else if ($_SESSION["uid"]["role_id"] == 1){
-														echo '<th style="height: 10px;">Действие</th>';
+													else if ($_SESSION["uid"]["role_id"] == 1 ){
+														echo '<th style="height: 10px;">'. $language_["action"] .'</th>';
 													}
 													?>
-													<th>Файл</th>
+													<th><?= $language_["file"] ?></th>
 												</tr>
 											</thead>
 											<tbody>
@@ -82,7 +94,7 @@
 																<div class="btn-group">
 																	<a href="/<?= $data['controller_name'] ?>/edit/<?= $material['id'] ?>"
 																		class="btn btn-primary btn-sm"><i
-																			class="fa fa-lg fa-edit"></i> Изменить</a>
+																			class="fa fa-lg fa-edit"></i> <?= $language_["change"] ?></a>
 																</div>
 																<div
 																	style="display:flex;justify-content:space-around;padding: 5px;">
@@ -90,7 +102,7 @@
 																		<a href="#"
 																			onclick="deleteMaterial(<?= $material['id'] ?>)"
 																			class="btn btn-danger btn-sm del-material"><i
-																				class="fa fa-lg fa-trash"></i> Удалить</a>
+																				class="fa fa-lg fa-trash"></i> <?= $language_["delete"] ?></a>
 																	</div>
 																</div>
 															</td>
@@ -104,29 +116,29 @@
 																	<div class="btn-group">
 																		<a href="/<?= $data['controller_name'] ?>/confirm/<?= $material['id'] ?>"
 																			class="btn btn-primary btn-sm">
-																			<i class="fa fa-lg fa-edit"></i> Подтвердить
+																			<i class="fa fa-lg fa-edit"></i> <?= $language_["confirm"] ?>
 																		</a>
 																	</div>
 																	<div class="btn-group">
 																		<a href="#" onclick="openModal(<?= $material['id'] ?>)"
 																			class="btn btn-danger btn-sm del-material">
-																			<i class="fa fa-lg fa-trash"></i> Отклонить
+																			<i class="fa fa-lg fa-trash"></i> <?= $language_["reject"] ?>
 																		</a>
 																	</div>
 																</div>
 															</td>
 														<?php else: ?>
-															<td>Материал в обработке</td>
+															<td><?= $language_["materialBeingProcessed"] ?></td>
 														<?php endif; ?>
 														<td>
 															<div class="btn-group">
 																<?php if (!empty($material['file_path'])): ?>
 																	<a href="/app/uploads/file/<?= $material['file_path'] ?>"
 																		class="btn btn-primary btn-sm" target="_blank">
-																		<i class="fa fa-lg fa-book"></i> Скачать
+																		<i class="fa fa-lg fa-book"></i> <?= $language_["download"] ?>
 																	</a>
 																<?php else: ?>
-																	<p>Файл отсутствует</p>
+																	<p><?= $language_["fileMissing"] ?></p>
 																<?php endif; ?>
 															</div>
 														</td>
@@ -148,7 +160,7 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h3 class="modal-title" id="exampleModalLabel">Добавление комментарий</h3>
+				<h3 class="modal-title" id="exampleModalLabel"><?= $language_["addingaComment"] ?></h3>
 			</div>
 			<div class="modal-body">
 				<div class="col-md-12">
@@ -158,7 +170,7 @@
 							<div class="row">
 								<div class="col-md-12">
 									<div class="form-group">
-										<label id="name" class="col-md-12" for="name">Материал</label>
+										<label id="name" class="col-md-12" for="name"><?= $language_["scientificMaterial"] ?></label>
 										<label id="id" class="col-md-12" for="name" style="display: none;"></label>
 										<div class="col-md-12">
 											<input class="form-control" id="nameMaterial" readonly />
@@ -169,7 +181,7 @@
 							<div class="row">
 								<div class="col-md-12">
 									<div class="form-group">
-										<label class="col-md-12" for="comment">Комментарий</label>
+										<label class="col-md-12" for="comment"><?= $language_["comment"] ?></label>
 										<div class="col-md-12">
 											<textarea class="form-control" rows="3" id="comment"></textarea>
 										</div>
@@ -183,8 +195,8 @@
 			<div class="modal-footer">
 				<button type="button" id="submit" onclick="declineMaterial(<?php $material['id'] ?>)"
 					style="background-color:limegreen; color:white" class="btn btn-secondary"
-					data-dismiss="modal">Отклонить</button>
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+					data-dismiss="modal"><?= $language_["reject"] ?></button>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal"><?= $language_["close"] ?></button>
 			</div>
 		</div>
 	</div>
@@ -196,7 +208,11 @@
 <script type="text/javascript">
 	var $id = "";
 
-	$('#sampleTable').DataTable();
+	$('#sampleTable').DataTable({
+        language:{           
+            url: '<?=$_SESSION['local']?>'=='tj'?'/assets/json/tg.json':'/assets/json/ru.json',
+        }
+    });
 
 	function deleteMaterial(id) {
 		swal({
