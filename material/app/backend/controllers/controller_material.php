@@ -366,10 +366,10 @@ class Controller_Material extends Controller
 
         if ($result) {
             $this->data["error"] = 0;
-            $this->data["message"] = "successMessageConfirMaterial";
+            $this->data["message"] = $this->language_["successMessageConfirMaterial"];
         } else {
             $this->data["error"] = 1;
-            $this->data["message"] = "errorConfirmMessageMaterial";
+            $this->data["message"] = $this->language_["errorConfirmMessageMaterial"];
         }
         //$this->return_json($result);
         $materials = $this->model->get_materialByuserId($_SESSION["uid"]["role_id"],$_SESSION["uid"]["id"]);

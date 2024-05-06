@@ -10,7 +10,7 @@ $language = array(
     "errorMessageAll" => "Маълумот нодуруст!",
     "errorMessageAuthorAll" => "Баъзе маълумот холӣ аст!",
     "editsuccessMessageAuthor" => "Муаллиф бомуваффақият иваз карда шуд!",
-    "erroraccessMessageDeleteAll" => "Шумо иҷозати нест кардани паём надоред!",
+    "erroraccessMessageDeleteAll" => "Шумо иҷозаи нест кардани паём надоред!",
     "deletesuccessMessageAuthor" => "Муаллиф бомуваффақият нест карда шуд!",
     "deleteerrorMessageAuthor" => "Шумо ин муаллифро нест карда наметавонед! Чунки ӯ дар рӯйхати маводҳои илмӣ қарор дорад!",
     "erroraccessMessageAddAll" => "Шумо иҷозати илова кардани вуруд надоред!",
@@ -50,6 +50,13 @@ $language = array(
     "errorMessageGetUser" => "Истифодабаранда ёфт нашуд",
     "errorMessageResetPasswordUser" => "Дар барқарор кардани парол муяссар нашуд!",
     "successMessageConfirMaterial" => "Маводи илмӣ бомуваффақият тасдиқ карда шуд!",
-    "errorConfirmMessageMaterial" => "Бо баъзе сабабҳо маводи илмӣ тасдиқ карда намешавад!"
+    "errorConfirmMessageMaterial" => "Бо баъзе сабабҳо маводи илмӣ тасдиқ карда намешавад!",
+    "successMessageDirection" => "Намуди самти нав бомуваффақият илова карда шуд!",
+    "errorMessageDirection" => "Маълумот ё навъи самти нодуруст аллакай илова карда шудааст!",
+    "errorMessageGetDirection" => "Намуди самт ёфт нашуд",
+    "erroreditMessageDirection" => "Хато ҳангоми таҳрир",
+    "errorMessageDirectionedit" => "Баъзе маълумот холӣ аст ё навъи самт бо ҳамон ном вуҷуд дорад!",
+    "successDeleteMessageDirection" => "Намуди самт бомуваффақият тоза карда шуд!",
+    "errorDeleteMessageDirection" => "Шумо ин навъи самтро нест карда наметавонед!",
 );
 ?>
