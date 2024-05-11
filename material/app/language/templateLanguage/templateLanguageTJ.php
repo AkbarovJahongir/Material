@@ -25,6 +25,8 @@ $language = array(
     "allReports" => "Ҳама гузоришҳо",
     "graphicReport" => "Ҳисоботи графикӣ",
     "direction" => "Самти навиштан",
-    "allDirection" => "Ҳама самт"
+    "allDirection" => "Ҳама самт",
+    "place" => "Ҷои нашр",
+    "allPlace" => "Ҳама ҷойҳои нашр"
 );
 ?>

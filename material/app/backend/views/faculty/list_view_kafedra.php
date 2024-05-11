@@ -264,6 +264,7 @@ if ($_SESSION["local"] == "ru") {
             success: function (response) {
                 if (response && !response.error) {
                     swal("Добавлено!", response.message, "success");
+                    location.reload();
                     console.log(response.id);
                 } else {
                     swal("Ошибка!", response.message, "error");

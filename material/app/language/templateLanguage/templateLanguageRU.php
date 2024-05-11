@@ -25,6 +25,8 @@ $language = array(
     "allReports" => "Все отчеты",
     "graphicReport" => "Графический отчет",
     "direction" => "Тип направление",
-    "allDirection" => "Все направление"
+    "allDirection" => "Все направление",
+    "place" => "Место публикации",
+    "allPlace" => "Все места публикации"
 );
 ?>

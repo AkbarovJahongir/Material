@@ -39,27 +39,6 @@ class Controller_Material extends Controller
                 }
             }
             $materials[$i]['authors'] = $authors_str;
-            $subjects = $this->model->get_material_subjects($materials[$i]['id']);
-            $subjects_str = "";
-            for ($j = 0; $j < count($subjects); $j++) {
-                if ($j == 0) {
-                    $subjects_str = $subjects[$j]["name"];
-                } else {
-                    $subjects_str .= ", " . $subjects[$j]["name"];
-                }
-            }
-            $materials[$i]['subjects'] = $subjects_str;
-
-            $specialties = $this->model->get_material_specialties($materials[$i]['id']);
-            $specialties_str = "";
-            for ($j = 0; $j < count($specialties); $j++) {
-                if ($j == 0) {
-                    $specialties_str = $specialties[$j]["code"];
-                } else {
-                    $specialties_str .= ", " . $specialties[$j]["code"];
-                }
-            }
-            $materials[$i]['specialties'] = $specialties_str;
         }
         $this->data["materials"] = $materials;
 
@@ -84,15 +63,6 @@ class Controller_Material extends Controller
                 }
             }
             $materials[$i]['authors'] = $authors_str;
-            $subjects = $this->model->get_material_subjects($materials[$i]['id']);
-            $subjects_str = "";
-            for ($j = 0; $j < count($subjects); $j++) {
-                if ($j == 0) {
-                    $subjects_str = $subjects[$j]["name"];
-                } else {
-                    $subjects_str .= ", " . $subjects[$j]["name"];
-                }
-            }
         }
         $this->data["materials"] = $materials;
         //$this->print_array($materials);die;
@@ -108,8 +78,6 @@ class Controller_Material extends Controller
         /* #Получение общих данных */
         $this->data["authors"] = $this->model_common->get_authors();
         $this->data["languages"] = $this->model_common->get_languages();
-        $this->data["specialties"] = $this->model_common->get_specialties();
-        $this->data["subjects"] = $this->model_common->get_subjects();
         $this->data["types"] = $this->model_common->get_types();
         $this->data["places"] = $this->model_common->get_places();
         $this->data["kafedra"] = $this->model_common->get_kafedra();

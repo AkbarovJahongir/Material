@@ -49,7 +49,7 @@ if ($_SESSION["local"] == "ru") {
                 <div class="tile-footer">
                     <div class="row">
                         <div class="col-md-8 col-md-offset-3">
-                            <input value="Изменить" class="btn btn-primary" type="submit">
+                            <input value="Изменить" onclick="redirect()" class="btn btn-primary" type="submit">
                         </div>
                     </div>
                 </div>
@@ -57,3 +57,10 @@ if ($_SESSION["local"] == "ru") {
         </div>
     </div>
 </div>
+<script>
+     function redirect() {
+        var url = window.location.protocol + '//' + window.location.hostname + window.location.port + '/author/index'; // Протокол "//" позволяет автоматически использовать текущий протокол (http или https)
+        alert(url);//http://material:81/author/add/
+        window.location.href += url;
+    }
+</script>

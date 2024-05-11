@@ -1,4 +1,16 @@
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<?php
+$language_ = [];
+if ($_SESSION["local"] == "ru") {
+	$language_ = [];
+	include_once './app/language/Users/languageRU.php';
+	$language_ = $language;
+} else {
+	$language_ = [];
+	include_once './app/language/Users/languageTJ.php';
+	$language_ = $language;
+}
+?>
+<script type="text/javascript" src="/assets/js/plugins/sweetalert.min.js"></script>
 
 <style>
 	span.dropdown-item {
@@ -9,108 +21,81 @@
 	<div>
 		<ul class="app-breadcrumb breadcrumb">
 			<li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-			<li class="breadcrumb-item"><a href="/user">Пользователи</a></li>
+			<li class="breadcrumb-item"><a href="/user"><?= $language_["users"] ?></a></li>
 		</ul>
 	</div>
-	<a class="btn btn-primary btn-sm" href="/user/add/">Добавить</a>
+	<a class="btn btn-primary btn-sm" href="/user/add/"><?= $language_["add"] ?></a>
 </div>
 
 <div class="row">
 	<div class="col-md-12">
 		<div class="tile">
-			<h3 class="tile-title">Список пользователей</h3>
+			<h3 class="tile-title"><?= $language_["listOfUsers"] ?></h3>
 			<div class="tile-body">
 				<div id="sampleTable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
 					<div class="row">
-						<div class="col-sm-12">
-							<table class="table table-hover table-bordered dataTable no-footer" id="sampleTable"
-								role="grid" aria-describedby="sampleTable_info">
-								<thead>
-									<tr role="row">
-										<th style="width: 25px;">ID</th>
-										<th style="width: 100px;">Имя</th>
-										<th style="width: 100px;">Роль</th>
-										<th style="width: 100px;">Логин</th>
-										<th style="width: 100px;">Факультет</th>
-										<th style="width: 100px;">Кафедра</th>
-										<th style="width: 100px;">Фото пользователя</th>
-										<th style="width: 20px;">Доступ</th>
-										<th style="width: 70px;"></th>
-									</tr>
-								</thead>
-								<tbody>
-									<?php
-									//print_r($data);
-									// echo count($data);
-									foreach ($data['users'] as $row) {
-										?>
-										<tr role='row'>
-											<!--ID-->
-											<td>
-												<?= $row['id']; ?>
-											</td>
-											<!--Имя-->
-											<td><a href='/user/edit/<?= $row['id']; ?>'>
-													<?= $row['name']; ?>
-												</a></td>
-											<!--Роль-->
-											<td>
-												<?= $row['role_name']; ?>
-											</td>
-											<!--Логин-->
-											<td>
-												<?= $row['login']; ?>
-											</td>
-											<td>
-												<?= $row['faculty']; ?>
-											</td>
-											<td>
-												<?= $row['kafedra']; ?>
-											</td>
-											<td>
-												<?= $row['image_url']; ?>
-											</td>
-											<!--Доступ-->
-											<td id='access_<?= $row['id']; ?>'>
-												<?= ($row['access'] ? "есть" : "нет"); ?>
-											</td>
-											<!---->
-											<td>
-												<div class='btn-group'>
-													<?php
-													$href = "/user/edit/" . $row['id'];
-													?>
-													<a href='<?= $href; ?>' class='btn btn-primary btn-sm'>
-														<i class='fa fa-lg fa-edit'></i>
-													</a>
-												</div>
-												<div class="btn-group" role="group"
-													aria-label="Button group with nested dropdown">
-													<span class="btn btn-primary btn-sm">действия</span>
-													<div class="btn-group" role="group">
-														<button class="btn btn-primary btn-sm dropdown-toggle" type="button"
-															data-toggle="dropdown" aria-haspopup="true"
-															aria-expanded="false"></button>
-														<div id="dropdown_<?= $row['id']; ?>"
-															class="dropdown-menu dropdown-menu-right"
-															x-placement="bottom-end">
-															<span class="dropdown-item"
-																onclick="openModal(<?= $row['id'] ?>)">Сбросить
-																пароль</span>
-															<span class="dropdown-item"
-																onclick="operation(<?= $row['id']; ?>, '<?= ($row['access'] ? "blockUser" : "unlockUser") ?>');">
-																<?= ($row['access'] ? "Заблокировать" : "Разблокировать") ?>
-															</span>
+						<div class="col-12">
+							<div class="table-responsive">
+								<table class="table table-hover table-bordered dataTable no-footer" id="sampleTable"
+									role="grid" aria-describedby="sampleTable_info">
+									<thead>
+										<tr role="row">
+											<th style="width: 25px;">ID</th>
+											<th style="width: 100px;"><?= $language_["name"] ?></th>
+											<th style="width: 100px;"><?= $language_["role"] ?></th>
+											<th style="width: 100px;"><?= $language_["login"] ?></th>
+											<th style="width: 100px;"><?= $language_["faculty"] ?></th>
+											<th style="width: 100px;"><?= $language_["department"] ?></th>
+											<th style="width: 100px;"><?= $language_["photo"] ?></th>
+											<th style="width: 20px;"><?= $language_["access"] ?></th>
+											<th style="width: 70px;"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php foreach ($data['users'] as $row): ?>
+											<tr role='row'>
+												<td><?= $row['id']; ?></td>
+												<td><a href='/user/edit/<?= $row['id']; ?>'><?= $row['name']; ?></a></td>
+												<td><?= $row['role_name']; ?></td>
+												<td><?= $row['login']; ?></td>
+												<td><?= $row['faculty']; ?></td>
+												<td><?= $row['kafedra']; ?></td>
+												<td><?= $row['image_url']; ?></td>
+												<td id='access_<?= $row['id']; ?>'>
+													<?= ($row['access'] ? $language_["accessYes"] : $language_["accessNo"]); ?>
+												</td>
+												<td>
+													<div class='btn-group'>
+														<a href='/user/edit/<?= $row['id']; ?>'
+															class='btn btn-primary btn-sm'><i
+																class='fa fa-lg fa-edit'></i></a>
+													</div>
+													<div class="btn-group" role="group"
+														aria-label="Button group with nested dropdown">
+														<span
+															class="btn btn-primary btn-sm"><?= $language_["action"] ?></span>
+														<div class="btn-group" role="group">
+															<button class="btn btn-primary btn-sm dropdown-toggle"
+																type="button" data-toggle="dropdown" aria-haspopup="true"
+																aria-expanded="false"></button>
+															<div id="dropdown_<?= $row['id']; ?>"
+																class="dropdown-menu dropdown-menu-right"
+																x-placement="bottom-end"
+																style="width: max-content; white-space: nowrap;">
+																<span class="dropdown-item"
+																	onclick="openModal(<?= $row['id'] ?>)"><?= $language_["resetThePassword"] ?></span>
+																<span class="dropdown-item"
+																	onclick="operation(<?= $row['id']; ?>, '<?= ($row['access'] ? "blockUser" : "unlockUser") ?>');"><?= ($row['access'] ? $language_["block"] : $language_["unlockUser"]) ?></span>
+															</div>
+
 														</div>
 													</div>
-												</div>
-											</td>
-										</tr>
-										<?php
-									}
-									?>
-								</tbody>
-							</table>
+												</td>
+											</tr>
+										<?php endforeach; ?>
+									</tbody>
+								</table>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -118,11 +103,12 @@
 		</div>
 	</div>
 </div>
+
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h3 class="modal-title" id="exampleModalLabel">Обновление пароля</h3>
+				<h3 class="modal-title" id="exampleModalLabel"><?= $language_["passwordUpdate"] ?></h3>
 			</div>
 			<div class="modal-body">
 				<div class="col-md-12">
@@ -132,7 +118,7 @@
 							<div class="row">
 								<div class="col-md-12">
 									<div class="form-group">
-										<label id="name" class="col-md-12" for="name">Пользователь</label>
+										<label id="name" class="col-md-12" for="name"><?= $language_["user"] ?></label>
 										<label id="id" class="col-md-12" for="name" style="display: none;"></label>
 										<div class="col-md-12">
 											<input class="form-control" id="nameUser" readonly />
@@ -143,10 +129,10 @@
 							<div class="row">
 								<div class="col-md-12">
 									<div class="form-group">
-										<label class="col-md-12" for="comment">Новый пароль</label>
+										<label class="col-md-12" for="comment"><?= $language_["newPassword"] ?></label>
 										<div class="col-md-12">
 											<input name="password" id="password" class="form-control" type="password"
-												placeholder="Введите пароль">
+												placeholder="<?= $language_["enterPassword"] ?>">
 										</div>
 									</div>
 								</div>
@@ -158,14 +144,19 @@
 			<div class="modal-footer">
 				<button type="button" id="submit" onclick="resetPassword()"
 					style="background-color:limegreen; color:white" class="btn btn-secondary"
-					data-dismiss="modal">Обновить</button>
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+					data-dismiss="modal"><?= $language_["update"] ?></button>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal"><?= $language_["close"] ?></button>
 			</div>
 		</div>
 	</div>
 </div>
 <script type="text/javascript" src="/assets/js/plugins/sweetalert.min.js"></script>
 <script>
+	$('#sampleTable').DataTable({
+        language:{           
+            url: '<?=$_SESSION['local']?>'=='tj'?'/assets/json/tg.json':'/assets/json/ru.json',
+        }
+    });
 	var $id = '';
 	var messages = '';
 	function operation(id, typeOperation) {

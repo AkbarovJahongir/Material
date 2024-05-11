@@ -41,6 +41,7 @@ if ($_SESSION["local"] == "ru") {
             top: 10px;
         }
     }
+
 </style>
 
 <body class="app sidebar-mini rtl  <?php if (isset($_SESSION["sidenav_toggled"])) {
@@ -59,7 +60,7 @@ if ($_SESSION["local"] == "ru") {
         <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
 
         <ul class="app-nav">
-            <div class="dropdown language">
+            <div class="dropdown" style="margin-top: 10px">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     
@@ -118,6 +119,7 @@ if ($_SESSION["local"] == "ru") {
             $subject_active = (Route::$active_controller == "subject") ? "active" : "";
             $user_active = (Route::$active_controller == "user") ? "active" : "";
             $report_active = (Route::$active_controller == "report") ? "active" : "";
+            $place_active = (Route::$active_controller == "report") ? "active" : "";
 
             if ($_SESSION["uid"]["role_id"] == 3 || $_SESSION["uid"]["role_id"] == 4) {
                 echo
@@ -158,6 +160,14 @@ if ($_SESSION["local"] == "ru") {
                     <li class="treeview"><a class="app-menu__item <?= $direction_active ?>" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-code-fork"></i><span class="app-menu__label">'.$language_["direction"].'</span><i class="treeview-indicator fa fa-angle-right"></i></a>
                         <ul class="treeview-menu">
                             <li><a class="treeview-item" href="/direction"><i class="icon fa fa-circle-o"></i> '.$language_["allDirection"].'</a></li>
+                        </ul> 
+                    </li>
+                    
+                    <li class="treeview"><a class="app-menu__item <?= $place_active ?>" href="#" data-toggle="treeview"><i class="app-menu__icon bi bi-map"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-map" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M15.817.113A.5.5 0 0 1 16 .5v14a.5.5 0 0 1-.402.49l-5 1a.5.5 0 0 1-.196 0L5.5 15.01l-4.902.98A.5.5 0 0 1 0 15.5v-14a.5.5 0 0 1 .402-.49l5-1a.5.5 0 0 1 .196 0L10.5.99l4.902-.98a.5.5 0 0 1 .415.103M10 1.91l-4-.8v12.98l4 .8zm1 12.98 4-.8V1.11l-4 .8zm-6-.8V1.11l-4 .8v12.98z"/>
+</svg></i><span class="app-menu__label">'.$language_["place"].'</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+                        <ul class="treeview-menu">
+                            <li><a class="treeview-item" href="/place"><i class="icon fa fa-circle-o"></i> '.$language_["allPlace"].'</a></li>
                         </ul> 
                     </li>
                     

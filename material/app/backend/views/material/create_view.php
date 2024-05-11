@@ -113,7 +113,7 @@ if ($_SESSION["local"] == "ru") {
                         <div class="col-md-3">
                             <input id="date_publish" name="date_publish" class="form-control" type="text" placeholder="<?= $language_["selectDate"] ?>">
                         </div>
-                        <label class="control-label col-md-3 text-right"><?= $language_["selectaFileToPublish"] ?>*:</label>
+                        <label class="control-label col-md-3 text-right"><?= $language_["selectaFileToPublish"] ?> PDF*:</label>
                         <div class="col-md-3">
                             <input type="file" class="form-control" lang="" value="<?= $language_["choose"] ?>" name="fileToUpload" id="fileToUpload" required accept="file/pdf">
                         </div>
