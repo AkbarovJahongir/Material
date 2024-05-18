@@ -28,8 +28,16 @@ class Controller_User extends Controller
         $this->data["users"] = $users;
 
         //$this->print_array($this->data); die;
+        if (isset($_SESSION["uid"]["role_id"])) {
+            if ($_SESSION["uid"]["role_id"] == 1 || $_SESSION["uid"]["role_id"] == 2) {
+                $this->view->generate('403_view.php', 'template_view.php', $this->data);
 
-        $this->view->generate('user/list_view.php', 'template_view.php', $this->data);
+            }
+            else{
+                $this->view->generate('user/list_view.php', 'template_view.php', $this->data);
+            }
+        }
+        //$this->view->generate('user/list_view.php', 'template_view.php', $this->data);
     }
 
     function action_add()
@@ -116,13 +124,23 @@ class Controller_User extends Controller
         $this->data["author"] = $this->model_common->get_authors();
         //$this->data["users"] = $this->model->get_user();
         //$this->print_array($this->data["author"]);die;
-        $this->view->generate('user/add_view.php', 'template_view.php', $this->data);
+
+        //$this->view->generate('user/add_view.php', 'template_view.php', $this->data);
 
         // Logging error messages
         $fd = fopen("./log/users_log.txt", "a") or die("Не удалось открыть файл журнала");
         $date_time_now = date("Y-m-d H:i:s"); // Get current date and time in the format YYYY-MM-DD HH:MM:SS
         fwrite($fd, $date_time_now . ": " . $error_message . "\n"); // Append date and time to the error message
         fclose($fd);
+        if (isset($_SESSION["uid"]["role_id"])) {
+            if ($_SESSION["uid"]["role_id"] == 1 || $_SESSION["uid"]["role_id"] == 2) {
+                $this->view->generate('403_view.php', 'template_view.php', $this->data);
+
+            }
+            else{
+                $this->view->generate('user/add_view.php', 'template_view.php', $this->data);
+            }
+        }
     }
 
 
@@ -171,7 +189,16 @@ class Controller_User extends Controller
         //$this->data["user"] = $this->model->get_user($id);
         //  $this->print_array($this->data);
         //  die;
-        $this->view->generate('user/edit_view.php', 'template_view.php', $this->data);
+        if (isset($_SESSION["uid"]["role_id"])) {
+            if ($_SESSION["uid"]["role_id"] == 1 || $_SESSION["uid"]["role_id"] == 2) {
+                $this->view->generate('403_view.php', 'template_view.php', $this->data);
+
+            }
+            else{
+                $this->view->generate('user/edit_view.php', 'template_view.php', $this->data);
+            }
+        }
+        //$this->view->generate('user/edit_view.php', 'template_view.php', $this->data);
     }
 
     function action_operation()

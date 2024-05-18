@@ -60,7 +60,7 @@ class Controller_Auth extends Controller {
                         $_SESSION["role_id"] = $result[0]["role_id"];
                         $_SESSION["local"] = 'tj';
                         //print_r($result[0]["role"]);die;
-                        //$this->print_array($result[0]);die;
+                        //$this->print_array($_SESSION["uid"]);die;
                         $data["message"] = "Success";
                             Route::MainPage();
                     } else {

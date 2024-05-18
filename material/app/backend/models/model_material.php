@@ -237,22 +237,25 @@ class Model_Material extends Model
             . " ,`pub_place_id`"
             . " ,`count`"
             . " ,`file_path`"
-            . " ,`kafedra_id`"
+            . " ,(SELECT `name` FROM kafedra WHERE id = `kafedra_id`)"
             . " ,`conference_name`"
             . " ,`name_jurnal`"
+            . " ,`url`"
             . " ,`material_direction_id`"
             . " FROM `material` WHERE id=?", [$id])[0];
         return $result;
     }
 
-    public function add_material($name, $type_id, $language_id, $date_publish, $pub_place_id, $count, $jsons, $unique_filename, $kafedra, $nameOfTheConference, $namejurnal, $direction)
+    public function add_material($name, $type_id, $language_id, $date_publish, $pub_place_id, $count, $jsons, $unique_filename, $kafedra, $nameOfTheConference, $namejurnal, $url, $direction)
     {
         try {
-            if (!$this->select("SELECT * FROM `material` WHERE `name` = ? AND `language_id` = ?", [$name, $language_id])) {
+            if ($this->select("SELECT * FROM `material` WHERE `name` = ? AND `language_id` = ?", [$name, $language_id])) {
+                $kafedra_id = $this->select("SELECT id FROM kafedra WHERE name=? LIMIT 1", [$kafedra])[0]["id"];
+                echo $kafedra_id;
                 $id = $this->insert_get_id(
                     "INSERT INTO `material` SET `name`=?,`type_id`=?,`language_id`=?,"
-                    . "`date_publish`=?,`pub_place_id`=?,`count`=?,`user_id`=?,`file_path`=?,`kafedra_id`=?, `conference_name`=?, `name_jurnal`=?, `material_direction_id`=?",
-                    [$name, $type_id, $language_id, $date_publish, $pub_place_id, $count, $this->user_id, $unique_filename, $kafedra, $nameOfTheConference, $namejurnal, $direction]
+                    . "`date_publish`=?,`pub_place_id`=?,`count`=?,`user_id`=?,`file_path`=?,`kafedra_id`=?, `conference_name`=?, `name_jurnal`=?, `url`=?, `material_direction_id`=?",
+                    [$name, $type_id, $language_id, $date_publish, $pub_place_id, $count, $this->user_id, $unique_filename, $kafedra_id, $nameOfTheConference, $namejurnal, $url, $direction]
                 );
                 if ($id) {
                     $authors = $jsons["authors"];
@@ -270,9 +273,11 @@ class Model_Material extends Model
             return false;
         }
     }
-    public function edit_material($id, $name, $type_id, $language_id, $date_publish, $pub_place_id, $count, $file_path, $jsons, $kafedra, $nameOfTheConference, $namejurnal, $direction)
+    public function edit_material($id, $name, $type_id, $language_id, $date_publish, $pub_place_id, $count, $file_path, $jsons, $kafedra, $nameOfTheConference, $namejurnal, $url, $direction)
     {
         echo 'hi';
+        $kafedra_id = $this->select("SELECT id FROM kafedra WHERE name=? LIMIT 1", [$kafedra])[0]["id"];
+        echo $kafedra_id;
         $result = $this->update(
             "UPDATE `material` SET `name`=?"
             . " ,`type_id`=? "
@@ -285,6 +290,7 @@ class Model_Material extends Model
             . " ,`kafedra_id`=?"
             . " ,`conference_name`=?"
             . " ,`name_jurnal`=?"
+            . " ,`url`=?"
             . " ,`material_direction_id`=?"
             . " ,`status` = 1 WHERE id=?",
             [
@@ -296,9 +302,10 @@ class Model_Material extends Model
                 $count,
                 $file_path,
                 $this->current_date,
-                $kafedra,
+                $kafedra_id,
                 $nameOfTheConference,
                 $namejurnal,
+                $url,
                 $direction,
                 $id
             ]

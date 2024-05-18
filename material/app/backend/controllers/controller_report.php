@@ -24,7 +24,17 @@ class Controller_Report extends Controller
     function action_report_barchart()
     {  
         $this->data["users"] = $this->model->get_user();
-        $this->view->generate('report/report_barchart.php', 'template_view.php',$this->data);
+        $this->data["kafedra"] = $this->model->get_kafedra();
+        if (isset($_SESSION["uid"]["role_id"])) {
+            if ($_SESSION["uid"]["role_id"] == 1 || $_SESSION["uid"]["role_id"] == 2) {
+                $this->view->generate('403_view.php', 'template_view.php', $this->data);
+
+            }
+            else{
+                $this->view->generate('report/report_barchart.php', 'template_view.php', $this->data);
+            }
+        }
+        //$this->view->generate('report/report_barchart.php', 'template_view.php',$this->data);
         return;
     }
     public function action_getFaculty()
@@ -75,11 +85,12 @@ class Controller_Report extends Controller
     public function action_getKafedra()
     {
         $user_role = $_SESSION["uid"]["role_id"];
-
+        $kafedra = $_POST["kafedra"];
+        //$this->print_array($_POST);die;
         if ($user_role != 3 && $user_role != 4) {
             $result = ["error" => 1, "message" => $this->language_["accessMessageAll"]];
         } else {
-            $result = $this->model->get_dataKafedra();
+            $result = $this->model->get_dataKafedra($kafedra);
             if (!$result) {
                 $result = ["error" => 1, "message" => $this->language_["errorMessageGetKafedra"]];
             }
@@ -107,6 +118,15 @@ class Controller_Report extends Controller
         $this->data["materials"] = $materials;
 
         //$this->print_array( $materials ); die;
-        $this->view->generate('report/all_report.php', 'template_view.php', $this->data);
+        if (isset($_SESSION["uid"]["role_id"])) {
+            if ($_SESSION["uid"]["role_id"] == 1 || $_SESSION["uid"]["role_id"] == 2) {
+                $this->view->generate('403_view.php', 'template_view.php', $this->data);
+
+            }
+            else{
+                $this->view->generate('report/all_report.php', 'template_view.php', $this->data);
+            }
+        }
+        //$this->view->generate('report/all_report.php', 'template_view.php', $this->data);
     }
 }

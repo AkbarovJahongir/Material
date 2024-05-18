@@ -1,6 +1,6 @@
 <?php
 $language = array(
-    "authorization" => "Воридшави",
+    "authorization" => "Воридшавӣ",
     "login" => "Логин",
     "password" => "Парол",
     "toComeIn" => "Воридшавӣ",

@@ -55,8 +55,10 @@ if ($_SESSION["local"] == "ru") {
         </div>
     </div>
 </div>
+<script>
  function redirect() {
         var url = window.location.protocol + '//' + window.location.hostname + '/author/index'; // Протокол "//" позволяет автоматически использовать текущий протокол (http или https)
         alert(url);//http://material:81/author/add/
         window.location.href += url;
     }
+    </script>

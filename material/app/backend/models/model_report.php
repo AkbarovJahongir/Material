@@ -15,6 +15,18 @@ class Model_Report extends Model
         . " HAVING COUNT(`material`.`id`) > 0;");
 		return $result;
 	}
+    public function get_kafedra()
+    {
+        $result = $this->select(
+            "SELECT k.`id`"
+            . " ,k.`name`"
+            . " ,`f`.`name` AS `facultyName`"
+            . " FROM `kafedra` AS k"
+            . " INNER JOIN `faculty` AS `f` ON `f`.id = k.faculty_id"
+            . " ORDER BY k.`date_add` DESC"
+        );
+        return $result;
+    }
     public function get_materials()
     {
         $result = $this->select(
@@ -53,10 +65,11 @@ class Model_Report extends Model
         ." GROUP BY YEAR(date_publish)"
         ." ORDER BY YEAR(date_publish) ASC");
     }
-    public function get_dataKafedra(){
-        return $this->select("SELECT k.`name`, COUNT(m.id) AS `count` FROM kafedra k"
+    public function get_dataKafedra($kafedra){
+        return $this->select("SELECT k.`name`, COUNT(m.id) AS `count`,YEAR(m.date_publish) AS `year` FROM kafedra k"
         ." LEFT JOIN material m ON k.id = m.kafedra_id"
-        ." GROUP BY k.`name`");
+        ." WHERE (k.id = ? OR m.kafedra_id = k.id)"
+        ." GROUP BY k.`name`,YEAR(m.date_publish) ASC",[$kafedra]);
     }
     public function get_dataUsers($users)
     {

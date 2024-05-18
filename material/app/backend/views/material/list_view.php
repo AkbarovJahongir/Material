@@ -14,6 +14,11 @@ if ($_SESSION["local"] == "ru") {
 	span.dropdown-item {
 		cursor: pointer;
 	}
+	.modal {
+      display: none;
+      /* Стили модального окна */
+    }
+
 </style>
 <div class="app-title">
 	<div>
@@ -24,7 +29,7 @@ if ($_SESSION["local"] == "ru") {
 	</div>
 	<?php if ($_SESSION["uid"]["role_id"] == 2 || $_SESSION["uid"]["role_id"] == 1) {
 		echo '
-	<a class="btn btn-primary btn-sm" href=' . $data['controller_name'] . '/add/"><?= $language_["add"] ?></a>';
+	<a class="btn btn-primary btn-sm" href=' . $data['controller_name'] . '/add/">'. $language_["add"]. '</a>';
 	} ?>
 </div>
 
@@ -44,8 +49,7 @@ if ($_SESSION["local"] == "ru") {
 							<div class="tile">
 								<div class="tile-body">
 									<div class="table-responsive">
-										<table class="table table-hover table-bordered dataTable no-footer" id="sampleTable"
-									role="grid" aria-describedby="sampleTable_info">
+										<table class="table table-hover table-bordered" id="sampleTable">
 											<thead>
 												<tr>
 													<th>ID</th>
@@ -79,11 +83,39 @@ if ($_SESSION["local"] == "ru") {
 												<?php foreach ($data['materials'] as $material): ?>
 													<tr>
 														<td><?= $material['id'] ?></td>
-														<td><?= $material['name'] ?></td>
+    													<td class="material-cell" data-name="<?= $material['name'] ?>">
+                                                          <?php
+                                                            $name = $material['name'];
+                                                            if (strlen($name) > 20) {
+                                                              echo '<a href="#" onclick="openModals(\'' . htmlspecialchars($name) . '\')">' . substr($name, 0, 20) . '...</a>';
+                                                            } else {
+                                                              echo htmlspecialchars($name);
+                                                            }
+                                                          ?>
+                                                        </td>
 														<td><?= $material['authors'] ?></td>
 														<td><?= $material['type'] ?></td>
-														<td><?= $material['conference_name'] ?></td>
-														<td><?= $material['name_jurnal'] ?></td>
+														
+														<td class="material-cell" data-name="<?= $material['conference_name'] ?>">
+                                                          <?php
+                                                            $name = $material['conference_name'];
+                                                            if (strlen($name) > 20) {
+                                                              echo '<a href="#" onclick="openModals(\'' . htmlspecialchars($name) . '\')">' . substr($name, 0, 20) . '...</a>';
+                                                            } else {
+                                                              echo htmlspecialchars($name);
+                                                            }
+                                                          ?>
+                                                        </td>
+														<td class="material-cell" data-name="<?= $material['name_jurnal'] ?>">
+                                                          <?php
+                                                            $name = $material['name_jurnal'];
+                                                            if (strlen($name) > 20) {
+                                                              echo '<a href="#" onclick="openModals(\'' . htmlspecialchars($name) . '\')">' . substr($name, 0, 20) . '...</a>';
+                                                            } else {
+                                                              echo htmlspecialchars($name);
+                                                            }
+                                                          ?>
+                                                        </td>
 														<td><?= $material['direction'] ?></td>
 														<td><?= $material['faculty'] ?></td>
 														<td><?= $material['kafedra'] ?></td>
@@ -278,7 +310,12 @@ if ($_SESSION["local"] == "ru") {
 		});
 		$('#myModal').modal('show');
 	}
-
+	
+	function openModals(name) {
+        $('#description').val(name);
+        swal("", name, "success");
+        //$('#myModals').modal('show');
+    }
 
 
 	function declineMaterial() {

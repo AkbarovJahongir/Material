@@ -25,9 +25,18 @@ class Controller_Author extends Controller{
         $authors = $this->model->get_authors();
         $this->data["authors"] = $authors;
 
+        //var_dump($_SESSION);die;
         //$this->print_array($authors); die;
-
-		$this->view->generate('author/list_view.php', 'template_view.php', $this->data);
+        if (isset($_SESSION["uid"]["role_id"])) {
+            if ($_SESSION["uid"]["role_id"] == 1 || $_SESSION["uid"]["role_id"] == 2) {
+                $this->view->generate('403_view.php', 'template_view.php', $this->data);
+                var_dump($_SESSION);die;
+            }
+            else{
+                $this->view->generate('author/list_view.php', 'template_view.php', $this->data);
+                var_dump($_SESSION);die;
+            }
+        }
 	}
     function action_add() {
 
@@ -58,8 +67,15 @@ class Controller_Author extends Controller{
                 $this->data["message"] = $this->language_["errorMessageAuthorAll"];
             }
         }
+        if (isset($_SESSION["uid"]["role_id"])) {
+            if ($_SESSION["uid"]["role_id"] == 1 || $_SESSION["uid"]["role_id"] == 2) {
+                $this->view->generate('403_view.php', 'template_view.php', $this->data);
 
-        $this->view->generate('author/add_view.php', 'template_view.php', $this->data);
+            }
+            else{
+                $this->view->generate('author/add_view.php', 'template_view.php', $this->data);
+            }
+        }
     }
 
     function action_edit($id) {
@@ -98,8 +114,15 @@ class Controller_Author extends Controller{
                 $this->data["message"] = $this->language_["errorMessageAuthorAll"];
             }
         }
+        if (isset($_SESSION["uid"]["role_id"])) {
+            if ($_SESSION["uid"]["role_id"] == 1 || $_SESSION["uid"]["role_id"] == 2) {
+                $this->view->generate('403_view.php', 'template_view.php', $this->data);
 
-        $this->view->generate('author/edit_view.php', 'template_view.php', $this->data);
+            }
+            else{
+                $this->view->generate('author/edit_view.php', 'template_view.php', $this->data);
+            }
+        }
     }
 
     function action_delete() {

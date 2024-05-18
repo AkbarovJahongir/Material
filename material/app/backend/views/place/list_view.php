@@ -2,11 +2,11 @@
 $language_ = [];
 if ($_SESSION["local"] == "ru") {
     $language_ = [];
-    include_once './app/language/Place/languageRU.php';
+    include_once './app/language/placeOrKafedra/languageRU.php';
     $language_ = $language;
 } else {
     $language_ = [];
-    include_once './app/language/Place/languageTJ.php';
+    //include_once './app/language/placeOrKafedra/languageTJ.php';
     $language_ = $language;
 }
 ?>
@@ -19,7 +19,7 @@ if ($_SESSION["local"] == "ru") {
     <div>
         <ul class="app-breadcrumb breadcrumb">
             <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-            <li class="breadcrumb-item"><a href="/<?= $data['controller_name'] ?>"><?= $language_["places"] ?></a></li>
+            <li class="breadcrumb-item"><a href="/<?= $data['controller_name'] ?>"><?= $language_["faculties"] ?></a></li>
         </ul>
     </div>
     <a class="btn btn-primary btn-sm" onclick="openModal()"><?= $language_["add"] ?></a>
@@ -28,7 +28,7 @@ if ($_SESSION["local"] == "ru") {
 <div class="row">
     <div class="col-md-12">
         <div class="tile">
-            <h3 class="tile-title"><?= $language_["allplaces"] ?></h3>
+            <h3 class="tile-title"><?= $language_["allFaculties"] ?></h3>
             <div class="tile-body">
                 <div id="sampleTable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
                     <div class="row">

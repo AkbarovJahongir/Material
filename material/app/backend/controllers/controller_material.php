@@ -4,7 +4,7 @@ class Controller_Material extends Controller
 
     private $data = [];
     private $language_ = [];
-    
+
     function __construct()
     {
         $this->model_common = new Model_Common();
@@ -15,8 +15,7 @@ class Controller_Material extends Controller
             $this->language_ = [];
             include_once './app/language/messageRU.php';
             $this->language_ = $language;
-        }
-        else{
+        } else {
             $this->language_ = [];
             include_once './app/language/messageTJ.php';
             $this->language_ = $language;
@@ -43,13 +42,21 @@ class Controller_Material extends Controller
         $this->data["materials"] = $materials;
 
         //$this->print_array( $materials ); die;
+        if (isset($_SESSION["uid"]["role_id"])) {
+            if ($_SESSION["uid"]["role_id"] == 1 || $_SESSION["uid"]["role_id"] == 2 || $_SESSION["uid"]["role_id"] == 4) {
+                $this->view->generate('403_view.php', 'template_view.php', $this->data);
 
-        $this->view->generate('material/list_view.php', 'template_view.php', $this->data);
+            }
+            else{
+                $this->view->generate('material/list_view.php', 'template_view.php', $this->data);
+            }
+        }
+        //$this->view->generate('material/list_view.php', 'template_view.php', $this->data);
     }
 
     function action_get()
     {
-        $materials = $this->model->get_materialByuserId($_SESSION["uid"]["role_id"],$_SESSION["uid"]["id"]);
+        $materials = $this->model->get_materialByuserId($_SESSION["uid"]["role_id"], $_SESSION["uid"]["id"]);
         //$this->print_array($materials);die;
         for ($i = 0; $i < count($materials); $i++) {
             $authors = $this->model->get_material_authors($materials[$i]['id']);
@@ -66,7 +73,16 @@ class Controller_Material extends Controller
         }
         $this->data["materials"] = $materials;
         //$this->print_array($materials);die;
-        $this->view->generate('material/list_view.php', 'template_view.php', $this->data);
+        if (isset($_SESSION["uid"]["role_id"])) {
+            if ($_SESSION["uid"]["role_id"] == 3) {
+                $this->view->generate('403_view.php', 'template_view.php', $this->data);
+
+            }
+            else{
+                $this->view->generate('material/list_view.php', 'template_view.php', $this->data);
+            }
+        }
+        //$this->view->generate('material/list_view.php', 'template_view.php', $this->data);
     }
 
     function action_add()
@@ -92,7 +108,7 @@ class Controller_Material extends Controller
 
             $file_type = strtolower(pathinfo($_FILES["fileToUpload"]["name"], PATHINFO_EXTENSION));
 
-            $unique_filename =  $_FILES["fileToUpload"]["name"]; // uniqid() . "." . $file_type;
+            $unique_filename = $_FILES["fileToUpload"]["name"]; // uniqid() . "." . $file_type;
 
             $target_file = $target_dir . $unique_filename;
 
@@ -129,12 +145,13 @@ class Controller_Material extends Controller
             isset($_POST["date_publish"]) &&
             isset($_POST["place"]) &&
             isset($_POST["count"]) &&
-            isset($_POST["kafedra"]) &&
+            //isset($_POST["kafedra"]) &&
             isset($unique_filename) &&
             isset($_POST["json_authors"]) &&
-            isset($_POST["nameOfTheConference"]) &&
-            isset($_POST["namejurnal"]) &&
-            isset($_POST["direction"])
+            //isset($_POST["nameOfTheConference"]) &&
+            //isset($_POST["namejurnal"]) &&
+            isset($_POST["direction"]) &&
+            isset($_POST["urlMatrial"])
         ) {
             $name = $_POST["name"];
             $type = $_POST["type"];
@@ -147,6 +164,7 @@ class Controller_Material extends Controller
             $nameOfTheConference = $_POST["nameOfTheConference"];
             $namejurnal = $_POST["namejurnal"];
             $direction = $_POST["direction"];
+            $url = $_POST["urlMatrial"];
 
             if (
                 $name != "" &&
@@ -155,17 +173,18 @@ class Controller_Material extends Controller
                 $date_publish != "" &&
                 $place != "" &&
                 $count != "" &&
-                $kafedra != "" &&
+                //$kafedra != "" &&
                 $unique_filename != "" &&
                 $json_authors != null &&
-                $nameOfTheConference != "" &&
-                $namejurnal != "" &&
-                $direction != ""
+                //$nameOfTheConference != "" &&
+                //$namejurnal != "" &&
+                $direction != "" &&
+                $url != ""
             ) {
                 $jsons = [
                     "authors" => $json_authors
                 ];
-                $result = $this->model->add_material($name, $type, $language, $date_publish, $place, $count, $jsons, $unique_filename, $kafedra, $nameOfTheConference, $namejurnal, $direction);
+                $result = $this->model->add_material($name, $type, $language, $date_publish, $place, $count, $jsons, $unique_filename, $kafedra, $nameOfTheConference, $namejurnal, $url, $direction);
 
                 if ($result) {
                     $this->data["error"] = 0;
@@ -179,11 +198,19 @@ class Controller_Material extends Controller
                 $this->data["message"] = $this->language_["errorMessageMaterialAll"];
             }
         }
-        $this->view->generate('material/create_view.php', 'template_view.php', $this->data);
+        if (isset($_SESSION["uid"]["role_id"])) {
+            if ($_SESSION["uid"]["role_id"] == 3 || $_SESSION["uid"]["role_id"] == 4) {
+                $this->view->generate('403_view.php', 'template_view.php', $this->data);
+
+            }
+            else{
+                $this->view->generate('material/edit_view.php', 'template_view.php', $this->data);
+            }
+        }
 
         $fd = fopen("./log/materials_log.txt", "a") or die("Не удалось открыть файл журнала");
-        $date_time_now = date("Y-m-d H:i:s",strtotime('+5 hours')); 
-        fwrite($fd, $date_time_now . ": " . $error_message . "\n"); 
+        $date_time_now = date("Y-m-d H:i:s", strtotime('+5 hours'));
+        fwrite($fd, $date_time_now . ": " . $error_message . "\n");
         fclose($fd);
     }
 
@@ -203,7 +230,7 @@ class Controller_Material extends Controller
             $file_type = strtolower(pathinfo($_FILES["fileToUpload"]["name"], PATHINFO_EXTENSION));
 
             // Генерация уникального имени для файла
-            $unique_filename =  $_FILES["fileToUpload"]["name"]; // uniqid() . "." . $file_type;
+            $unique_filename = $_FILES["fileToUpload"]["name"]; // uniqid() . "." . $file_type;
 
             $target_file = $target_dir . $unique_filename;
 
@@ -238,9 +265,10 @@ class Controller_Material extends Controller
         $this->data["direction"] = $this->model_common->get_direction();
         //$this->print_array($_FILES["fileToUpload"]); die;
 
+        //$this->print_array($_POST);die;
         $this->data["material"] = $this->model->get_material($id);
+        //$this->print_array($this->data["material"]);die;
         $this->data["json_authors"] = json_encode($this->model->get_material_authors_id($id));
-        //
         if (
             isset($_POST["name"]) &&
             isset($_POST["type"]) &&
@@ -251,11 +279,12 @@ class Controller_Material extends Controller
             isset($_POST["kafedra"]) &&
             isset($unique_filename) &&
             isset($_POST["json_authors"]) &&
-            isset($_POST["nameOfTheConference"]) &&
-            isset($_POST["namejurnal"]) &&
-            isset($_POST["direction"])
+            //isset($_POST["nameOfTheConference"]) &&
+            //isset($_POST["namejurnal"]) &&
+            isset($_POST["direction"]) &&
+            isset($_POST["urlMatrial"])
         ) {
-           
+
             $name = $_POST["name"];
             $type = $_POST["type"];
             $language = $_POST["language"];
@@ -267,7 +296,8 @@ class Controller_Material extends Controller
             $nameOfTheConference = $_POST["nameOfTheConference"];
             $namejurnal = $_POST["namejurnal"];
             $direction = $_POST["direction"];
-            
+            $url = $_POST["urlMatrial"];
+
 
             if (
                 $name != "" &&
@@ -279,9 +309,10 @@ class Controller_Material extends Controller
                 $kafedra != "" &&
                 $unique_filename != "" &&
                 $json_authors != null &&
-                $nameOfTheConference != "" &&
-                $namejurnal != "" &&
-                $direction != ""
+                //$nameOfTheConference != "" &&
+                //$namejurnal != "" &&
+                $direction != "" &&
+                $url != ""
             ) {
                 $jsons = [
                     "authors" => $json_authors,
@@ -299,7 +330,7 @@ class Controller_Material extends Controller
                 //     ,"count" => $count
                 //     ,"jsons" => $jsons ]); die;
 
-                $result = $this->model->edit_material($id, $name, $type, $language, $date_publish, $place, $count, $unique_filename, $jsons, $kafedra, $nameOfTheConference, $namejurnal, $direction);
+                $result = $this->model->edit_material($id, $name, $type, $language, $date_publish, $place, $count, $unique_filename, $jsons, $kafedra, $nameOfTheConference, $namejurnal, $url, $direction);
 
                 if ($result) {
                     $this->data["error"] = 0;
@@ -322,10 +353,18 @@ class Controller_Material extends Controller
         }
 
         $fd = fopen("./log/materials_log.txt", "a") or die("Не удалось открыть файл журнала");
-        $date_time_now = date("Y-m-d H:i:s",strtotime('+5 hours')); // Get current date and time in the format YYYY-MM-DD HH:MM:SS
+        $date_time_now = date("Y-m-d H:i:s", strtotime('+5 hours')); // Get current date and time in the format YYYY-MM-DD HH:MM:SS
         fwrite($fd, $date_time_now . ": " . $error_message . "\n"); // Append date and time to the error message
         fclose($fd);
-        $this->view->generate('material/edit_view.php', 'template_view.php', $this->data);
+        if (isset($_SESSION["uid"]["role_id"])) {
+            if ($_SESSION["uid"]["role_id"] == 3 || $_SESSION["uid"]["role_id"] == 4) {
+                $this->view->generate('403_view.php', 'template_view.php', $this->data);
+
+            }
+            else{
+                $this->view->generate('material/edit_view.php', 'template_view.php', $this->data);
+            }
+        }
     }
     function action_confirm($id)
     {
@@ -340,7 +379,7 @@ class Controller_Material extends Controller
             $this->data["message"] = $this->language_["errorConfirmMessageMaterial"];
         }
         //$this->return_json($result);
-        $materials = $this->model->get_materialByuserId($_SESSION["uid"]["role_id"],$_SESSION["uid"]["id"]);
+        $materials = $this->model->get_materialByuserId($_SESSION["uid"]["role_id"], $_SESSION["uid"]["id"]);
         for ($i = 0; $i < count($materials); $i++) {
             $authors = $this->model->get_material_authors($materials[$i]['id']);
 
@@ -361,7 +400,7 @@ class Controller_Material extends Controller
     function action_decline()
     {
         $id = $_POST["id"];
-        $comment =  $_POST["comment"];
+        $comment = $_POST["comment"];
         $user_role = $_SESSION["uid"]["role_id"];
         $result = $this->model->decline_material($id, $comment, $user_role);
 
@@ -391,7 +430,7 @@ class Controller_Material extends Controller
                 $result = ["error" => 1, "message" => $this->language_["errorMessageAll"]];
             }
         }
-        
+
         $this->return_json($result);
         return;
     }
@@ -541,14 +580,15 @@ class Controller_Material extends Controller
         $this->return_json($material);
         return;
     }
-    function action_type() {
+    function action_type()
+    {
         $types = $this->model->get_types();
         $this->data["type"] = $types;
 
         //$this->print_array($types); die;
 
-		$this->view->generate('material/list_view_type.php', 'template_view.php', $this->data);
-	}
+        $this->view->generate('material/list_view_type.php', 'template_view.php', $this->data);
+    }
     function action_addType()
     {
         $user_role = $_SESSION["uid"]["role_id"];
@@ -556,7 +596,7 @@ class Controller_Material extends Controller
         if ($user_role != 3) {
             $result = ["error" => 1, "message" => $this->language_["erroraccessMessageAddAll"]];
         } else {
-            if (isset ($_POST["type"])) {
+            if (isset($_POST["type"])) {
                 $type = $_POST["type"];
                 if ($this->model->add_type($type)) {
                     $result = ["error" => 0, "message" => $this->language_["successMessageType"]];
@@ -576,7 +616,7 @@ class Controller_Material extends Controller
         $id = $_POST["id"];
         $this->data["type"] = $this->model->get_typeById($id);
 
-        if (isset ($_POST["typeName"]) && isset ($_POST["id"])) {
+        if (isset($_POST["typeName"]) && isset($_POST["id"])) {
             $name = $_POST["typeName"];
             $result = $this->model->edit_type($id, $name);
             if (!$result) {
