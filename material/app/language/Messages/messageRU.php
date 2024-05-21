@@ -58,5 +58,13 @@ $language = array(
     "errorMessageDirectionedit" => "Некоторые данные пусты или тип напрвления с таким именем существует!",
     "successDeleteMessageDirection" => "Тип направления успешно удален!",
     "errorDeleteMessageDirection" => "Вы не можете удалить этот тип напрвления!",
+    "successMessagePlace" => "Новый место публикации успешно добавлен!",
+    "successMessagePlaceedit" => "Место публикации успешно изменен!",
+    "errorMessagePlace" => "Не верные данные или место публикации был уже добавлен!",
+    "errorMessageGetPlace" => "Место публикации не найден",
+    "erroreditMessagePlace" => "Ошибка при изменении",
+    "errorMessagePlaceedit" => "Некоторые данные пусты или место публикации с таким именем существует!",
+    "successDeleteMessagePlace" => "Место публикации успешно удален!",
+    "errorDeleteMessagePlace" => "Вы не можете удалить!",
 );
 ?>

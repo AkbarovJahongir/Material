@@ -204,7 +204,7 @@ class Controller_Material extends Controller
 
             }
             else{
-                $this->view->generate('material/edit_view.php', 'template_view.php', $this->data);
+                $this->view->generate('material/create_view.php', 'template_view.php', $this->data);
             }
         }
 

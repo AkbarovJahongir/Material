@@ -34,17 +34,18 @@ class Model_Place extends Model
         return $result;
     }
     public function edit_place($id, $name)
-    {
-        if ($this->select("SELECT * FROM `place` WHERE `name` = ?", [$name])) {
-            return $this->update(
-                "UPDATE `place` SET `name`=? "
-                . " ,`date_edit`=?"
-                . " WHERE id=?",
-                [$name, $this->current_date, $id]
-            );
-        }
-        return false;
+{
+    $existingPlace = $this->select("SELECT * FROM `place` WHERE `id` = ?", [$id]);
+
+    if ($existingPlace) {
+        return $this->update(
+            "UPDATE `place` SET `name`=?, `date_edit`=? WHERE `id`=?",
+            [$name, $this->current_date, $id]
+        );
     }
+
+    return false;
+}
     public function delete_place($id)
     {
         return $this->delete(

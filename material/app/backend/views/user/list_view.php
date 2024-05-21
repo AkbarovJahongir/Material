@@ -174,7 +174,7 @@ if ($_SESSION["local"] == "ru") {
 			type: "warning",
 			showCancelButton: true,
 			confirmButtonText: "ДА, " + messages + "!",
-			cancelButtonText: "НЕТ, отменить!",
+			cancelButtonText: "<?= $language_["rejectEdit"] ?>",
 			closeOnConfirm: false,
 			closeOnCancel: false
 		}, function (isConfirm) {
@@ -211,7 +211,7 @@ if ($_SESSION["local"] == "ru") {
 					}
 				});
 			} else {
-				swal("ОТМЕНЕН!", "Вы чуть не " + messages + " доступ пользователя :)", "error");
+				swal("<?= $language_["canceled"] ?>!", "Вы чуть не " + messages + " доступ пользователя :)", "error");
 			}
 		});
 	}
@@ -226,7 +226,7 @@ if ($_SESSION["local"] == "ru") {
 			type: "warning",
 			showCancelButton: true,
 			confirmButtonText: "ДА, сбросить!",
-			cancelButtonText: "НЕТ, отменить!",
+			cancelButtonText: "<?= $language_["rejectEdit"] ?>",
 			closeOnConfirm: false,
 			closeOnCancel: false
 		}, function (isConfirm) {
@@ -242,7 +242,7 @@ if ($_SESSION["local"] == "ru") {
 					cache: false,
 					success: function (response) {
 						if (response.error === 1) {
-							swal("ОШИБКА!", response.message, "error");
+							swal("<?= $language_["error"] ?>!", response.message, "error");
 							console.log(id);
 						} else {
 							swal("Успешно!", response.message, "success");
@@ -251,11 +251,11 @@ if ($_SESSION["local"] == "ru") {
 					},
 					error: function (er) {
 						console.log(er);
-						swal("ОШИБКА!", "Что-то пошло не так!", "error");
+						swal("<?= $language_["error"] ?>!", "<?= $language_["errorMessage"] ?>!", "error");
 					}
 				});
 			} else {
-				swal("ОТМЕНЕН!", "Вы чуть не сбросили пароль :)", "error");
+				swal("<?= $language_["canceled"] ?>!", "Вы чуть не сбросили пароль :)", "error");
 			}
 		});
 		$id = '';
@@ -276,12 +276,12 @@ if ($_SESSION["local"] == "ru") {
 					$('#myModal').modal('show');
 				} else {
 					console.log("Пользователь с идентификатором не найден: " + id);
-					swal("ОШИБКА!", "Пользователь не найден!", "error");
+					swal("<?= $language_["error"] ?>!", "Пользователь не найден!", "error");
 				}
 			},
 			error: function (err) {
 				console.log(err);
-				swal("ОШИБКА!", "Что-то пошло не так!", "error");
+				swal("<?= $language_["error"] ?>!", "<?= $language_["errorMessage"] ?>!", "error");
 			}
 		});
 	}

@@ -146,7 +146,7 @@ if ($_SESSION["local"] == "ru") {
                     $id = id;
                     $('#typeName').val(response["name"]); 
                 } else {
-                    swal("ОШИБКА!", response.message, "error");
+                    swal("<?= $language_["error"] ?>!", response.message, "error");
                     console.log(id);
                     //swal("Добавлено!", response.message, "success");
                     //location.reload();
@@ -154,7 +154,7 @@ if ($_SESSION["local"] == "ru") {
             },
             error: function(er) {
                 console.log(er);
-                swal("ОШИБКА!", "Что-то пошло не так!", "error");
+                swal("<?= $language_["error"] ?>!", "<?= $language_["errorMessage"] ?>!", "error");
             }
         });
         $('#myModals').modal('show');
@@ -171,7 +171,7 @@ if ($_SESSION["local"] == "ru") {
             cache: false,
             success: function(response) {
                 if (response.error === 1) {
-                    swal("ОШИБКА!", response.message, "error");
+                    swal("<?= $language_["error"] ?>!", response.message, "error");
                     console.log(id);
                 } else {
                     swal("Добавлено!", response.message, "success");
@@ -180,7 +180,7 @@ if ($_SESSION["local"] == "ru") {
             },
             error: function(er) {
                 console.log(er);
-                swal("ОШИБКА!", "Что-то пошло не так!", "error");
+                swal("<?= $language_["error"] ?>!", "<?= $language_["errorMessage"] ?>!", "error");
             }
         });
         $('#type').val('');
@@ -191,11 +191,11 @@ if ($_SESSION["local"] == "ru") {
 		var $ID = $id;
 		var $typeName = $("#typeName").val();
 		swal({
-			title: "Вы действительно хотите изменить?",
+			title: "<?= $language_["titleError"] ?>",
 			type: "warning",
 			showCancelButton: true,
-			confirmButtonText: "ДА, изменить!",
-			cancelButtonText: "НЕТ, отменить!",
+			confirmButtonText: "<?= $language_["confirmEdit"] ?>",
+			cancelButtonText: "<?= $language_["rejectEdit"] ?>",
 			closeOnConfirm: false,
 			closeOnCancel: false
 		}, function(isConfirm) {
@@ -214,17 +214,17 @@ if ($_SESSION["local"] == "ru") {
 							swal("Изменено!", response.message, "success");
 							//location.reload();
 						} else {
-							swal("ОШИБКА!", response.message, "error");
+							swal("<?= $language_["error"] ?>!", response.message, "error");
 							console.log(id);
 						}
 					},
 					error: function(er) {
 						console.log(er);
-						swal("ОШИБКА!", "Что-то пошло не так!", "error");
+						swal("<?= $language_["error"] ?>!", "<?= $language_["errorMessage"] ?>!", "error");
 					}
 				});
 			} else {
-				swal("ОТМЕНЕН!", "Вы чуть не отклонили :)", "error");
+				swal("<?= $language_["canceled"] ?>!", "Вы чуть не изменили :)", "error");
 			}
 		});
 		$id = '';

@@ -133,7 +133,7 @@
                     $id = id;
                     $('#facultyName').val(response["name"]); 
                 } else {
-                    swal("ОШИБКА!", response.message, "error");
+                    swal("<?= $language_["error"] ?>!", response.message, "error");
                     console.log(id);
                     //swal("Добавлено!", response.message, "success");
                     //location.reload();
@@ -141,7 +141,7 @@
             },
             error: function(er) {
                 console.log(er);
-                swal("ОШИБКА!", "Что-то пошло не так!", "error");
+                swal("<?= $language_["error"] ?>!", "<?= $language_["errorMessage"] ?>!", "error");
             }
         });
         $('#myModals').modal('show');
@@ -159,7 +159,7 @@
             cache: false,
             success: function(response) {
                 if (response.error === 1) {
-                    swal("ОШИБКА!", response.message, "error");
+                    swal("<?= $language_["error"] ?>!", response.message, "error");
                     console.log(id);
                 } else {
                     swal("Добавлено!", response.message, "success");
@@ -168,7 +168,7 @@
             },
             error: function(er) {
                 console.log(er);
-                swal("ОШИБКА!", "Что-то пошло не так!", "error");
+                swal("<?= $language_["error"] ?>!", "<?= $language_["errorMessage"] ?>!", "error");
             }
         });
         $('#faculty').val('');
@@ -179,11 +179,11 @@
 		var $ID = $id;
 		var $facultyName = $("#facultyName").val();
 		swal({
-			title: "Вы действительно хотите изменить?",
+			title: "<?= $language_["titleError"] ?>",
 			type: "warning",
 			showCancelButton: true,
-			confirmButtonText: "ДА, изменить!",
-			cancelButtonText: "НЕТ, отменить!",
+			confirmButtonText: "<?= $language_["confirmEdit"] ?>",
+			cancelButtonText: "<?= $language_["rejectEdit"] ?>",
 			closeOnConfirm: false,
 			closeOnCancel: false
 		}, function(isConfirm) {
@@ -202,17 +202,17 @@
 							swal("Изменено!", response.message, "success");
 							//location.reload();
 						} else {
-							swal("ОШИБКА!", response.message, "error");
+							swal("<?= $language_["error"] ?>!", response.message, "error");
 							console.log(id);
 						}
 					},
 					error: function(er) {
 						console.log(er);
-						swal("ОШИБКА!", "Что-то пошло не так!", "error");
+						swal("<?= $language_["error"] ?>!", "<?= $language_["errorMessage"] ?>!", "error");
 					}
 				});
 			} else {
-				swal("ОТМЕНЕН!", "Вы чуть не отклонили :)", "error");
+				swal("<?= $language_["canceled"] ?>!", "Вы чуть не отклонили :)", "error");
 			}
 		});
 		$id = '';

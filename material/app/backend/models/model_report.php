@@ -23,6 +23,7 @@ class Model_Report extends Model
             . " ,`f`.`name` AS `facultyName`"
             . " FROM `kafedra` AS k"
             . " INNER JOIN `faculty` AS `f` ON `f`.id = k.faculty_id"
+            . " WHERE k.`name` <> 'Барои илова кардан'"
             . " ORDER BY k.`date_add` DESC"
         );
         return $result;
@@ -58,6 +59,7 @@ class Model_Report extends Model
         return $this->select("SELECT f.`name`, COUNT(m.id) AS `count` FROM faculty f"
         ." LEFT JOIN kafedra k ON f.id = k.faculty_id"
         ." LEFT JOIN `material` m ON m.kafedra_id = k.id"
+        . " WHERE f.`name` <> 'Барои илова'"
         ." GROUP BY f.`name`");
     }
     public function getFacultyByYear(){
@@ -68,7 +70,7 @@ class Model_Report extends Model
     public function get_dataKafedra($kafedra){
         return $this->select("SELECT k.`name`, COUNT(m.id) AS `count`,YEAR(m.date_publish) AS `year` FROM kafedra k"
         ." LEFT JOIN material m ON k.id = m.kafedra_id"
-        ." WHERE (k.id = ? OR m.kafedra_id = k.id)"
+        ." WHERE (k.id = ? OR m.kafedra_id = k.id) AND k.`name` <> 'Барои илова кардан'"
         ." GROUP BY k.`name`,YEAR(m.date_publish) ASC",[$kafedra]);
     }
     public function get_dataUsers($users)

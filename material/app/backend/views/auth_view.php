@@ -130,7 +130,7 @@ if ($_SESSION["local"] == "ru") {
                 },
                 error: function (er) {
                     console.log(er);
-                    swal("ОШИБКА!", "Что то пошло не так!", "error");
+                    swal("<?= $language_["error"] ?>!", "Что то пошло не так!", "error");
                 }
             });
         }

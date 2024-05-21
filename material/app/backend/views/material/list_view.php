@@ -59,6 +59,7 @@ if ($_SESSION["local"] == "ru") {
 													<th><?= $language_["conferenceTitle"] ?></th>
 													<th><?= $language_["magazineName"] ?></th>
 													<th><?= $language_["directionOfScientificMaterial"] ?></th>
+													<th>Ссылка</th>
 													<th><?= $language_["faculty"] ?></th>
 													<th><?= $language_["department"] ?></th>
 													<th><?= $language_["publicationDate"] ?></th>
@@ -117,6 +118,7 @@ if ($_SESSION["local"] == "ru") {
                                                           ?>
                                                         </td>
 														<td><?= $material['direction'] ?></td>
+														<td><?= $material['url'] ?></td>
 														<td><?= $material['faculty'] ?></td>
 														<td><?= $material['kafedra'] ?></td>
 														<td><?= $material['date_publish'] ?></td>
@@ -254,7 +256,7 @@ if ($_SESSION["local"] == "ru") {
 			type: "warning",
 			showCancelButton: true,
 			confirmButtonText: "ДА, удалить!",
-			cancelButtonText: "НЕТ, отменить!",
+			cancelButtonText: "<?= $language_["rejectEdit"] ?>",
 			closeOnConfirm: false,
 			closeOnCancel: false
 		}, function (isConfirm) {
@@ -267,7 +269,7 @@ if ($_SESSION["local"] == "ru") {
 					cache: false,
 					success: function (response) {
 						if (response.error === 1) {
-							swal("ОШИБКА!", response.message, "error");
+							swal("<?= $language_["error"] ?>!", response.message, "error");
 							console.log(id);
 						} else {
 							swal("УДАЛЕНО!", response.message, "success");
@@ -276,11 +278,11 @@ if ($_SESSION["local"] == "ru") {
 					},
 					error: function (er) {
 						console.log(er);
-						swal("ОШИБКА!", "Что то пошло не так!", "error");
+						swal("<?= $language_["error"] ?>!", "Что то пошло не так!", "error");
 					}
 				});
 			} else {
-				swal("ОТМЕНЕН!", "Вы чуть не удалили :)", "error");
+				swal("<?= $language_["canceled"] ?>!", "Вы чуть не удалили :)", "error");
 			}
 		});
 		$id = '';
@@ -300,12 +302,12 @@ if ($_SESSION["local"] == "ru") {
 					$('#nameMaterial').val(response["name"]);
 				} else {
 					console.log("Материал с идентификатором не найден: " + id);
-					swal("ОШИБКА!", "Материал не найден!", "error");
+					swal("<?= $language_["error"] ?>!", "Материал не найден!", "error");
 				}
 			},
 			error: function (err) {
 				console.log(err);
-				swal("ОШИБКА!", "Что-то пошло не так!", "error");
+				swal("<?= $language_["error"] ?>!", "<?= $language_["errorMessage"] ?>!", "error");
 			}
 		});
 		$('#myModal').modal('show');
@@ -327,7 +329,7 @@ if ($_SESSION["local"] == "ru") {
 			type: "warning",
 			showCancelButton: true,
 			confirmButtonText: "ДА, отклонить!",
-			cancelButtonText: "НЕТ, отменить!",
+			cancelButtonText: "<?= $language_["rejectEdit"] ?>",
 			closeOnConfirm: false,
 			closeOnCancel: false
 		}, function (isConfirm) {
@@ -343,7 +345,7 @@ if ($_SESSION["local"] == "ru") {
 					cache: false,
 					success: function (response) {
 						if (response.error === 1) {
-							swal("ОШИБКА!", response.message, "error");
+							swal("<?= $language_["error"] ?>!", response.message, "error");
 							console.log(id);
 						} else {
 							swal("Откланено!", response.message, "success");
@@ -352,11 +354,11 @@ if ($_SESSION["local"] == "ru") {
 					},
 					error: function (er) {
 						console.log(er);
-						swal("ОШИБКА!", "Что-то пошло не так!", "error");
+						swal("<?= $language_["error"] ?>!", "<?= $language_["errorMessage"] ?>!", "error");
 					}
 				});
 			} else {
-				swal("ОТМЕНЕН!", "Вы чуть не отклонили :)", "error");
+				swal("<?= $language_["canceled"] ?>!", "Вы чуть не отклонили :)", "error");
 			}
 		});
 		$id = '';

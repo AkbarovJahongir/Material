@@ -76,8 +76,6 @@ class Route
 				// @controller => $controller   | controller_main
 				// @action => $action           | action_index
 				// @id => $routes[3]            | 1
-				
-				//die();
 				$controller->$action($routes[3]);
 			} else {
 				//echo "login: ".$_POST["login"]; die;

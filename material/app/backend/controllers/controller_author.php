@@ -28,7 +28,7 @@ class Controller_Author extends Controller{
         //var_dump($_SESSION);die;
         //$this->print_array($authors); die;
         if (isset($_SESSION["uid"]["role_id"])) {
-            if ($_SESSION["uid"]["role_id"] == 1 || $_SESSION["uid"]["role_id"] == 2) {
+            if (/*$_SESSION["uid"]["role_id"] == 1 ||*/ $_SESSION["uid"]["role_id"] == 2) {
                 $this->view->generate('403_view.php', 'template_view.php', $this->data);
                 var_dump($_SESSION);die;
             }
@@ -68,7 +68,7 @@ class Controller_Author extends Controller{
             }
         }
         if (isset($_SESSION["uid"]["role_id"])) {
-            if ($_SESSION["uid"]["role_id"] == 1 || $_SESSION["uid"]["role_id"] == 2) {
+            if (/*$_SESSION["uid"]["role_id"] == 1 ||*/ $_SESSION["uid"]["role_id"] == 2) {
                 $this->view->generate('403_view.php', 'template_view.php', $this->data);
 
             }
@@ -115,7 +115,7 @@ class Controller_Author extends Controller{
             }
         }
         if (isset($_SESSION["uid"]["role_id"])) {
-            if ($_SESSION["uid"]["role_id"] == 1 || $_SESSION["uid"]["role_id"] == 2) {
+            if (/*$_SESSION["uid"]["role_id"] == 1 ||*/ $_SESSION["uid"]["role_id"] == 2) {
                 $this->view->generate('403_view.php', 'template_view.php', $this->data);
 
             }

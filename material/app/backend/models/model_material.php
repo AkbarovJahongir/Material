@@ -20,6 +20,7 @@ class Model_Material extends Model
             . " ,material.`conference_name`"
             . " ,material.`name_jurnal`"
             . " ,md.`name` AS direction"
+            . " ,material.`url`"
             . " FROM `material` AS material"
             . " INNER JOIN `type` AS `type` ON material.`type_id` = `type`.`id`"
             . " INNER JOIN `kafedra` AS `kafedra` ON material.`kafedra_id` = `kafedra`.`id`"
@@ -50,6 +51,7 @@ class Model_Material extends Model
                 . " ,material.`conference_name`"
                 . " ,material.`name_jurnal`"
                 . " ,md.`name` AS direction"
+                . " ,material.`url`"
                 . " FROM `material` AS material"
                 . " INNER JOIN `type` AS `type` ON material.`type_id` = `type`.`id`"
                 . " INNER JOIN `user` AS `user` ON material.`user_id` = `user`.`id`"
@@ -75,6 +77,7 @@ class Model_Material extends Model
             ." ,material.`conference_name`"
             ." ,material.`name_jurnal`"
             ." ,md.`name` AS direction"
+            ." ,material.`url`"
             ." FROM `material` AS material"
             ." INNER JOIN `type` AS `type` ON material.`type_id` = `type`.`id`"
             ." INNER JOIN `user` AS `user` ON material.`user_id` = `user`.`id`"
@@ -101,6 +104,7 @@ class Model_Material extends Model
             ." ,material.`conference_name`"
             ." ,material.`name_jurnal`"
             ." ,md.`name` AS direction"
+            ." ,material.`url`"
             ." FROM author "
             ." INNER JOIN `user` ON `user`.`author_id` = author.id "
             ." INNER JOIN `material_author` ON `material_author`.`author_id` = author.id"
@@ -133,6 +137,7 @@ class Model_Material extends Model
             ." ,material.`conference_name`"
             ." ,material.`name_jurnal`"
             ." ,md.`name` AS direction"
+            ." ,material.`url`"
             ." FROM `material` AS material"
             ." INNER JOIN `type` AS `type` ON material.`type_id` = `type`.`id`"
             ." INNER JOIN `user` AS `user` ON material.`user_id` = `user`.`id`"
@@ -158,6 +163,7 @@ class Model_Material extends Model
             ." ,material.`conference_name`"
             ." ,material.`name_jurnal`"
             ." ,md.`name` AS direction"
+            ." ,material.`url`"
             ." FROM author "
             ." INNER JOIN `user` ON `user`.`author_id` = author.id "
             ." INNER JOIN `material_author` ON `material_author`.`author_id` = author.id"
@@ -249,7 +255,7 @@ class Model_Material extends Model
     public function add_material($name, $type_id, $language_id, $date_publish, $pub_place_id, $count, $jsons, $unique_filename, $kafedra, $nameOfTheConference, $namejurnal, $url, $direction)
     {
         try {
-            if ($this->select("SELECT * FROM `material` WHERE `name` = ? AND `language_id` = ?", [$name, $language_id])) {
+            if (!$this->select("SELECT * FROM `material` WHERE `name` = ? AND `language_id` = ?", [$name, $language_id])) {
                 $kafedra_id = $this->select("SELECT id FROM kafedra WHERE name=? LIMIT 1", [$kafedra])[0]["id"];
                 echo $kafedra_id;
                 $id = $this->insert_get_id(

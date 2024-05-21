@@ -58,5 +58,13 @@ $language = array(
     "errorMessageDirectionedit" => "Баъзе маълумот холӣ аст ё навъи самт бо ҳамон ном вуҷуд дорад!",
     "successDeleteMessageDirection" => "Намуди самт бомуваффақият тоза карда шуд!",
     "errorDeleteMessageDirection" => "Шумо ин навъи самтро нест карда наметавонед!",
+    "successMessagePlace" => "Макони нашрияи нав бомуваффақият илова карда шуд!",
+    "errorMessagePlace" => "Маълумоти нодуруст ё макони нашр аллакай илова карда шудааст!",
+    "errorMessageGetPlace" => "Ҷойгоҳи интишор ёфт нашуд",
+    "erroreditMessagePlace" => "Хато ҳангоми таҳрир",
+    "errorMessagePlaceedit" => "Баъзе маълумот холӣ аст ё ҷойе бо ҳамон ном вуҷуд дорад!",
+    "successDeleteMessagePlace" => "Макони нашр бомуваффақият нест карда шуд!",
+    "errorDeleteMessagePlace" => "Шумо нест карда наметавонед!",
+    "successMessagePlaceedit" => "Макони нашр бо муваффақият иваз карда шуд!",
 );
 ?>

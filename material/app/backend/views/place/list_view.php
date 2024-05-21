@@ -2,11 +2,11 @@
 $language_ = [];
 if ($_SESSION["local"] == "ru") {
     $language_ = [];
-    include_once './app/language/placeOrKafedra/languageRU.php';
+    include_once './app/language/Place/languageRU.php';
     $language_ = $language;
 } else {
     $language_ = [];
-    //include_once './app/language/placeOrKafedra/languageTJ.php';
+    include_once './app/language/Place/languageTJ.php';
     $language_ = $language;
 }
 ?>
@@ -19,7 +19,7 @@ if ($_SESSION["local"] == "ru") {
     <div>
         <ul class="app-breadcrumb breadcrumb">
             <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-            <li class="breadcrumb-item"><a href="/<?= $data['controller_name'] ?>"><?= $language_["faculties"] ?></a></li>
+            <li class="breadcrumb-item"><a href="/<?= $data['controller_name'] ?>"><?= $language_["places"] ?></a></li>
         </ul>
     </div>
     <a class="btn btn-primary btn-sm" onclick="openModal()"><?= $language_["add"] ?></a>
@@ -28,7 +28,7 @@ if ($_SESSION["local"] == "ru") {
 <div class="row">
     <div class="col-md-12">
         <div class="tile">
-            <h3 class="tile-title"><?= $language_["allFaculties"] ?></h3>
+            <h3 class="tile-title"><?= $language_["allplaces"] ?></h3>
             <div class="tile-body">
                 <div id="sampleTable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
                     <div class="row">
@@ -163,7 +163,7 @@ if ($_SESSION["local"] == "ru") {
                     $id = id;
                     $('#placeName').val(response["name"]);
                 } else {
-                    swal("ОШИБКА!", response.message, "error");
+                    swal("<?= $language_["error"] ?>!", response.message, "error");
                     console.log(id);
                     //swal("Добавлено!", response.message, "success");
                     //location.reload();
@@ -171,7 +171,7 @@ if ($_SESSION["local"] == "ru") {
             },
             error: function (er) {
                 console.log(er);
-                swal("ОШИБКА!", "Что-то пошло не так!", "error");
+                swal("<?= $language_["error"] ?>!", "<?= $language_["errorMessage"] ?>!", "error");
             }
         });
         $('#myModals').modal('show');
@@ -193,12 +193,12 @@ if ($_SESSION["local"] == "ru") {
                     //location.reload();
                     //console.log(id);
                 } else {
-                    swal("ОШИБКА!", response.message, "error");
+                    swal("<?= $language_["error"] ?>!", response.message, "error");
                 }
             },
             error: function (er) {
                 console.log(er);
-                swal("ОШИБКА!", "Что-то пошло не так!", "error");
+                swal("<?= $language_["error"] ?>!", "<?= $language_["errorMessage"] ?>!", "error");
             }
         });
         $('#place').val('');
@@ -209,11 +209,11 @@ if ($_SESSION["local"] == "ru") {
         var $ID = $id;
         var $placeName = $("#placeName").val();
         swal({
-            title: "Вы действительно хотите изменить?",
+            title: "<?= $language_["titleError"] ?>",
             type: "warning",
             showCancelButton: true,
-            confirmButtonText: "ДА, изменить!",
-            cancelButtonText: "НЕТ, отменить!",
+            confirmButtonText: "<?= $language_["confirmEdit"] ?>",
+            cancelButtonText: "<?= $language_["rejectEdit"] ?>",
             closeOnConfirm: false,
             closeOnCancel: false
         }, function (isConfirm) {
@@ -232,17 +232,17 @@ if ($_SESSION["local"] == "ru") {
                             swal("Изменено!", response.message, "success");
                             //location.reload();
                         } else {
-                            swal("ОШИБКА!", response.message, "error");
+                            swal("<?= $language_["error"] ?>!", response.message, "error");
                             console.log(id);
                         }
                     },
                     error: function (error) {
                         console.log(error);
-                        swal("ОШИБКА!", "Некоторые данные пусты или факультет с таким именем существует!", "error");
+                        swal("<?= $language_["error"] ?>!", "Некоторые данные пусты или факультет с таким именем существует!", "error");
                     }
                 });
             } else {
-                swal("ОТМЕНЕН!", "Вы чуть не изменили :)", "error");
+                swal("<?= $language_["canceled"] ?>!", "Вы чуть не изменили :)", "error");
             }
         });
         $id = '';
@@ -251,11 +251,11 @@ if ($_SESSION["local"] == "ru") {
 
     function deleteplace(id) {
         swal({
-            title: "Вы действительно хотите удалить?",
+            title: "<?= $language_["titleErrorDelete"] ?>",
             type: "warning",
             showCancelButton: true,
             confirmButtonText: "ДА, удалить!",
-            cancelButtonText: "НЕТ, отменить!",
+            cancelButtonText: "<?= $language_["rejectEdit"] ?>",
             closeOnConfirm: false,
             closeOnCancel: false
         }, function (isConfirm) {
@@ -268,7 +268,7 @@ if ($_SESSION["local"] == "ru") {
                     cache: false,
                     success: function (response) {
                         if (response.error === 1) {
-                            swal("ОШИБКА!", response.message, "error");
+                            swal("<?= $language_["error"] ?>!", response.message, "error");
                         } else {
                             swal("УДАЛЕНО!", response.message, "success");
                             location.reload();
@@ -276,11 +276,11 @@ if ($_SESSION["local"] == "ru") {
                     },
                     error: function (er) {
                         console.log(er);
-                        swal("ОШИБКА!", "Что то пошло не так!", "error");
+                        swal("<?= $language_["error"] ?>!", "Что то пошло не так!", "error");
                     }
                 });
             } else {
-                swal("ОТМЕНЕН!", "Вы чуть не удалили :)", "error");
+                swal("<?= $language_["canceled"] ?>!", "Вы чуть не удалили :)", "error");
             }
         });
     }

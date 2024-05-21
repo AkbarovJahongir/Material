@@ -251,7 +251,7 @@ if ($_SESSION["local"] == "ru") {
 
     function deleteDirection(id) {
         swal({
-            title: "<?= $language_["titleError"] ?>",
+            title: "<?= $language_["titleErrorDelete"] ?>",
             type: "warning",
             showCancelButton: true,
             confirmButtonText: "<?= $language_["confirmDelete"] ?>",

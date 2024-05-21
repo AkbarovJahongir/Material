@@ -35,14 +35,14 @@ class Controller_Faculty extends Controller
         $this->data["kafedra"] = $kafedra;
         $this->view->generate('faculty/list_view_kafedra.php', 'template_view.php', $this->data);
     }
-    function action_add()
+    public function action_add()
     {
         $user_role = $_SESSION["uid"]["role_id"];
 
         if ($user_role != 3) {
             $result = ["error" => 1, "message" => $this->language_["erroraccessMessageAddAll"]];
         } else {
-            if (isset ($_POST["faculty"])) {
+            if (isset($_POST["faculty"])) {
                 $faculty = $_POST["faculty"];
                 if ($this->model->add_faculty($faculty)) {
                     $result = ["error" => 0, "message" => $this->language_["successMessageFaculty"]];
@@ -54,79 +54,90 @@ class Controller_Faculty extends Controller
             }
         }
         $this->return_json($result);
-        return;
-
     }
-    function action_getFaculty()
+
+    public function action_getFaculty()
     {
         $faculty = $this->model->get_facultys();
         $this->return_json($faculty);
-        return;
     }
+
     public function action_getFacultyById($id)
     {
         $faculty = $this->model->get_facultyById($id);
         if (!$faculty) {
-            return json_encode(["error" => 1, "message" => $this->language_["errorMessageGetFaculty"]]);
+            $result = ["error" => 1, "message" => $this->language_["errorMessageGetFaculty"]];
+            $this->return_json($result);
+        } else {
+            $this->return_json($faculty);
         }
-        $this->return_json($faculty);
-        return;
     }
+
     public function action_getKafedraById($id)
     {
-        $faculty = $this->model->get_kafedraById($id);
-        if (!$faculty) {
-            return json_encode(["error" => 1, "message" => $this->language_["errorMessageGetKafedra"]]);
-        }
-        $faculty["faculty"] = $this->model->get_facultys();
-
-        $this->return_json($faculty);
-        return;
-    }
-
-    function action_edit()
-    {
-        $id = $_POST["id"];
-        $this->data["faculty"] = $this->model->get_facultyById($id);
-
-        if (isset ($_POST["facultyName"]) && isset ($_POST["id"])) {
-            $name = $_POST["facultyName"];
-            $result = $this->model->edit_faculty($id, $name);
-            if (!$result) {
-                return json_encode(["error" => 1, "message" => $this->language_["erroreditMessageFaculty"]]);
-            }
+        $kafedra = $this->model->get_kafedraById($id);
+        if (!$kafedra) {
+            $result = ["error" => 1, "message" => $this->language_["errorMessageGetKafedra"]];
             $this->return_json($result);
-
         } else {
-            return json_encode(["error" => 1, "message" => $this->language_["errorMessageFacultyedit"]]);
+            $kafedra["faculty"] = $this->model->get_facultys();
+            $this->return_json($kafedra);
         }
     }
-    function action_editKafedra()
-    {
-        $id = $_POST["id"];
-        $this->data["kafedra"] = $this->model->get_kafedraById($id);
 
-        if (isset ($_POST["kafedra"]) && isset ($_POST["id"]) && isset($_POST["faculty"])) {
+    public function action_edit()
+    {
+        $result = ["error" => 0, "message" => ""];
+
+        if (isset($_POST["id"])) {
+            $id = $_POST["id"];
+
+            if (isset($_POST["facultyName"])) {
+                $name = $_POST["facultyName"];
+                if (!$this->model->edit_faculty($id, $name)) {
+                    $result = ["error" => 1, "message" => $this->language_["erroreditMessageFaculty"]];
+                } else {
+                    $result["message"] = $this->language_["successMessageFacultyedit"];
+                }
+            } else {
+                $result = ["error" => 1, "message" => $this->language_["errorMessageFacultyedit"]];
+            }
+        } else {
+            $result = ["error" => 1, "message" => "No faculty ID provided."];
+        }
+
+        $this->return_json($result);
+    }
+
+    public function action_editKafedra()
+    {
+        $result = ["error" => 0, "message" => ""];
+
+        if (isset($_POST["id"]) && isset($_POST["kafedra"]) && isset($_POST["faculty"])) {
+            $id = $_POST["id"];
             $name = $_POST["kafedra"];
             $faculty = $_POST["faculty"];
-            $result = $this->model->edit_kafedra($id, $name, $faculty);
-            if (!$result) {
-                return json_encode(["error" => 1, "message" => $this->language_["erroreditMessageFaculty"]]);
+
+            if (!$this->model->edit_kafedra($id, $name, $faculty)) {
+                $result = ["error" => 1, "message" => $this->language_["erroreditMessageKafedra"]];
+            } else {
+                $result["message"] = $this->language_["successMessageKafedraedit"];
             }
-            $this->return_json($result);
-
         } else {
-            return json_encode(["error" => 1, "message" => $this->language_["errorMessageKafedraedit"]]);
+            $result = ["error" => 1, "message" => $this->language_["errorMessageKafedraedit"]];
         }
-    }
-    function action_delete() {
 
+        $this->return_json($result);
+    }
+
+    public function action_delete()
+    {
         $user_role = $_SESSION["uid"]["role_id"];
 
-        if ( $user_role == 3 ) {
-            if ( isset($_POST["id"]) ) {
+        if ($user_role == 3) {
+            if (isset($_POST["id"])) {
                 $id = $_POST["id"];
-                if ( $this->model->delete_faculty( $id ) ) {
+                if ($this->model->delete_faculty($id)) {
                     $result = ["error" => 0, "message" => $this->language_["successDeleteMessageFaculty"]];
                 } else {
                     $result = ["error" => 1, "message" => $this->language_["errorDeleteMessageFaculty"]];
@@ -137,20 +148,21 @@ class Controller_Faculty extends Controller
         } else {
             $result = ["error" => 1, "message" => $this->language_["erroraccessMessageDeleteAll"]];
         }
+
         $this->return_json($result);
-        return;
     }
-    function action_addKafedra()
+
+    public function action_addKafedra()
     {
         $user_role = $_SESSION["uid"]["role_id"];
 
         if ($user_role != 3) {
             $result = ["error" => 1, "message" => $this->language_["erroraccessMessageAddAll"]];
         } else {
-            if (isset ($_POST["kafedra"]) && isset($_POST["faculty"])) {
+            if (isset($_POST["kafedra"]) && isset($_POST["faculty"])) {
                 $kafedra = $_POST["kafedra"];
-                $facilty = $_POST["faculty"];
-                if ($this->model->add_kafedra($kafedra,$facilty)) {
+                $faculty = $_POST["faculty"];
+                if ($this->model->add_kafedra($kafedra, $faculty)) {
                     $result = ["error" => 0, "message" => $this->language_["successMessageKafedra"]];
                 } else {
                     $result = ["error" => 1, "message" => $this->language_["errorMessageKafedraedit"]];
@@ -159,18 +171,18 @@ class Controller_Faculty extends Controller
                 $result = ["error" => 1, "message" => $this->language_["errorMessageAll"]];
             }
         }
+
         $this->return_json($result);
-        return;
-
     }
-    function action_deleteKafedra() {
 
+    public function action_deleteKafedra()
+    {
         $user_role = $_SESSION["uid"]["role_id"];
 
-        if ( $user_role == 3 ) {
-            if ( isset($_POST["id"]) ) {
+        if ($user_role == 3) {
+            if (isset($_POST["id"])) {
                 $id = $_POST["id"];
-                if ( $this->model->delete_kafedra( $id ) ) {
+                if ($this->model->delete_kafedra($id)) {
                     $result = ["error" => 0, "message" => $this->language_["successDeleteMessageKafedra"]];
                 } else {
                     $result = ["error" => 1, "message" => $this->language_["errorDeleteMessageKafedra"]];
@@ -181,8 +193,8 @@ class Controller_Faculty extends Controller
         } else {
             $result = ["error" => 1, "message" => $this->language_["erroraccessMessageDeleteAll"]];
         }
+
         $this->return_json($result);
-        return;
     }
 }
 ?>

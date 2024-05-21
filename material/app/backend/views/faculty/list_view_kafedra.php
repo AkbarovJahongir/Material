@@ -192,7 +192,7 @@ if ($_SESSION["local"] == "ru") {
                         select.append(option);
                     });
                 } else {
-                    swal("ОШИБКА!", response.message, "error");
+                    swal("<?= $language_["error"] ?>!", response.message, "error");
                     console.log(id);
                     //swal("Добавлено!", response.message, "success");
                     //location.reload();
@@ -200,7 +200,7 @@ if ($_SESSION["local"] == "ru") {
             },
             error: function (er) {
                 console.log(er);
-                swal("ОШИБКА!", "Что-то пошло не так!", "error");
+                swal("<?= $language_["error"] ?>!", "<?= $language_["errorMessage"] ?>!", "error");
             }
         });
 
@@ -230,15 +230,15 @@ if ($_SESSION["local"] == "ru") {
                             select.append(option);
                         });
                     } else {
-                        swal("ОШИБКА!", "Данные о факультетах недоступны или не найдены", "error");
+                        swal("<?= $language_["error"] ?>!", "Данные о факультетах недоступны или не найдены", "error");
                     }
                 } else {
-                    swal("ОШИБКА!", response.message, "error");
+                    swal("<?= $language_["error"] ?>!", response.message, "error");
                 }
             },
             error: function (er) {
                 console.log(er);
-                swal("ОШИБКА!", "Что-то пошло не так!", "error");
+                swal("<?= $language_["error"] ?>!", "<?= $language_["errorMessage"] ?>!", "error");
             }
         });
 
@@ -249,7 +249,7 @@ if ($_SESSION["local"] == "ru") {
         var kafedraName = $('#kafedra').val();
         var faculty =  document.getElementById('facultySelect').value;
         if (!faculty) {
-            swal("Ошибка!", "Пожалуйста, выберите факультет", "error");
+            swal("<?= $language_["error"] ?>!", "Пожалуйста, выберите факультет", "error");
             return;
         }
         $.ajax({
@@ -267,12 +267,12 @@ if ($_SESSION["local"] == "ru") {
                     location.reload();
                     console.log(response.id);
                 } else {
-                    swal("Ошибка!", response.message, "error");
+                    swal("<?= $language_["error"] ?>!", response.message, "error");
                 }
             },
             error: function (er) {
                 console.log(er);
-                swal("Ошибка!", "Что-то пошло не так!", "error");
+                swal("<?= $language_["error"] ?>!", "<?= $language_["errorMessage"] ?>!", "error");
             }
         });
     }
@@ -285,11 +285,11 @@ if ($_SESSION["local"] == "ru") {
         var $kafedra = $('#kafedraName').val();
         var $faculty =  document.getElementById('facultySelected').value;
         swal({
-            title: "Вы действительно хотите изменить?",
+            title: "<?= $language_["titleError"] ?>",
             type: "warning",
             showCancelButton: true,
-            confirmButtonText: "ДА, изменить!",
-            cancelButtonText: "НЕТ, отменить!",
+            confirmButtonText: "<?= $language_["confirmEdit"] ?>",
+            cancelButtonText: "<?= $language_["rejectEdit"] ?>",
             closeOnConfirm: false,
             closeOnCancel: false
         }, function (isConfirm) {
@@ -309,17 +309,17 @@ if ($_SESSION["local"] == "ru") {
                             swal("Изменено!", response.message, "success");
                             //location.reload();
                         } else {
-                            swal("ОШИБКА!", response.message, "error");
+                            swal("<?= $language_["error"] ?>!", response.message, "error");
                             console.log(id);
                         }
                     },
                     error: function (er) {
                         console.log(er);
-                        swal("ОШИБКА!", "Что-то пошло не так!", "error");
+                        swal("<?= $language_["error"] ?>!", "<?= $language_["errorMessage"] ?>!", "error");
                     }
                 });
             } else {
-                swal("ОТМЕНЕН!", "Вы чуть не отклонили :)", "error");
+                swal("<?= $language_["canceled"] ?>!", "Вы чуть не изменили :)", "error");
             }
         });
         $id = '';
@@ -327,11 +327,11 @@ if ($_SESSION["local"] == "ru") {
     }
     function deleteKafedra(id) {
         swal({
-            title: "Вы действительно хотите удалить?",
+            title: "<?= $language_["titleErrorDelete"] ?>",
             type: "warning",
             showCancelButton: true,
             confirmButtonText: "ДА, удалить!",
-            cancelButtonText: "НЕТ, отменить!",
+            cancelButtonText: "<?= $language_["rejectEdit"] ?>",
             closeOnConfirm: false,
             closeOnCancel: false
         }, function (isConfirm) {
@@ -344,7 +344,7 @@ if ($_SESSION["local"] == "ru") {
                     cache: false,
                     success: function (response) {
                         if (response.error === 1) {
-                            swal("ОШИБКА!", response.message, "error");
+                            swal("<?= $language_["error"] ?>!", response.message, "error");
                         } else {
                             swal("УДАЛЕНО!", response.message, "success");
                             location.reload();
@@ -352,11 +352,11 @@ if ($_SESSION["local"] == "ru") {
                     },
                     error: function (er) {
                         console.log(er);
-                        swal("ОШИБКА!", "Что то пошло не так!", "error");
+                        swal("<?= $language_["error"] ?>!", "Что то пошло не так!", "error");
                     }
                 });
             } else {
-                swal("ОТМЕНЕН!", "Вы чуть не удалили :)", "error");
+                swal("<?= $language_["canceled"] ?>!", "Вы чуть не удалили :)", "error");
             }
         });
     }

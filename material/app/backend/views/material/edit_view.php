@@ -124,7 +124,7 @@ if ($_SESSION["local"] == "ru") {
                         <div class="col-md-7">
                             <input name="namejurnal" id="namejurnal" class="form-control" type="text"
                                 placeholder="<?= $language_["enterTheTitleOfTheMagazine"] ?>"
-                                value="<?= $data["material"]["name_jurnal"] ?>" <?= $check1 ? '' : 'disabled' ?>>
+                                value="<?= $data["material"]["name_jurnal"] ?>"<?= $check1 ? '' : 'disabled' ?>>
                         </div>
                         <div class="col-md-2">
                             <div class="form-check">

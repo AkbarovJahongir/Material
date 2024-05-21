@@ -169,12 +169,12 @@
                         }
                     });
                 } else {
-                    swal("ОШИБКА!", response.message || "Нет данных для отображения", "error");
+                    swal("<?= $language_["error"] ?>!", response.message || "Нет данных для отображения", "error");
                 }
             },
             error: function (xhr, status, error) {
                 console.error(xhr, status, error);
-                swal("ОШИБКА!", "Что-то пошло не так!", "error");
+                swal("<?= $language_["error"] ?>!", "<?= $language_["errorMessage"] ?>!", "error");
             }
         });
     }
@@ -226,7 +226,7 @@
         },
         error: function (xhr, status, error) {
             console.error(xhr, status, error);
-            swal("ОШИБКА!", "Что-то пошло не так!", "error");
+            swal("<?= $language_["error"] ?>!", "<?= $language_["errorMessage"] ?>!", "error");
         }
     });
 }
@@ -267,12 +267,12 @@
                         }
                     });
                 } else {
-                    swal("ОШИБКА!", response.message || "Нет данных для отображения", "error");
+                    swal("<?= $language_["error"] ?>!", response.message || "Нет данных для отображения", "error");
                 }
             },
             error: function (xhr, status, error) {
                 console.error(xhr, status, error);
-                swal("ОШИБКА!", "Что-то пошло не так!", "error");
+                swal("<?= $language_["error"] ?>!", "<?= $language_["errorMessage"] ?>!", "error");
             }
         });
     }
@@ -323,7 +323,7 @@
             },
             error: function (xhr, status, error) {
                 console.error(xhr, status, error);
-                swal("ОШИБКА!", "Что-то пошло не так!", "error");
+                swal("<?= $language_["error"] ?>!", "<?= $language_["errorMessage"] ?>!", "error");
             }
         });
     }

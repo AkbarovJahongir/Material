@@ -246,8 +246,6 @@ if ($_SESSION["local"] == "ru") {
         checkbox.addEventListener('change', function () {
             if (this.checked) {
                 document.getElementById("nameOfTheConference").disabled = false;
-
-
             } else {
                 document.getElementById("nameOfTheConference").disabled = true;
             }
@@ -255,8 +253,6 @@ if ($_SESSION["local"] == "ru") {
         checkbox1.addEventListener('change', function () {
             if (this.checked) {
                 document.getElementById("namejurnal").disabled = false;
-
-
             } else {
                 document.getElementById("namejurnal").disabled = true;
             }
