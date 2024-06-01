@@ -67,6 +67,19 @@ $language = array(
     "canceled" => "ОТМЕНЕН",
     "changed" => "Изменено!",
     "deleted" => "УДАЛЕНО!",
-    "added" => "Добавлено"
+    "added" => "Добавлено",
+    "urls" =>"Адрес URL",
+    "user_k" => "Заведующий кафедрой",
+    "user_d" => "Отдел науки",
+    "allScientificMaterialsReport" => "Все отчеты",
+    "reportonPublish" => "Отчет по публикациям",
+    "countMaterial" => "Количество научных материалов",
+    "addedMaterial" => "Добавлены научные материалы",
+    "selectedKafedra" => "Выбрать кафедру",
+    "analizData" => "Анализ данных",
+    "activity" => "Активность",
+    "selectedUser" =>"Выбрать пользователя",
+    "all" => "Все",
+    "selectedFaculty" => "Выбрать факультет"
 );
 ?>

@@ -180,6 +180,7 @@ if ($_SESSION["local"] == "ru") {
                     <li class="treeview"><a class="app-menu__item <?= $report_active ?>" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label">'.$language_["reports"].'</span><i class="treeview-indicator fa fa-angle-right"></i></a>
                         <ul class="treeview-menu">
                             <li><a class="treeview-item" href="/report/allReport"><i class="icon fa fa-circle-o"></i> '.$language_["allReports"].'</a></li>
+                            <li><a class="treeview-item" href="/report/report_kafedra"><i class="icon fa fa-circle-o"></i> '.$language_["allReports"].'</a></li>
                             <li><a class="treeview-item" href="/report/report_barchart"><i class="icon fa fa-circle-o"></i> '.$language_["graphicReport"].'</a></li>
                         </ul>
                     </li>';

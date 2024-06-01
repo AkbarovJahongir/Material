@@ -35,33 +35,37 @@ if ($_SESSION["local"] == "ru") {
                         <div class="col-md-12">
                             <div class="tile">
                                 <div class="tile-body">
-                                    <table class="table table-hover table-bordered" id="sampleTable">
-                                        <thead>
-                                        <tr>
-                                            <th><?= $language_["authorsName"] ?></th>
-                                            <th><?= $language_["academicDegree"] ?></th>
-                                            <th><?= $language_["action"] ?></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <?php foreach ($data['authors'] as $author) : ?>
-                                            <tr>
-                                                <td><?= $author['name'] ?></td>
-                                                <td><?= $author['degree'] ?></td>
-                                                <td>
-                                                    <div class="btn-group">
-                                                        <a href="/<?= $data['controller_name'] ?>/edit/<?= $author['id'] ?>"
-                                                           class="btn btn-primary btn-sm"><i class="fa fa-lg fa-edit"></i> <?= $language_["change"] ?></a>
-                                                    </div>
-                                                    <div class="btn-group">
-                                                        <a href="#" onclick="deleteAuthor(<?= $author["id"] ?>)"
-                                                           class="btn btn-danger btn-sm del-author"><i class="fa fa-lg fa-trash"></i> <?= $language_["delete"] ?></a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        <?php endforeach; ?>
-                                        </tbody>
-                                    </table>
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-bordered" id="sampleTable">
+                                            <thead>
+                                                <tr>
+                                                    <th><?= $language_["authorsName"] ?></th>
+                                                    <th><?= $language_["academicDegree"] ?></th>
+                                                    <th><?= $language_["action"] ?></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach ($data['authors'] as $author) : ?>
+                                                    <tr>
+                                                        <td><?= $author['name'] ?></td>
+                                                        <td><?= $author['degree'] ?></td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <a href="/<?= $data['controller_name'] ?>/edit/<?= $author['id'] ?>" class="btn btn-primary btn-sm">
+                                                                    <i class="fa fa-lg fa-edit"></i> <?= $language_["change"] ?>
+                                                                </a>
+                                                            </div>
+                                                            <div class="btn-group">
+                                                                <a href="#" onclick="deleteAuthor(<?= $author['id'] ?>)" class="btn btn-danger btn-sm del-author">
+                                                                    <i class="fa fa-lg fa-trash"></i> <?= $language_["delete"] ?>
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -129,4 +129,53 @@ class Controller_Report extends Controller
         }
         //$this->view->generate('report/all_report.php', 'template_view.php', $this->data);
     }
+    function action_report_kafedra()
+    {
+        $materials = $this->model->get_materials();
+
+        for ($i = 0; $i < count($materials); $i++) {
+
+            $authors = $this->model->get_material_authors($materials[$i]['id']);
+            $authors_str = "";
+            for ($j = 0; $j < count($authors); $j++) {
+                if ($j == 0) {
+                    $authors_str = $authors[$j]["name"];
+                } else {
+                    $authors_str .= ", " . $authors[$j]["name"];
+                }
+            }
+            $materials[$i]['authors'] = $authors_str;
+        }
+        $this->data["faculty"] = $this->model->get_facultys();
+        //$this->data["kafedra"] = $this->model->get_kafedra();
+        $this->data["materials"] = $materials;
+
+        //$this->print_array( $materials ); die;
+        if (isset($_SESSION["uid"]["role_id"])) {
+            if ($_SESSION["uid"]["role_id"] == 1 || $_SESSION["uid"]["role_id"] == 2) {
+                $this->view->generate('403_view.php', 'template_view.php', $this->data);
+
+            }
+            else{
+                $this->view->generate('report/report_kafedra.php', 'template_view.php', $this->data);
+            }
+        }
+        //$this->view->generate('report/all_report.php', 'template_view.php', $this->data);
+    }
+    public function action_getKafedraByIdFaculty()
+    {
+        $user_role = $_SESSION["uid"]["role_id"];
+        $faculty_id = $_POST["faculty_id"];
+        //$this->print_array($_POST);die;
+        if ($user_role != 3 && $user_role != 4) {
+            $result = ["error" => 1, "message" => $this->language_["accessMessageAll"]];
+        } else {
+            $result = $this->model->get_kafedraById($faculty_id);
+            if (!$result) {
+                $result = ["error" => 1, "message" => $this->language_["errorMessageGetKafedra"]];
+            }
+        }
+        $this->return_json($result);
+        return;
+    }
 }

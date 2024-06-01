@@ -254,7 +254,7 @@ if ($_SESSION["local"] == "ru") {
             title: "<?= $language_["titleErrorDelete"] ?>",
             type: "warning",
             showCancelButton: true,
-            confirmButtonText: "ДА, удалить!",
+            confirmButtonText: "<?= $language_["confirmDelete"] ?>!",
             cancelButtonText: "<?= $language_["rejectEdit"] ?>",
             closeOnConfirm: false,
             closeOnCancel: false

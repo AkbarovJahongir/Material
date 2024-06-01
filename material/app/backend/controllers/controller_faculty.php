@@ -25,15 +25,36 @@ class Controller_Faculty extends Controller
 
     function action_index()
     {
+        //var_dump();
+        //echo 2222;
         $faculty = $this->model->get_facultys();
         $this->data["faculty"] = $faculty;
-        $this->view->generate('faculty/list_view.php', 'template_view.php', $this->data);
+        
+        //$this->view->generate('faculty/list_view.php', 'template_view.php', $this->data);
+        if (isset($_SESSION["uid"]["role_id"])) {
+            if ($_SESSION["uid"]["role_id"] == 1 || $_SESSION["uid"]["role_id"] == 2) {
+                $this->view->generate('403_view.php', 'template_view.php', $this->data);
+
+            }
+            else{
+                $this->view->generate('faculty/list_view.php', 'template_view.php', $this->data);
+            }
+        }
     }
     function action_index_kafedra()
     {
         $kafedra = $this->model->get_kafedra();
         $this->data["kafedra"] = $kafedra;
-        $this->view->generate('faculty/list_view_kafedra.php', 'template_view.php', $this->data);
+        //$this->view->generate('faculty/list_view_kafedra.php', 'template_view.php', $this->data);
+        if (isset($_SESSION["uid"]["role_id"])) {
+            if ($_SESSION["uid"]["role_id"] == 1 || $_SESSION["uid"]["role_id"] == 2) {
+                $this->view->generate('403_view.php', 'template_view.php', $this->data);
+
+            }
+            else{
+                $this->view->generate('faculty/list_view_kafedra.php', 'template_view.php', $this->data);
+            }
+        }
     }
     public function action_add()
     {

@@ -62,11 +62,25 @@ $language  = array(
     "хато" => "ХАТО",
     "муваффақият" => "ХАЗОР ШУД",
     "errorMessage" => "Чизе хато кард!",
+    
     "declineError" => "Шумо қариб нест кардаед :)",
     "declineErrorEdit" => "Шумо қариб тағйир ёфтед :)",
     "canceled" => "Canceled",
     "changed" => "Тағйир ёфт!",
     "deleted" => "НАЗАР ШУД!",
-    "added" => "Иловашуда"
+    "added" => "Иловашуда",
+    "urls" =>"Суроғаи URL",
+    "user_k" => "Сардори шӯъба",
+    "user_d" => "Шӯъбаи илм",
+    "allScientificMaterialsReport" => "Ҳама гузоришҳо",
+ "reportonPublish" => "Ҳисобот дар бораи нашрияҳо",
+ "countMaterial" => "Ҳисоби маводи илмӣ",
+ "addedMaterial" => "Маводҳои илмӣ илова карда шудаанд",
+ "selectedKafedra" => "Шӯъбаи интихоб кунед",
+ "analizData" => "Таҳлили маълумот",
+ "activity" => "Фаъолият",
+ "selectedUser" =>"Истифодабаранда интихоб кунед",
+    "all" => "Ҳама",
+    "selectedFaculty" => "Факултетро интихоб кунед"
 );
 ?>

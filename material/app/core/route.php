@@ -22,7 +22,7 @@ class Route
 		$controller_name = 'Controller_' . $controller_name;
 		$action_name = 'action_' . $action_name;
 
-
+        //die($action_name);
 		self::$app_side = "backend";
 
 		// if (!isset($_SESSION["uid"])) {
@@ -52,14 +52,20 @@ class Route
 				 //var_dump(in_array($routes[1],$arr));
 			}
 		}
-
+    
+        
+        
 		$model_file = strtolower($model_name) . '.php';
 		$model_path = "app/" . self::$app_side . "/models/" . $model_file;
+		
+		
 		if (file_exists($model_path)) {
 			include "app/" . self::$app_side . "/models/" . $model_file;
 			include "app/" . self::$app_side . "/models/model_common.php";
 		}
-
+		
+		//die($model_path);
+        
 		$controller_file = strtolower($controller_name) . '.php';
 		$controller_path = "app/" . self::$app_side . "/controllers/" . $controller_file;
 		if (file_exists($controller_path)) {
@@ -67,7 +73,9 @@ class Route
 		} else {
 			self::ErrorPage404();
 		}
-
+        
+        //die($controller_name);
+        
 		$controller = new $controller_name;
 		$action = $action_name;
 

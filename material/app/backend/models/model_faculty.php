@@ -51,19 +51,19 @@ class Model_Faculty extends Model
             "SELECT `id`, `name` FROM `faculty` WHERE `id` = ? AND `name` <> 'Барои илова'",
             [$id]
         );
-        return $result[0] ?? null;
+        return $result[0];
     }
 
     public function get_kafedraById($id)
     {
         $result = $this->select(
-            "SELECT k.`id`, k.`name`, f.`id` AS f_id, f.`name` AS `facultyName`
+            "SELECT k.`id`, k.`name`, f.`id` AS `f_id`, f.`name` AS `facultyName`
              FROM `kafedra` AS k
              INNER JOIN `faculty` AS f ON f.id = k.faculty_id
              WHERE k.`id` = ? AND k.`name` <> 'Барои илова кардан'",
             [$id]
         );
-        return $result[0] ?? null;
+        return $result[0];
     }
 
     public function edit_faculty($id, $name)
@@ -73,7 +73,7 @@ class Model_Faculty extends Model
         if ($existingPlace) {
             return $this->update(
                 "UPDATE `faculty` SET `name` = ?, `date_edit` = ? WHERE `id` = ?",
-                [$name, $this->current_date, $id]
+                [$name, date('Y-m-d H:i:s'), $id]
             );
         }
 
@@ -87,7 +87,7 @@ class Model_Faculty extends Model
         if ($existingKafedra) {
             return $this->update(
                 "UPDATE `kafedra` SET `name` = ?, `faculty_id` = ?, `date_edit` = ? WHERE `id` = ?",
-                [$name, $faculty, $this->current_date, $id]
+                [$name, $faculty, date('Y-m-d H:i:s'), $id]
             );
         }
         return false;

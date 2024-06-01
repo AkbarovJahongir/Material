@@ -15,6 +15,7 @@ $language = array(
     "enterPassword" => "Введите пароль",
     "selectPhoto" => "Выберите фото",
     "role" => "Роль",
+    "login" => "Логин",
     "loginAccess" => "Доступ для входа",
     "Yes/No" => "Есть/Нет",
     "department" => "Кафедра",

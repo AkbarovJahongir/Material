@@ -27,6 +27,7 @@ class Model_Material extends Model
             . " INNER JOIN `faculty` AS `faculty` ON kafedra.`faculty_id` = `faculty`.`id`"
             . " INNER JOIN `material_direction` AS `md` ON material.`material_direction_id` = `md`.`id`"
             . " INNER JOIN `material_status` AS `material_status` ON material_status.`id` = `material`.`status`"
+            . " WHERE material.`status` <> 0 "
             . " ORDER BY material.`date_add` DESC");
         return $result;
     }

@@ -1,3 +1,15 @@
+<?php
+$language_ = [];
+if ($_SESSION["local"] == "ru") {
+	$language_ = [];
+	include_once './app/language/Material/languageRU.php';
+	$language_ = $language;
+} else {
+	$language_ = [];
+	include_once './app/language/Material/languageTJ.php';
+	$language_ = $language;
+}
+?>
 <style>
     span.dropdown-item {
         cursor: pointer;
@@ -6,7 +18,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="tile">
-            <h3 class="tile-title">Отчет по публикациям</h3>
+            <h3 class="tile-title"><?= $language_["reportonPublish"] ?></h3>
             <div class="tile-body">
                 <div id="sampleTable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
                     <div class="row">
@@ -33,12 +45,12 @@
                             <div class="tile">
                                 <div class="row">
                                     <div class="col-4">
-                                        <h3 class="tile-title">Добавлены материалы</h3>
+                                        <h3 class="tile-title"><?= $language_["addedMaterial"] ?></h3>
                                     </div>
-                                    <label class="control-label col-md-2 text-right">Выбрать кафедру*:</label>
+                                    <label class="control-label col-md-2 text-right"><?= $language_["selectedKafedra"] ?>*:</label>
                                     <div class="col-6">
                                         <select name="kafedra" id="kafedra" class="form-control">
-                                            <option value='0'>Все</option>
+                                            <option value='0'><?= $language_["all"] ?></option>
                                             <?php
                                             if (isset($data["kafedra"])) {
                                                 foreach ($data['kafedra'] as $row) {
@@ -75,7 +87,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="tile">
-                                <h3 class="tile-title">Анализ данных</h3>
+                                <h3 class="tile-title"><?= $language_["analizData"] ?></h3>
                                 <div style="width: 80%; margin: auto;">
                                     <canvas id="activityChart"></canvas>
                                 </div>
@@ -98,12 +110,12 @@
                             <div class="tile">
                                 <div class="row">
                                     <div class="col-4">
-                                        <h3 class="tile-title">Добавлены материалы</h3>
+                                        <h3 class="tile-title"><?= $language_["addedMaterial"] ?></h3>
                                     </div>
-                                    <label class="control-label col-md-2 text-right">Выбрать пользователя*:</label>
+                                    <label class="control-label col-md-2 text-right"><?= $language_["selectedUser"] ?>*:</label>
                                     <div class="col-6">
                                         <select name="users" id="users" class="form-control">
-                                            <option value='0'>Все</option>
+                                            <option value='0'><?= $language_["all"] ?></option>
                                             <?php
                                             if (isset($data["users"])) {
                                                 foreach ($data['users'] as $row) {
@@ -146,7 +158,7 @@
                     const userData1 = {
                         labels: response.map(entry => entry.name),
                         datasets: [{
-                            label: 'Количество материалов',
+                            label: '<?= $language_["countMaterial"] ?>',
                             backgroundColor: 'rgba(54, 162, 235, 0.2)',
                             borderColor: 'rgba(54, 162, 235, 1)',
                             borderWidth: 1,
@@ -194,7 +206,7 @@
                 const userData = {
                     labels: response.map(entry => entry.year),
                     datasets: [{
-                        label: 'Добавлены материалы',
+                        label: '<?= $language_["addedMaterial"] ?>',
                         data: response.map(entry => entry.count),
                         backgroundColor: 'rgba(255, 99, 132, 0.2)',
                         borderColor: 'rgba(255, 99, 132, 1)',
@@ -244,7 +256,7 @@
                     const userActivityData = {
                         labels: response.map(entry => entry.year),
                         datasets: [{
-                            label: 'Активность',
+                            label: '<?= $language_["activity"] ?>',
                             data: response.map(entry => entry.count),
                             backgroundColor: 'rgba(54, 162, 235, 0.2)',
                             borderColor: 'rgba(54, 162, 235, 1)',
@@ -292,7 +304,7 @@
                     const userData = {
                         labels: response.map(entry => entry.year),
                         datasets: [{
-                            label: 'Добавлены материалы',
+                            label: '<?= $language_["addedMaterial"] ?>',
                             data: response.map(entry => entry.count),
                             backgroundColor: 'rgba(255, 99, 132, 0.2)',
                             borderColor: 'rgba(255, 99, 132, 1)',

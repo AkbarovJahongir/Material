@@ -30,11 +30,9 @@ class Controller_Author extends Controller{
         if (isset($_SESSION["uid"]["role_id"])) {
             if (/*$_SESSION["uid"]["role_id"] == 1 ||*/ $_SESSION["uid"]["role_id"] == 2) {
                 $this->view->generate('403_view.php', 'template_view.php', $this->data);
-                var_dump($_SESSION);die;
             }
             else{
                 $this->view->generate('author/list_view.php', 'template_view.php', $this->data);
-                var_dump($_SESSION);die;
             }
         }
 	}

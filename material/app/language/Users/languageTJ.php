@@ -15,6 +15,7 @@ $language = array(
     "enterPassword" => "Паролро ворид кунед",
     "selectPhoto" => "Аксро интихоб кунед",
     "role" => "Нақш",
+    "login" => "Логин",
     "loginAccess" => "Воридшавӣ",
     "Yes/No" => "Ҳа/Не",
     "department" => "Шӯъба",

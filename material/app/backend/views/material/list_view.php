@@ -1,35 +1,36 @@
 <?php
 $language_ = [];
 if ($_SESSION["local"] == "ru") {
-    $language_ = [];
-    include_once './app/language/Material/languageRU.php';
-    $language_ = $language;
+	$language_ = [];
+	include_once './app/language/Material/languageRU.php';
+	$language_ = $language;
 } else {
-    $language_ = [];
-    include_once './app/language/Material/languageTJ.php';
-    $language_ = $language;
+	$language_ = [];
+	include_once './app/language/Material/languageTJ.php';
+	$language_ = $language;
 }
 ?>
 <style>
 	span.dropdown-item {
 		cursor: pointer;
 	}
-	.modal {
-      display: none;
-      /* Стили модального окна */
-    }
 
+	.modal {
+		display: none;
+		/* Стили модального окна */
+	}
 </style>
 <div class="app-title">
 	<div>
 		<ul class="app-breadcrumb breadcrumb">
 			<li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-			<li class="breadcrumb-item"><a href="/<?= $data['controller_name'] ?>"><?= $language_["materials"] ?></a></li>
+			<li class="breadcrumb-item"><a href="/<?= $data['controller_name'] ?>"><?= $language_["materials"] ?></a>
+			</li>
 		</ul>
 	</div>
 	<?php if ($_SESSION["uid"]["role_id"] == 2 || $_SESSION["uid"]["role_id"] == 1) {
 		echo '
-	<a class="btn btn-primary btn-sm" href=' . $data['controller_name'] . '/add/">'. $language_["add"]. '</a>';
+	<a class="btn btn-primary btn-sm" href=' . $data['controller_name'] . '/add/">' . $language_["add"] . '</a>';
 	} ?>
 </div>
 
@@ -59,7 +60,7 @@ if ($_SESSION["local"] == "ru") {
 													<th><?= $language_["conferenceTitle"] ?></th>
 													<th><?= $language_["magazineName"] ?></th>
 													<th><?= $language_["directionOfScientificMaterial"] ?></th>
-													<th>Ссылка</th>
+													<th><?= $language_["urls"] ?></th>
 													<th><?= $language_["faculty"] ?></th>
 													<th><?= $language_["department"] ?></th>
 													<th><?= $language_["publicationDate"] ?></th>
@@ -71,10 +72,9 @@ if ($_SESSION["local"] == "ru") {
 														($_SESSION["uid"]["role_id"] != 1) ||
 														($_SESSION["uid"]["role_id"] == 4)
 													) {
-														echo '<th style="height: 10px;">'. $language_["action"] .'</th>';
-													}
-													else if ($_SESSION["uid"]["role_id"] == 1 ){
-														echo '<th style="height: 10px;">'. $language_["action"] .'</th>';
+														echo '<th style="height: 10px;">' . $language_["action"] . '</th>';
+													} else if ($_SESSION["uid"]["role_id"] == 1) {
+														echo '<th style="height: 10px;">' . $language_["action"] . '</th>';
 													}
 													?>
 													<th><?= $language_["file"] ?></th>
@@ -84,43 +84,52 @@ if ($_SESSION["local"] == "ru") {
 												<?php foreach ($data['materials'] as $material): ?>
 													<tr>
 														<td><?= $material['id'] ?></td>
-    													<td class="material-cell" data-name="<?= $material['name'] ?>">
-                                                          <?php
-                                                            $name = $material['name'];
-                                                            if (strlen($name) > 20) {
-                                                              echo '<a href="#" onclick="openModals(\'' . htmlspecialchars($name) . '\')">' . substr($name, 0, 20) . '...</a>';
-                                                            } else {
-                                                              echo htmlspecialchars($name);
-                                                            }
-                                                          ?>
-                                                        </td>
-														<td><?= $material['authors'] ?></td>
+														<td class="material-cell"data-name="<?= htmlspecialchars($material['name']) ?>">
+															<?php
+															$name = htmlspecialchars($material['name'], ENT_QUOTES, 'UTF-8');
+															echo '<a href="#" onclick="openModals(\'' . $name . '\')">' . mb_substr($name, 0, 20) . '</a>';
+															?>
+														</td>
+														<td class="material-cell"data-name="<?= htmlspecialchars($material['authors']) ?>">
+															<?php
+															$name = htmlspecialchars($material['authors'], ENT_QUOTES, 'UTF-8');
+															echo '<a href="#" onclick="openModals(\'' . $name . '\')">' . mb_substr($name, 0, 20) . '</a>';
+															?>
+														</td>
+
 														<td><?= $material['type'] ?></td>
-														
-														<td class="material-cell" data-name="<?= $material['conference_name'] ?>">
-                                                          <?php
-                                                            $name = $material['conference_name'];
-                                                            if (strlen($name) > 20) {
-                                                              echo '<a href="#" onclick="openModals(\'' . htmlspecialchars($name) . '\')">' . substr($name, 0, 20) . '...</a>';
-                                                            } else {
-                                                              echo htmlspecialchars($name);
-                                                            }
-                                                          ?>
-                                                        </td>
+
+														<td class="material-cell"data-name="<?= $material['conference_name'] ?>">
+															<?php
+															$name = htmlspecialchars($material['conference_name'], ENT_QUOTES, 'UTF-8');
+															echo '<a href="#" onclick="openModals(\'' . $name . '\')">' . mb_substr($name, 0, 20) . '</a>';
+															?>
+														</td>
 														<td class="material-cell" data-name="<?= $material['name_jurnal'] ?>">
-                                                          <?php
-                                                            $name = $material['name_jurnal'];
-                                                            if (strlen($name) > 20) {
-                                                              echo '<a href="#" onclick="openModals(\'' . htmlspecialchars($name) . '\')">' . substr($name, 0, 20) . '...</a>';
-                                                            } else {
-                                                              echo htmlspecialchars($name);
-                                                            }
-                                                          ?>
-                                                        </td>
-														<td><?= $material['direction'] ?></td>
-														<td><?= $material['url'] ?></td>
+															<?php
+															$name = htmlspecialchars($material['name_jurnal'], ENT_QUOTES, 'UTF-8');
+															echo '<a href="#" onclick="openModals(\'' . $name . '\')">' . mb_substr($name, 0, 20) . '</a>';
+															?>
+														</td>
+														<td class="material-cell" data-name="<?= $material['direction'] ?>">
+															<?php
+															$name = htmlspecialchars($material['direction'], ENT_QUOTES, 'UTF-8');
+															echo '<a href="#" onclick="openModals(\'' . $name . '\')">' . mb_substr($name, 0, 20) . '</a>';
+															?>
+														</td>
+														<td class="material-cell" data-name="<?= $material['url'] ?>">
+															<?php
+															$name = htmlspecialchars($material['url'], ENT_QUOTES, 'UTF-8');
+															echo '<a href="#" onclick="openModals(\'' . $name . '\')">' . mb_substr($name, 0, 20) . '</a>';
+															?>
+														</td>
 														<td><?= $material['faculty'] ?></td>
-														<td><?= $material['kafedra'] ?></td>
+														<td class="material-cell"data-name="<?= $material['kafedra'] ?>">
+															<?php
+															$name = htmlspecialchars($material['kafedra'], ENT_QUOTES, 'UTF-8');
+															echo '<a href="#" onclick="openModals(\'' . $name . '\')">' . mb_substr($name, 0, 20) . '</a>';
+															?>
+														</td>
 														<td><?= $material['date_publish'] ?></td>
 														<td><?= $material['status'] ?></td>
 														<td><?= $material['comment'] ?></td>
@@ -129,7 +138,8 @@ if ($_SESSION["local"] == "ru") {
 																<div class="btn-group">
 																	<a href="/<?= $data['controller_name'] ?>/edit/<?= $material['id'] ?>"
 																		class="btn btn-primary btn-sm"><i
-																			class="fa fa-lg fa-edit"></i> <?= $language_["change"] ?></a>
+																			class="fa fa-lg fa-edit"></i>
+																		<?= $language_["change"] ?></a>
 																</div>
 																<div
 																	style="display:flex;justify-content:space-around;padding: 5px;">
@@ -137,7 +147,8 @@ if ($_SESSION["local"] == "ru") {
 																		<a href="#"
 																			onclick="deleteMaterial(<?= $material['id'] ?>)"
 																			class="btn btn-danger btn-sm del-material"><i
-																				class="fa fa-lg fa-trash"></i> <?= $language_["delete"] ?></a>
+																				class="fa fa-lg fa-trash"></i>
+																			<?= $language_["delete"] ?></a>
 																	</div>
 																</div>
 															</td>
@@ -151,13 +162,15 @@ if ($_SESSION["local"] == "ru") {
 																	<div class="btn-group">
 																		<a href="/<?= $data['controller_name'] ?>/confirm/<?= $material['id'] ?>"
 																			class="btn btn-primary btn-sm">
-																			<i class="fa fa-lg fa-edit"></i> <?= $language_["confirm"] ?>
+																			<i class="fa fa-lg fa-edit"></i>
+																			<?= $language_["confirm"] ?>
 																		</a>
 																	</div>
 																	<div class="btn-group">
 																		<a href="#" onclick="openModal(<?= $material['id'] ?>)"
 																			class="btn btn-danger btn-sm del-material">
-																			<i class="fa fa-lg fa-trash"></i> <?= $language_["reject"] ?>
+																			<i class="fa fa-lg fa-trash"></i>
+																			<?= $language_["reject"] ?>
 																		</a>
 																	</div>
 																</div>
@@ -170,7 +183,8 @@ if ($_SESSION["local"] == "ru") {
 																<?php if (!empty($material['file_path'])): ?>
 																	<a href="/app/uploads/file/<?= $material['file_path'] ?>"
 																		class="btn btn-primary btn-sm" target="_blank">
-																		<i class="fa fa-lg fa-book"></i> <?= $language_["download"] ?>
+																		<i class="fa fa-lg fa-book"></i>
+																		<?= $language_["download"] ?>
 																	</a>
 																<?php else: ?>
 																	<p><?= $language_["fileMissing"] ?></p>
@@ -205,7 +219,8 @@ if ($_SESSION["local"] == "ru") {
 							<div class="row">
 								<div class="col-md-12">
 									<div class="form-group">
-										<label id="name" class="col-md-12" for="name"><?= $language_["scientificMaterial"] ?></label>
+										<label id="name" class="col-md-12"
+											for="name"><?= $language_["scientificMaterial"] ?></label>
 										<label id="id" class="col-md-12" for="name" style="display: none;"></label>
 										<div class="col-md-12">
 											<input class="form-control" id="nameMaterial" readonly />
@@ -244,10 +259,10 @@ if ($_SESSION["local"] == "ru") {
 	var $id = "";
 
 	$('#sampleTable').DataTable({
-        language:{           
-            url: '<?=$_SESSION['local']?>'=='tj'?'/assets/json/tg.json':'/assets/json/ru.json',
-        }
-    });
+		language: {
+			url: '<?= $_SESSION['local'] ?>'=='tj'?'/as   s ets/json/tg.json':'/assets/json/ru.json',
+		}
+	});
 
 	function deleteMaterial(id) {
 		swal({
@@ -312,14 +327,12 @@ if ($_SESSION["local"] == "ru") {
 		});
 		$('#myModal').modal('show');
 	}
-	
+
 	function openModals(name) {
-        $('#description').val(name);
-        swal("", name, "success");
-        //$('#myModals').modal('show');
-    }
-
-
+		$('#description').val(name);
+		swal("", name, "");
+		//$('#myModals').modal('show');
+	}
 	function declineMaterial() {
 		var $ID = $id;
 		var $comment = $("#comment").val();
@@ -364,9 +377,7 @@ if ($_SESSION["local"] == "ru") {
 		$id = '';
 		$("#comment").val('');
 	}
-	var delayBeforeClose = 3000; // Например, 3000 миллисекунд = 3 секунды
-
-	// Функция для закрытия сообщения
+	var delayBeforeClose = 3000;
 	function closeMessage() {
 		var messageBlock = document.getElementById('messageBlock');
 		if (messageBlock) {
@@ -375,4 +386,5 @@ if ($_SESSION["local"] == "ru") {
 	}
 
 	setTimeout(closeMessage, delayBeforeClose);
+ 
 </script>
