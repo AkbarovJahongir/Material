@@ -60,7 +60,7 @@ if ($_SESSION["local"] == "ru") {
                     <div class="form-group row">
                         <label class="control-label col-md-3"><?= $language_["typeofscientificmaterial"] ?>*:</label>
                         <div class="col-md-6">
-                            <select name="type" class="form-control">
+                            <select name="type" class="form-control"  id="select_directory">
                                 <option value=''><?= $language_["selectTheTypeOfScientificMaterial"] ?></option>
                                 <?php
                                 if (isset($data["types"])) {
@@ -84,6 +84,25 @@ if ($_SESSION["local"] == "ru") {
                                             echo "<option value='" . $row["id"] . "' selected>" . $row['code'] . " - " . $row['name'] . "</option>";
                                         else
                                             echo "<option value='" . $row["id"] . "'>" . $row['code'] . " - " . $row['name'] . "</option>";
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group row" style="display: none;"id="directory">
+                        <label class="control-label col-md-3"><?= $language_["typeofscientificmaterial"] ?>*:</label>
+                        <div class="col-md-6">
+                            <select name="direction_dictionary" class="form-control">
+                                <option value=''><?= $language_["selectTheTypeOfScientificMaterial"] ?></option>
+                                <?php
+                                if (isset($data["direction_dictionary"])) {
+                                    foreach ($data['direction_dictionary'] as $row) {
+                                    if ($row == $data["material"]["material_direction_dictionary_id"])
+                                        echo "<option selected value='" . $row["id"] . "'>" . $row['name'] . "</option>";
+                                    else
+                                        echo "<option value='" . $row["id"] . "'>" . $row['name'] . "</option>";
                                     }
                                 }
                                 ?>
@@ -273,5 +292,38 @@ if ($_SESSION["local"] == "ru") {
                 document.getElementById("namejurnal").disabled = true;
             }
         });
+        function checkSelectedValue() {
+        var select = document.getElementById("select_directory");
+        var directoryDiv = document.getElementById("directory");
+        var selectedValue = select.options[select.selectedIndex].text;
+
+        if (selectedValue === 'Макола') {
+            directoryDiv.style.display = 'block';
+        } else {
+            directoryDiv.style.display = 'none';
+        }
+    }
+
+    // Check the value on page load
+    checkSelectedValue();
+
+    // Add event listener for change event
+    document.getElementById("select_directory").addEventListener("change", checkSelectedValue);
     });
+    $("#select_directory").on('change', function () {
+    if (this.value == 1) {
+      $("#deliver_block").css("display", "block");
+      $('input[name ="d_sms"]').prop('checked', true);
+    } else {
+      $("#deliver_block").css("display", "none");
+      $('input[name ="d_sms"]').prop('checked', false);
+      $('input[name ="d_tel"]').val("");
+      $('input[name ="d_passport"]').val("");
+    }
+    if (this.value == 2 || this.value == 1) {
+      $("#directory").show();
+    } else {
+      $("#directory").hide();
+    }
+  });
 </script>

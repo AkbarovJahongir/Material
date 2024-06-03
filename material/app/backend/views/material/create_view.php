@@ -59,7 +59,7 @@ if ($_SESSION["local"] == "ru") {
                     <div class="form-group row">
                         <label class="control-label col-md-3"><?= $language_["typeofscientificmaterial"] ?>*:</label>
                         <div class="col-md-6">
-                            <select name="type" class="form-control">
+                            <select name="type" class="form-control"  id="select_directory">
                                 <option value=''><?= $language_["selectTheTypeOfScientificMaterial"] ?></option>
                                 <?php
                                 if (isset($data["types"])) {
@@ -77,6 +77,21 @@ if ($_SESSION["local"] == "ru") {
                                 if (isset($data["languages"])) {
                                     foreach ($data['languages'] as $row) {
                                         echo "<option value='" . $row["id"] . "'>" . $row['code'] . " - " . $row['name'] . "</option>";
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row" style="display: none;"id="directory">
+                        <label class="control-label col-md-3"><?= $language_["typeofscientificmaterial"] ?>*:</label>
+                        <div class="col-md-6">
+                            <select name="direction_dictionary" class="form-control">
+                                <option value=''><?= $language_["selectTheTypeOfScientificMaterial"] ?></option>
+                                <?php
+                                if (isset($data["direction_dictionary"])) {
+                                    foreach ($data['direction_dictionary'] as $row) {
+                                        echo "<option value='" . $row["id"] . "'>" . $row['name'] . "</option>";
                                     }
                                 }
                                 ?>
@@ -258,4 +273,20 @@ if ($_SESSION["local"] == "ru") {
             }
         });
     });
+    $("#select_directory").on('change', function () {
+    if (this.value == 1) {
+      $("#deliver_block").css("display", "block");
+      $('input[name ="d_sms"]').prop('checked', true);
+    } else {
+      $("#deliver_block").css("display", "none");
+      $('input[name ="d_sms"]').prop('checked', false);
+      $('input[name ="d_tel"]').val("");
+      $('input[name ="d_passport"]').val("");
+    }
+    if (this.value == 2 || this.value == 1) {
+      $("#directory").show();
+    } else {
+      $("#directory").hide();
+    }
+  });
 </script>

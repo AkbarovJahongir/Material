@@ -89,7 +89,7 @@ class Controller_Material extends Controller
     {
         $error_message = '';
 
-        //$this->print_array($_POST); 
+        //$this->print_array($_POST); die;
         //$this->print_array($_FILES["fileToUpload"]);die;
         /* #Получение общих данных */
         $this->data["authors"] = $this->model_common->get_authors();
@@ -98,6 +98,7 @@ class Controller_Material extends Controller
         $this->data["places"] = $this->model_common->get_places();
         $this->data["kafedra"] = $this->model_common->get_kafedra();
         $this->data["direction"] = $this->model_common->get_direction();
+        $this->data["direction_dictionary"] = $this->model_common->get_direction_dictionary();
 
         if (isset($_FILES["fileToUpload"])) {
             $target_dir = "./app/uploads/file/";
@@ -165,6 +166,7 @@ class Controller_Material extends Controller
             $namejurnal = $_POST["namejurnal"];
             $direction = $_POST["direction"];
             $url = $_POST["urlMatrial"];
+            $direction_dictionary = $_POST["direction_dictionary"];
 
             if (
                 $name != "" &&
@@ -184,7 +186,7 @@ class Controller_Material extends Controller
                 $jsons = [
                     "authors" => $json_authors
                 ];
-                $result = $this->model->add_material($name, $type, $language, $date_publish, $place, $count, $jsons, $unique_filename, $kafedra, $nameOfTheConference, $namejurnal, $url, $direction);
+                $result = $this->model->add_material($name, $type, $language, $date_publish, $place, $count, $jsons, $unique_filename, $kafedra, $nameOfTheConference, $namejurnal, $url, $direction, $direction_dictionary);
 
                 if ($result) {
                     $this->data["error"] = 0;
@@ -263,6 +265,7 @@ class Controller_Material extends Controller
         $this->data["types"] = $this->model_common->get_types();
         $this->data["places"] = $this->model_common->get_places();
         $this->data["direction"] = $this->model_common->get_direction();
+        $this->data["direction_dictionary"] = $this->model_common->get_direction_dictionary();
         //$this->print_array($_FILES["fileToUpload"]); die;
 
         //$this->print_array($_POST);die;
@@ -297,6 +300,7 @@ class Controller_Material extends Controller
             $namejurnal = $_POST["namejurnal"];
             $direction = $_POST["direction"];
             $url = $_POST["urlMatrial"];
+            $direction_dictionary = $_POST["direction_dictionary"];
 
 
             if (
@@ -330,7 +334,7 @@ class Controller_Material extends Controller
                 //     ,"count" => $count
                 //     ,"jsons" => $jsons ]); die;
 
-                $result = $this->model->edit_material($id, $name, $type, $language, $date_publish, $place, $count, $unique_filename, $jsons, $kafedra, $nameOfTheConference, $namejurnal, $url, $direction);
+                $result = $this->model->edit_material($id, $name, $type, $language, $date_publish, $place, $count, $unique_filename, $jsons, $kafedra, $nameOfTheConference, $namejurnal, $url, $direction, $direction_dictionary);
 
                 if ($result) {
                     $this->data["error"] = 0;
