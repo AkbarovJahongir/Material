@@ -80,6 +80,7 @@ $language = array(
     "activity" => "Активность",
     "selectedUser" =>"Выбрать пользователя",
     "all" => "Все",
-    "selectedFaculty" => "Выбрать факультет"
+    "selectedFaculty" => "Выбрать факультет",
+    "article" => "Cтатья"
 );
 ?>

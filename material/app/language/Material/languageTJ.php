@@ -81,6 +81,7 @@ $language  = array(
  "activity" => "Фаъолият",
  "selectedUser" =>"Истифодабаранда интихоб кунед",
     "all" => "Ҳама",
-    "selectedFaculty" => "Факултетро интихоб кунед"
+    "selectedFaculty" => "Факултетро интихоб кунед",
+    "article" => "Мақола"
 );
 ?>

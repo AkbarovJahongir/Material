@@ -77,111 +77,10 @@ if ($_SESSION["local"] == "ru") {
 													<th>ID</th>
 													<th><?= $language_["name"] ?></th>
 													<th><?= $language_["authors"] ?></th>
-													<th><?= $language_["typeOfScientific"] ?></th>
-													<th><?= $language_["conferenceTitle"] ?></th>
-													<th><?= $language_["magazineName"] ?></th>
-													<th><?= $language_["directionOfScientificMaterial"] ?></th>
-													<th><?= $language_["urls"] ?></th>
-													<th><?= $language_["faculty"] ?></th>
-													<th><?= $language_["department"] ?></th>
-													<th><?= $language_["publicationDate"] ?></th>
-													<th><?= $language_["status"] ?></th>
-													<th><?= $language_["user_k"] ?></th>
-													<th><?= $language_["user_d"] ?></th>
-													<th><?= $language_["comment"] ?></th>
-													<th><?= $language_["action"] ?></th>
-													<th><?= $language_["file"] ?></th>
 												</tr>
 											</thead>
 											<tbody>
-												<?php foreach ($data['materials'] as $material): ?>
-													<tr>
-														<td><?= $material['id'] ?></td>
-														<td class="cut-text">
-															<a href="#"
-																onclick="openModals('<?= htmlspecialchars($material['name'], ENT_QUOTES, 'UTF-8') ?>')"><?= htmlspecialchars($material['name'], ENT_QUOTES, 'UTF-8') ?></a>
-														</td>
-														<td class="cut-text">
-															<a href="#"
-																onclick="openModals('<?= htmlspecialchars($material['authors'], ENT_QUOTES, 'UTF-8') ?>')"><?= htmlspecialchars($material['authors'], ENT_QUOTES, 'UTF-8') ?></a>
-														</td>
-														<td><?= $material['type'] ?></td>
-														<td class="cut-text">
-															<a href="#"
-																onclick="openModals('<?= htmlspecialchars($material['conference_name'], ENT_QUOTES, 'UTF-8') ?>')"><?= htmlspecialchars($material['conference_name'], ENT_QUOTES, 'UTF-8') ?></a>
-														</td>
-														<td class="cut-text">
-															<a href="#"
-																onclick="openModals('<?= htmlspecialchars($material['name_jurnal'], ENT_QUOTES, 'UTF-8') ?>')"><?= htmlspecialchars($material['name_jurnal'], ENT_QUOTES, 'UTF-8') ?></a>
-														</td>
-														<td class="cut-text">
-															<a href="#"
-																onclick="openModals('<?= htmlspecialchars($material['direction'], ENT_QUOTES, 'UTF-8') ?>')"><?= htmlspecialchars($material['direction'], ENT_QUOTES, 'UTF-8') ?></a>
-														</td>
-														<td class="cut-text">
-															<a href="#"
-																onclick="openModals('<?= htmlspecialchars($material['url'], ENT_QUOTES, 'UTF-8') ?>')"><?= htmlspecialchars($material['url'], ENT_QUOTES, 'UTF-8') ?></a>
-														</td>
-														<td><?= $material['faculty'] ?></td>
-														<td class="cut-text">
-															<a href="#"
-																onclick="openModals('<?= htmlspecialchars($material['kafedra'], ENT_QUOTES, 'UTF-8') ?>')"><?= htmlspecialchars($material['kafedra'], ENT_QUOTES, 'UTF-8') ?></a>
-														</td>
-														<td><?= $material['date_publish'] ?></td>
-														<td class="cut-text">
-															<a href="#"
-																onclick="openModals('<?= htmlspecialchars($material['status'], ENT_QUOTES, 'UTF-8') ?>')"><?= htmlspecialchars($material['status'], ENT_QUOTES, 'UTF-8') ?></a>
-														</td>
-														<td><?= $material["user_k"] ?></td>
-														<td><?= $material["user_d"] ?></td>
-														<td><?= $material['comment'] ?></td>
-														<td>
-															<?php if ($_SESSION["uid"]["role_id"] == 1): ?>
-																<div class="btn-group">
-																	<a href="/<?= $data['controller_name'] ?>/edit/<?= $material['id'] ?>"
-																		class="btn btn-primary btn-sm">
-																		<i class="fa fa-lg fa-edit"></i>
-																		<?= $language_["change"] ?>
-																	</a>
-																	<a href="#" onclick="deleteMaterial(<?= $material['id'] ?>)"
-																		class="btn btn-danger btn-sm del-material">
-																		<i class="fa fa-lg fa-trash"></i>
-																		<?= $language_["delete"] ?>
-																	</a>
-																</div>
-															<?php elseif (
-																($_SESSION["uid"]["role_id"] == 2 && $material["status_id"] == 1 && $material["status_id"] != 2) ||
-																($_SESSION["uid"]["role_id"] == 4 && $material["status_id"] != 1 && $material["status_id"] == 2)
-															): ?>
-																<div class="btn-group">
-																	<a href="/<?= $data['controller_name'] ?>/confirm/<?= $material['id'] ?>"
-																		class="btn btn-primary btn-sm">
-																		<i class="fa fa-lg fa-edit"></i>
-																		<?= $language_["confirm"] ?>
-																	</a>
-																	<a href="#" onclick="openModal(<?= $material['id'] ?>)"
-																		class="btn btn-danger btn-sm del-material">
-																		<i class="fa fa-lg fa-trash"></i>
-																		<?= $language_["reject"] ?>
-																	</a>
-																</div>
-															<?php else: ?>
-																<?= $language_["materialBeingProcessed"] ?>
-															<?php endif; ?>
-														</td>
-														<td>
-															<?php if (!empty($material['file_path'])): ?>
-																<a href="/app/uploads/file/<?= $material['file_path'] ?>"
-																	class="btn btn-primary btn-sm" target="_blank">
-																	<i class="fa fa-lg fa-book"></i>
-																	<?= $language_["download"] ?>
-																</a>
-															<?php else: ?>
-																<p><?= $language_["fileMissing"] ?></p>
-															<?php endif; ?>
-														</td>
-													</tr>
-												<?php endforeach; ?>
+
 											</tbody>
 										</table>
 									</div> <!-- End table-responsive -->
@@ -293,13 +192,12 @@ if ($_SESSION["local"] == "ru") {
 		$('#kafedra').change(function () {
 			var kafedraId = $(this).val();
 			$.ajax({
-				url: '/report/getKafedraByIdFaculty',
+				url: '/report/getreportArticle',
 				type: 'POST',
 				data: { kafedra_id: kafedraId },
 				success: function (response) {
 					//console.log("Raw response:", response);  // Log the raw response
 					var kafedraSelect = $('#kafedra');
-					kafedraSelect.empty();
 					kafedraSelect.append("<option value='0'><?= $language_["all"] ?></option>");
 
 					if (typeof response === 'string') {
@@ -317,6 +215,7 @@ if ($_SESSION["local"] == "ru") {
 						$.each(response, function (index, kafedra) {
 							kafedraSelect.append("<option value='" + kafedra.id + "'>" + kafedra.name + "</option>");
 						});
+						fillTable(response);
 					}
 				},
 				error: function (xhr, status, error) {
@@ -326,7 +225,18 @@ if ($_SESSION["local"] == "ru") {
 		});
 	});
 
+function fillTable(data) {
+    var tableBody = $('#sampleTable tbody');
+    tableBody.empty();  // Clear the table body
 
+    $.each(data, function (index, user) {
+        var row = '<tr>';
+        row += '<td>' + user.id + '</td>';
+        row += '<td>' + user.name + '</td>';
+        row += '</tr>';
+        tableBody.append(row);
+    });
+}
 	$('#faculty').select2();
 	$('#kafedra').select2();
 	function openModals(name) {

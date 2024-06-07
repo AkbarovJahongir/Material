@@ -178,4 +178,20 @@ class Controller_Report extends Controller
         $this->return_json($result);
         return;
     }
+    public function action_getreportArticle()
+    {
+        $user_role = $_SESSION["uid"]["role_id"];
+        //$this->print_array($_POST);die;
+        $kefedra = $_POST["kafedra_id"];
+        if ($user_role != 3 && $user_role != 4) {
+            $result = ["error" => 1, "message" => $this->language_["accessMessageAll"]];
+        } else {
+            $result = $this->model->get_reportArticle($kefedra);
+            if (!$result) {
+                $result = ["error" => 1, "message" => $this->language_["errorMessageGetKafedra"]];
+            }
+        }
+        $this->return_json($result);
+        return;
+    }
 }

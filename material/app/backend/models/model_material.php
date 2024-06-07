@@ -53,6 +53,7 @@ class Model_Material extends Model
                 . " ,material.`name_jurnal`"
                 . " ,md.`name` AS direction"
                 . " ,material.`url`"
+                . " ,mdd.`name` AS MD"
                 . " FROM `material` AS material"
                 . " INNER JOIN `type` AS `type` ON material.`type_id` = `type`.`id`"
                 . " INNER JOIN `user` AS `user` ON material.`user_id` = `user`.`id`"
@@ -60,6 +61,7 @@ class Model_Material extends Model
                 . " INNER JOIN `faculty` AS `faculty` ON kafedra.`faculty_id` = `faculty`.`id`"
                 . " INNER JOIN `material_direction` AS `md` ON material.`material_direction_id` = `md`.`id`"
                 . " INNER JOIN `material_status` AS `material_status` ON material_status.`id` = `material`.`status`"
+                . " LEFT JOIN `material_direction_dictionary` AS `mdd` ON mdd.`id` = `material`.`material_direction_dictionary_id`"
                 . " WHERE material.`status` = 2 "
                 . " ORDER BY material.`date_add` DESC");
         } else if ($id == 1) {
@@ -79,6 +81,7 @@ class Model_Material extends Model
             ." ,material.`name_jurnal`"
             ." ,md.`name` AS direction"
             ." ,material.`url`"
+            ." ,mdd.`name` AS MD"
             ." FROM `material` AS material"
             ." INNER JOIN `type` AS `type` ON material.`type_id` = `type`.`id`"
             ." INNER JOIN `user` AS `user` ON material.`user_id` = `user`.`id`"
@@ -86,6 +89,7 @@ class Model_Material extends Model
             ." INNER JOIN `faculty` AS `faculty` ON kafedra.`faculty_id` = `faculty`.`id`"
             ." INNER JOIN `material_direction` AS `md` ON material.`material_direction_id` = `md`.`id`"
             ." INNER JOIN `material_status` AS `material_status` ON material_status.`id` = `material`.`status`"
+            . " LEFT JOIN `material_direction_dictionary` AS `mdd` ON mdd.`id` = `material`.`material_direction_dictionary_id`"
             ." WHERE `user`.`role_id` = ? AND material.`user_id` = ?"
             
             ." UNION ALL"
@@ -106,6 +110,7 @@ class Model_Material extends Model
             ." ,material.`name_jurnal`"
             ." ,md.`name` AS direction"
             ." ,material.`url`"
+            . " ,mdd.`name` AS MD"
             ." FROM author "
             ." INNER JOIN `user` ON `user`.`author_id` = author.id "
             ." INNER JOIN `material_author` ON `material_author`.`author_id` = author.id"
@@ -115,6 +120,7 @@ class Model_Material extends Model
             ." INNER JOIN `faculty` ON kafedra.`faculty_id` = `faculty`.`id`"
             ." INNER JOIN `material_direction` AS `md` ON material.`material_direction_id` = `md`.`id`"
             ." INNER JOIN `material_status` ON material_status.`id` = `material`.`status`"
+                . " LEFT JOIN `material_direction_dictionary` AS `mdd` ON mdd.`id` = `material`.`material_direction_dictionary_id`"
             ." WHERE `user`.`role_id` = ? AND `user`.`id` = ?"
             
             ." ORDER BY `date_publish` DESC", 
@@ -139,6 +145,7 @@ class Model_Material extends Model
             ." ,material.`name_jurnal`"
             ." ,md.`name` AS direction"
             ." ,material.`url`"
+            . " ,mdd.`name` AS MD"
             ." FROM `material` AS material"
             ." INNER JOIN `type` AS `type` ON material.`type_id` = `type`.`id`"
             ." INNER JOIN `user` AS `user` ON material.`user_id` = `user`.`id`"
@@ -146,6 +153,7 @@ class Model_Material extends Model
             ." INNER JOIN `faculty` AS `faculty` ON kafedra.`faculty_id` = `faculty`.`id`"
             ." INNER JOIN `material_direction` AS `md` ON material.`material_direction_id` = `md`.`id`"
             ." INNER JOIN `material_status` AS `material_status` ON material_status.`id` = `material`.`status`"
+            . " LEFT JOIN `material_direction_dictionary` AS `mdd` ON mdd.`id` = `material`.`material_direction_dictionary_id`"
             ." WHERE material.`status` IN (1,5) AND `material`.`kafedra_id` = (SELECT kafedra_id FROM `user` WHERE id = ?)"
             ." UNION ALL"
             ." SELECT material.`id`"
@@ -165,6 +173,7 @@ class Model_Material extends Model
             ." ,material.`name_jurnal`"
             ." ,md.`name` AS direction"
             ." ,material.`url`"
+            ." ,mdd.`name` AS MD"
             ." FROM author "
             ." INNER JOIN `user` ON `user`.`author_id` = author.id "
             ." INNER JOIN `material_author` ON `material_author`.`author_id` = author.id"
@@ -174,6 +183,7 @@ class Model_Material extends Model
             ." INNER JOIN `faculty` ON kafedra.`faculty_id` = `faculty`.`id`"
             ." INNER JOIN `material_direction` AS `md` ON material.`material_direction_id` = `md`.`id`"
             ." INNER JOIN `material_status` ON material_status.`id` = `material`.`status`"
+            . " LEFT JOIN `material_direction_dictionary` AS `mdd` ON mdd.`id` = `material`.`material_direction_dictionary_id`"
             ." WHERE `user`.`id` = ?"
             ." ORDER BY `date_publish` DESC",
             [$user_id, $user_id]
@@ -249,6 +259,7 @@ class Model_Material extends Model
             . " ,`name_jurnal`"
             . " ,`url`"
             . " ,`material_direction_id`"
+            . " ,`material_direction_dictionary_id`"
             . " FROM `material` WHERE id=?", [$id])[0];
         return $result;
     }

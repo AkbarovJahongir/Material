@@ -99,7 +99,7 @@ if ($_SESSION["local"] == "ru") {
                                 <?php
                                 if (isset($data["direction_dictionary"])) {
                                     foreach ($data['direction_dictionary'] as $row) {
-                                    if ($row == $data["material"]["material_direction_dictionary_id"])
+                                    if ($row["id"] == $data["material"]["material_direction_dictionary_id"])
                                         echo "<option selected value='" . $row["id"] . "'>" . $row['name'] . "</option>";
                                     else
                                         echo "<option value='" . $row["id"] . "'>" . $row['name'] . "</option>";

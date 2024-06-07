@@ -73,6 +73,20 @@ class Model_Report extends Model
     {
         return $this->select("SELECT * FROM `kafedra` WHERE `faculty_id` = ?", [$faculty]);
     }
+    public function get_reportArticle($kafedra)
+{
+    $sql = "
+        SELECT u.name, COUNT(mdd.id)
+        FROM `user` AS u
+        INNER JOIN `material` AS m ON u.id = m.user_id
+        LEFT JOIN `material_direction_dictionary` AS mdd ON m.material_direction_dictionary_id = mdd.id
+        WHERE u.kafedra_id = ?
+        GROUP BY u.name
+    ";
+
+    return $this->select($sql, [$kafedra]);
+}
+
     public function get_dataFaculty(){
         return $this->select("SELECT f.`name`, COUNT(m.id) AS `count` FROM faculty f"
         ." LEFT JOIN kafedra k ON f.id = k.faculty_id"
