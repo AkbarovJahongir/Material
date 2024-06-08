@@ -87,6 +87,7 @@ $language = array(
     "RINSE" =>"РИНС",
     "international"=>"Международный",
     "republic"=>"Республиканский",
-    "total" =>"Общее количество"
+    "total" =>"Общее количество",    
+    "allReportsKafedra" => "Отчеты по кафедре"
 );
 ?>

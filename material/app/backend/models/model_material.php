@@ -4,7 +4,7 @@ class Model_Material extends Model
 
     public function get_materials()
     {
-        $result = $this->select("SELECT DISTINCT material.`id`"
+        $result = $this->select("SELECT material.`id`"
             . " ,material.`name`"
             . " ,`type`.`name` AS `type`"
             . " ,material.`language_id`"

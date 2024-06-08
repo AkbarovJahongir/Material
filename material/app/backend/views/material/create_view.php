@@ -283,10 +283,12 @@ if ($_SESSION["local"] == "ru") {
       $('input[name ="d_tel"]').val("");
       $('input[name ="d_passport"]').val("");
     }
-    if (this.value == 2 || this.value == 1) {
+    if (this.value == 1) {
       $("#directory").show();
+      document.getElementsByName("direction_dictionary")[0].disabled = false;
     } else {
       $("#directory").hide();
+      document.getElementsByName("direction_dictionary")[0].disabled = true;
     }
   });
 </script>

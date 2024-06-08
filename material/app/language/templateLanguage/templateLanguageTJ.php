@@ -27,6 +27,7 @@ $language = array(
     "direction" => "Самти навиштан",
     "allDirection" => "Ҳама самт",
     "place" => "Ҷои нашр",
-    "allPlace" => "Ҳама ҷойҳои нашр"
+    "allPlace" => "Ҳама ҷойҳои нашр",
+    "allReportsKafedra" => "Ҳисоботҳо аз рӯи шӯъба"
 );
 ?>

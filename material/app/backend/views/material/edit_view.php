@@ -93,7 +93,7 @@ if ($_SESSION["local"] == "ru") {
                     
                     <div class="form-group row" style="display: none;"id="directory">
                         <label class="control-label col-md-3"><?= $language_["typeofscientificmaterial"] ?>*:</label>
-                        <div class="col-md-6">
+                        <div class="col-md-6" style="display: inline-block">
                             <select name="direction_dictionary" class="form-control">
                                 <option value=''><?= $language_["selectTheTypeOfScientificMaterial"] ?></option>
                                 <?php
@@ -320,10 +320,12 @@ if ($_SESSION["local"] == "ru") {
       $('input[name ="d_tel"]').val("");
       $('input[name ="d_passport"]').val("");
     }
-    if (this.value == 2 || this.value == 1) {
+    if (this.value == 1) {
       $("#directory").show();
+      document.getElementsByName("direction_dictionary")[0].disabled = false;
     } else {
       $("#directory").hide();
+      document.getElementsByName("direction_dictionary")[0].disabled = true;
     }
   });
 </script>

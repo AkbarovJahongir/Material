@@ -27,6 +27,7 @@ $language = array(
     "direction" => "Тип направление",
     "allDirection" => "Все направление",
     "place" => "Место публикации",
-    "allPlace" => "Все места публикации"
+    "allPlace" => "Все места публикации",    
+    "allReportsKafedra" => "Отчеты по кафедре"
 );
 ?>
