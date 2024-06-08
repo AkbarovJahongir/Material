@@ -81,6 +81,12 @@ $language = array(
     "selectedUser" =>"Выбрать пользователя",
     "all" => "Все",
     "selectedFaculty" => "Выбрать факультет",
-    "article" => "Cтатья"
+    "article" => "Cтатья",
+    "KOA" => "KOA",
+    "SCOPUS" => "SCOPUS",
+    "RINSE" =>"РИНС",
+    "international"=>"Международный",
+    "republic"=>"Республиканский",
+    "total" =>"Общее количество"
 );
 ?>

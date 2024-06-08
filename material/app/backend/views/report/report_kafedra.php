@@ -17,7 +17,6 @@ if ($_SESSION["local"] == "ru") {
 
 	.cut-text {
 		max-width: 150px;
-		/* Set the maximum width you prefer */
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
@@ -59,7 +58,6 @@ if ($_SESSION["local"] == "ru") {
 											class="control-label col-md-2 text-right"><?= $language_["selectedKafedra"] ?>*:</label>
 										<div class="col-md-3">
 											<select name="kafedra" id="kafedra" class="form-control">
-												<!-- <option value='0'><?= $language_["all"] ?></option> -->
 												<?php
 												if (isset($data["kafedra"])) {
 													foreach ($data['kafedra'] as $row) {
@@ -76,19 +74,24 @@ if ($_SESSION["local"] == "ru") {
 												<tr>
 													<th>ID</th>
 													<th><?= $language_["name"] ?></th>
-													<th><?= $language_["authors"] ?></th>
+													<th><?= $language_["KOA"] ?></th>
+													<th><?= $language_["SCOPUS"] ?></th>
+													<th><?= $language_["RINSE"] ?></th>
+													<th><?= $language_["international"] ?></th>
+													<th><?= $language_["republic"] ?></th>
+													<th><?= $language_["total"] ?></th>
 												</tr>
 											</thead>
 											<tbody>
 
 											</tbody>
 										</table>
-									</div> <!-- End table-responsive -->
-								</div> <!-- End tile-body -->
-							</div> <!-- End tile -->
-						</div> <!-- End col-md-12 -->
-					</div> <!-- End row -->
-				</div> <!-- End dataTables_wrapper -->
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -138,23 +141,6 @@ if ($_SESSION["local"] == "ru") {
 				url: '<?= $_SESSION['local'] == 'tj' ? '/assets/json/tg.json' : '/assets/json/ru.json' ?>'
 			},
 		});
-		// $('#faculty').change(function() {
-		//     var facultyId = $(this).val();
-		//     $.ajax({
-		//         url: "/report/getKafedraByIdFaculty",
-		//         type: 'POST',
-		//         data: {faculty_id: facultyId},
-		//         success: function(response) {
-		//             var kafedraSelect = $('#kafedra');
-		//             kafedraSelect.empty();
-		//             kafedraSelect.append("<option value='0'><?= $language_["all"] ?></option>");
-		//             $.each(JSON.parse(response), function(index, kafedra) {
-		// 				console.log(kafedra);
-		//                 kafedraSelect.append("<option value='" + kafedra.id + "'>" + kafedra.name + "</option>");
-		//             });
-		//         }
-		//     });
-		// });
 		$('#faculty').change(function () {
 			var facultyId = $(this).val();
 			$.ajax({
@@ -196,9 +182,7 @@ if ($_SESSION["local"] == "ru") {
 				type: 'POST',
 				data: { kafedra_id: kafedraId },
 				success: function (response) {
-					//console.log("Raw response:", response);  // Log the raw response
-					var kafedraSelect = $('#kafedra');
-					kafedraSelect.append("<option value='0'><?= $language_["all"] ?></option>");
+					//kafedraSelect.empty();
 
 					if (typeof response === 'string') {
 						try {
@@ -210,11 +194,8 @@ if ($_SESSION["local"] == "ru") {
 					}
 
 					if (response.error) {
-						//alert(response.message);  // Display the error message
+						openModals(name);  // Display the error message
 					} else {
-						$.each(response, function (index, kafedra) {
-							kafedraSelect.append("<option value='" + kafedra.id + "'>" + kafedra.name + "</option>");
-						});
 						fillTable(response);
 					}
 				},
@@ -231,17 +212,22 @@ function fillTable(data) {
 
     $.each(data, function (index, user) {
         var row = '<tr>';
-        row += '<td>' + user.id + '</td>';
-        row += '<td>' + user.name + '</td>';
+        row += '<td class="cut-text">' + user.row_number + '</td>';
+        row += '<td class="cut-text"><a href="#" onclick="openModals(\'' + user.name + '\')" </a>'+ user.name +'</td>';
+        row += '<td class="cut-text">' + user.KOA + '</td>';
+        row += '<td class="cut-text">' + user.SCOPUS + '</td>';
+        row += '<td class="cut-text">' + user.РИНС + '</td>';
+        row += '<td class="cut-text">' + user.Байналмилалӣ + '</td>';
+        row += '<td class="cut-text">' + user.Чумхурияви + '</td>';
+        row += '<td class="cut-text">' + user.total_count + '</td>';
         row += '</tr>';
         tableBody.append(row);
     });
 }
 	$('#faculty').select2();
-	$('#kafedra').select2();
+	$('#kafedra').select2();  
 	function openModals(name) {
 		$('#description').val(name);
 		swal("", name, "");
-		//$('#myModals').modal('show');
 	}
 </script>

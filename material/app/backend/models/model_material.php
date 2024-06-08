@@ -4,7 +4,7 @@ class Model_Material extends Model
 
     public function get_materials()
     {
-        $result = $this->select("SELECT material.`id`"
+        $result = $this->select("SELECT DISTINCT material.`id`"
             . " ,material.`name`"
             . " ,`type`.`name` AS `type`"
             . " ,material.`language_id`"
@@ -35,7 +35,7 @@ class Model_Material extends Model
     public function get_materialByuserId($id, $user_id)
     {
         if ($id == 4) {
-            return $this->select("SELECT material.`id`"
+            return $this->select("SELECT DISTINCT material.`id`"
                 . " ,material.`name`"
                 . " ,`type`.`name` AS `type`"
                 . " ,material.`language_id`"
@@ -64,8 +64,9 @@ class Model_Material extends Model
                 . " LEFT JOIN `material_direction_dictionary` AS `mdd` ON mdd.`id` = `material`.`material_direction_dictionary_id`"
                 . " WHERE material.`status` = 2 "
                 . " ORDER BY material.`date_add` DESC");
-        } else if ($id == 1) {
-            return $this->select(" SELECT material.`id`"
+        } 
+        else if ($id == 1) {
+            return $this->select(" SELECT DISTINCT material.`id`"
             ." ,material.`name`"
             ." ,`type`.`name` AS `type`"
             ." ,material.`language_id`"
@@ -83,80 +84,22 @@ class Model_Material extends Model
             ." ,material.`url`"
             ." ,mdd.`name` AS MD"
             ." FROM `material` AS material"
-            ." INNER JOIN `type` AS `type` ON material.`type_id` = `type`.`id`"
-            ." INNER JOIN `user` AS `user` ON material.`user_id` = `user`.`id`"
-            ." INNER JOIN `kafedra` AS `kafedra` ON material.`kafedra_id` = `kafedra`.`id`"
-            ." INNER JOIN `faculty` AS `faculty` ON kafedra.`faculty_id` = `faculty`.`id`"
-            ." INNER JOIN `material_direction` AS `md` ON material.`material_direction_id` = `md`.`id`"
-            ." INNER JOIN `material_status` AS `material_status` ON material_status.`id` = `material`.`status`"
-            . " LEFT JOIN `material_direction_dictionary` AS `mdd` ON mdd.`id` = `material`.`material_direction_dictionary_id`"
-            ." WHERE `user`.`role_id` = ? AND material.`user_id` = ?"
-            
-            ." UNION ALL"
-            
-            ." SELECT material.`id`"
-            ." ,material.`name`"
-            ." ,`type`.`name` AS `type`"
-            ." ,material.`language_id`"
-            ." ,material.`date_publish`"
-            ." ,material.`pub_place_id`"
-            ." ,material.`count`"
-            ." ,material.`file_path`"
-            ." ,kafedra.`name` AS kafedra"
-            ." ,faculty.`name` AS faculty"
-            ." ,material_status.`desciption` AS `status`"
-            ." ,material.`comment`"
-            ." ,material.`conference_name`"
-            ." ,material.`name_jurnal`"
-            ." ,md.`name` AS direction"
-            ." ,material.`url`"
-            . " ,mdd.`name` AS MD"
-            ." FROM author "
-            ." INNER JOIN `user` ON `user`.`author_id` = author.id "
-            ." INNER JOIN `material_author` ON `material_author`.`author_id` = author.id"
-            ." INNER JOIN `material` ON `material`.`id` = `material_author`.`material_id`"
             ." INNER JOIN `type` ON material.`type_id` = `type`.`id`"
             ." INNER JOIN `kafedra` ON material.`kafedra_id` = `kafedra`.`id`"
             ." INNER JOIN `faculty` ON kafedra.`faculty_id` = `faculty`.`id`"
             ." INNER JOIN `material_direction` AS `md` ON material.`material_direction_id` = `md`.`id`"
-            ." INNER JOIN `material_status` ON material_status.`id` = `material`.`status`"
-                . " LEFT JOIN `material_direction_dictionary` AS `mdd` ON mdd.`id` = `material`.`material_direction_dictionary_id`"
-            ." WHERE `user`.`role_id` = ? AND `user`.`id` = ?"
-            
+            ." INNER JOIN `material_status` ON material_status.`id` = material.`status`"
+            ." LEFT JOIN `material_direction_dictionary` AS `mdd` ON mdd.`id` = material.`material_direction_dictionary_id`"
+            ." INNER JOIN `user` ON `material`.`user_id` = user.id"
+            ." INNER JOIN material_author ON material.id = material_author.material_id"
+            ." INNER JOIN author ON material_author.author_id = author.id"
+            ." WHERE `user`.`role_id` = ? AND material.`user_id` = ?"
             ." ORDER BY `date_publish` DESC", 
-                [$id, $user_id, $id, $user_id]);
+                [$id, $user_id]);
         }
 
         return $this->select(
-            " SELECT material.`id`"
-            ." ,material.`name`"
-            ." ,`type`.`name` AS `type`"
-            ." ,material.`language_id`"
-            ." ,DATE_FORMAT(material.`date_publish`, \"%d/%m/%Y\") AS `date_publish`"
-            ." ,material.`pub_place_id`"
-            ." ,material.`count`"
-            ." ,material.`file_path`"
-            ." ,kafedra.`name` AS kafedra"
-            ." ,faculty.`name` AS faculty"
-            ." ,material.`status` AS status_id"
-            ." ,material_status.`desciption` AS `status`"
-            ." ,material.`comment`"
-            ." ,material.`conference_name`"
-            ." ,material.`name_jurnal`"
-            ." ,md.`name` AS direction"
-            ." ,material.`url`"
-            . " ,mdd.`name` AS MD"
-            ." FROM `material` AS material"
-            ." INNER JOIN `type` AS `type` ON material.`type_id` = `type`.`id`"
-            ." INNER JOIN `user` AS `user` ON material.`user_id` = `user`.`id`"
-            ." INNER JOIN `kafedra` AS `kafedra` ON material.`kafedra_id` = `kafedra`.`id`"
-            ." INNER JOIN `faculty` AS `faculty` ON kafedra.`faculty_id` = `faculty`.`id`"
-            ." INNER JOIN `material_direction` AS `md` ON material.`material_direction_id` = `md`.`id`"
-            ." INNER JOIN `material_status` AS `material_status` ON material_status.`id` = `material`.`status`"
-            . " LEFT JOIN `material_direction_dictionary` AS `mdd` ON mdd.`id` = `material`.`material_direction_dictionary_id`"
-            ." WHERE material.`status` IN (1,5) AND `material`.`kafedra_id` = (SELECT kafedra_id FROM `user` WHERE id = ?)"
-            ." UNION ALL"
-            ." SELECT material.`id`"
+            " SELECT DISTINCT material.`id`"
             ." ,material.`name`"
             ." ,`type`.`name` AS `type`"
             ." ,material.`language_id`"
@@ -174,19 +117,19 @@ class Model_Material extends Model
             ." ,md.`name` AS direction"
             ." ,material.`url`"
             ." ,mdd.`name` AS MD"
-            ." FROM author "
-            ." INNER JOIN `user` ON `user`.`author_id` = author.id "
-            ." INNER JOIN `material_author` ON `material_author`.`author_id` = author.id"
-            ." INNER JOIN `material` ON `material`.`id` = `material_author`.`material_id`"
+            ." FROM `material` AS material"
             ." INNER JOIN `type` ON material.`type_id` = `type`.`id`"
             ." INNER JOIN `kafedra` ON material.`kafedra_id` = `kafedra`.`id`"
             ." INNER JOIN `faculty` ON kafedra.`faculty_id` = `faculty`.`id`"
             ." INNER JOIN `material_direction` AS `md` ON material.`material_direction_id` = `md`.`id`"
-            ." INNER JOIN `material_status` ON material_status.`id` = `material`.`status`"
-            . " LEFT JOIN `material_direction_dictionary` AS `mdd` ON mdd.`id` = `material`.`material_direction_dictionary_id`"
-            ." WHERE `user`.`id` = ?"
+            ." INNER JOIN `material_status` ON material_status.`id` = material.`status`"
+            ." LEFT JOIN `material_direction_dictionary` AS `mdd` ON mdd.`id` = material.`material_direction_dictionary_id`"
+            ." INNER JOIN `user` ON `material`.`user_id` = user.id"
+            ." INNER JOIN material_author ON material.id = material_author.material_id"
+            ." INNER JOIN author ON material_author.author_id = author.id"
+            ." WHERE material.`status` IN (1,5) AND `material`.`kafedra_id` = (SELECT kafedra_id FROM `user` WHERE id = ?)"
             ." ORDER BY `date_publish` DESC",
-            [$user_id, $user_id]
+            [$user_id]
         );
         
     }
@@ -272,7 +215,7 @@ class Model_Material extends Model
                 //echo $kafedra_id;
                 $id = $this->insert_get_id(
                     "INSERT INTO `material` SET `name`=?,`type_id`=?,`language_id`=?,"
-                    . "`date_publish`=?,`pub_place_id`=?,`count`=?,`user_id`=?,`file_path`=?,`kafedra_id`=?, `conference_name`=?, `name_jurnal`=?, `url`=?, `material_direction_id`=?,`material_direction_dictionary`=?",
+                    . "`date_publish`=?,`pub_place_id`=?,`count`=?,`user_id`=?,`file_path`=?,`kafedra_id`=?, `conference_name`=?, `name_jurnal`=?, `url`=?, `material_direction_id`=?,`material_direction_dictionary_id`=?",
                     [$name, $type_id, $language_id, $date_publish, $pub_place_id, $count, $this->user_id, $unique_filename, $kafedra_id, $nameOfTheConference, $namejurnal, $url, $direction, $direction_dictionary]
                 );
                 if ($id) {
@@ -310,7 +253,7 @@ class Model_Material extends Model
             . " ,`name_jurnal`=?"
             . " ,`url`=?"
             . " ,`material_direction_id`=?"
-            . " ,`material_direction_dictionary`=?"
+            . " ,`material_direction_dictionary_id`=?"
             . " ,`status` = 1 WHERE id=?",
             [
                 $name,

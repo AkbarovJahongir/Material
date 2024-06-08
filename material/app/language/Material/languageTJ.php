@@ -82,6 +82,12 @@ $language  = array(
  "selectedUser" =>"Истифодабаранда интихоб кунед",
     "all" => "Ҳама",
     "selectedFaculty" => "Факултетро интихоб кунед",
-    "article" => "Мақола"
+    "article" => "Мақола",
+    "KOA" => "KOA",
+ "SCOPUS" => "SCOPUS",
+ "RINSE" =>"РИНС",
+ "international"=>"Байналмилалӣ",
+ "republic"=>"Ҷумҳуриявӣ",
+ "total" =>"Миқдори умумӣ"
 );
 ?>

@@ -31,7 +31,7 @@ class Model_Report extends Model
     public function get_materials()
     {
         $result = $this->select(
-            " SELECT material.`id`"
+            " SELECT DISTINCT material.`id`"
             ." ,material.`name`"
             ." ,`type`.`name` AS `type`"
             ." ,material.`language_id`"
@@ -74,18 +74,45 @@ class Model_Report extends Model
         return $this->select("SELECT * FROM `kafedra` WHERE `faculty_id` = ?", [$faculty]);
     }
     public function get_reportArticle($kafedra)
-{
-    $sql = "
-        SELECT u.name, COUNT(mdd.id)
-        FROM `user` AS u
-        INNER JOIN `material` AS m ON u.id = m.user_id
-        LEFT JOIN `material_direction_dictionary` AS mdd ON m.material_direction_dictionary_id = mdd.id
-        WHERE u.kafedra_id = ?
-        GROUP BY u.name
-    ";
+    {
+        // Step 1: Fetch distinct direction names
+        $directionSql = "SELECT DISTINCT name FROM material_direction_dictionary";
+        $directions = $this->select($directionSql);
+    
+        // Step 2: Construct the pivot part of the query
+        $pivotSqlParts = [];
+        foreach ($directions as $direction) {
+            $directionName = $direction['name'];
+            $pivotSqlParts[] = "SUM(CASE WHEN mdd.name = '$directionName' THEN 1 ELSE 0 END) AS `$directionName`";
+        }
+        $pivotSql = implode(", ", $pivotSqlParts);
+    
+        // Step 3: Construct the full SQL query with ROW_NUMBER() using a subquery
+        $sql = "
+            SELECT 
+                subquery.name,
+                subquery.`row_number`,
+                subquery.`total_count`,
+                subquery.`" . implode("`, subquery.`", array_column($directions, 'name')) . "`
+            FROM (
+                SELECT 
+                    u.name,
+                    $pivotSql,
+                    COUNT(mdd.id) AS total_count,
+                    ROW_NUMBER() OVER (ORDER BY u.name) AS `row_number`
+                FROM `user` AS u
+                INNER JOIN `material` AS m ON u.id = m.user_id
+                LEFT JOIN `material_direction_dictionary` AS mdd ON m.material_direction_dictionary_id = mdd.id
+                WHERE u.kafedra_id = ?
+                GROUP BY u.name
+            ) AS subquery
+        ";
+    
+        // Step 4: Execute the query with the provided kafedra_id
+        return $this->select($sql, [$kafedra]);
+    }
+    
 
-    return $this->select($sql, [$kafedra]);
-}
 
     public function get_dataFaculty(){
         return $this->select("SELECT f.`name`, COUNT(m.id) AS `count` FROM faculty f"

@@ -37,22 +37,22 @@ if ($_SESSION["local"] == "ru") {
                                 <div class="tile-body">
                                     <table class="table table-hover table-bordered" id="sampleTable">
                                         <thead>
-                                        <tr>
-                                            <th><?= $language_["type"] ?></th>
-                                            <th><?= $language_["action"] ?></th>
-                                        </tr>
+                                            <tr>
+                                                <th><?= $language_["type"] ?></th>
+                                                <th><?= $language_["action"] ?></th>
+                                            </tr>
                                         </thead>
                                         <tbody>
-                                        <?php foreach ($data['type'] as $type) : ?>
-                                            <tr>
-                                                <td><?= $type['name'] ?></td>
-                                                <td>
-                                                    <div class="btn-group">
-                                                    <a onclick="openModals(<?= $type['id'] ?>)" class="btn btn-primary btn-sm"><i class="fa fa-lg fa-edit"></i> <?= $language_["change"] ?></a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        <?php endforeach; ?>
+                                            <?php foreach ($data['type'] as $type) : ?>
+                                                <tr>
+                                                    <td><?= $type['name'] ?></td>
+                                                    <td>
+                                                        <div class="btn-group">
+                                                            <a onclick="openModals(<?= $type['id'] ?>)" class="btn btn-primary btn-sm"><i class="fa fa-lg fa-edit"></i> <?= $language_["change"] ?></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; ?>
                                         </tbody>
                                     </table>
                                 </div>
