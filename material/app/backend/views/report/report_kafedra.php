@@ -83,7 +83,6 @@ if ($_SESSION["local"] == "ru") {
 												</tr>
 											</thead>
 											<tbody>
-
 											</tbody>
 										</table>
 									</div>
@@ -99,8 +98,6 @@ if ($_SESSION["local"] == "ru") {
 <script type="text/javascript" src="/assets/js/plugins/select2.min.js"></script>
 <script type="text/javascript" src="/assets/js/plugins/sweetalert.min.js"></script>
 <script type="text/javascript">
-
-
 function getFormattedDateTime() {
 	var now = new Date();
 	var year = now.getFullYear();
@@ -113,7 +110,7 @@ function getFormattedDateTime() {
 }
 
 $(document).ready(function () {
-	$dtTable=$('#sampleTable').DataTable({
+	var $dtTable = $('#sampleTable').DataTable({
 		dom: 'lBfrtip',
 		buttons: [
 			{
@@ -143,6 +140,7 @@ $(document).ready(function () {
 			url: '<?= $_SESSION['local'] == 'tj' ? '/assets/json/tg.json' : '/assets/json/ru.json' ?>'
 		},
 	});
+
 	$('#faculty').change(function () {
 		var facultyId = $(this).val();
 		$.ajax({
@@ -197,7 +195,6 @@ $(document).ready(function () {
 					openModals(response.message);  // Display the error message
 				} else {
 					fillTable(response);
-					//dtTable.button('.buttons-pdf').trigger();
 				}
 			},
 			error: function (xhr, status, error) {
@@ -206,52 +203,30 @@ $(document).ready(function () {
 		});
 	});
 
-	
+	$('#faculty, #kafedra').select2();
 
-	$('#faculty').select2();
-	$('#kafedra').select2();
-	
+	function fillTable(data) {
+		var $table = $('#sampleTable').DataTable();  // Assuming you're using DataTables
+		$table.clear();  // Clear existing data
+
+		// Loop through the data and add rows to the table
+		data.forEach(function (user) {
+			var row = [
+				user.row_number,
+				'<a href="#" onclick="openModals(\'' + user.name + '\')">' + user.name + '</a>',
+				user.KOA,
+				user.SCOPUS,
+				user.РИНС,
+				user.Байналмилалӣ,
+				user.Чумхуриявӣ,
+				user.total_count
+			];
+			$table.row.add(row).draw(false);
+		});
+	}
+
+	function openModals(name) {
+		swal("", name, "");
+	}
 });
-function fillTable(data) {
-    var $table = $('#sampleTable').DataTable();  // Assuming you're using DataTables
-    $table.clear();  // Clear existing data
-
-    // Loop through the data and add rows to the table
-    data.forEach(function (user) {
-        var row = [
-            user.row_number,
-            '<a href="#" onclick="openModals(\'' + user.name + '\')">' + user.name + '</a>',
-            user.KOA,
-            user.SCOPUS,
-            user.РИНС,
-            user.Байналмилалӣ,
-            user.Чумхурияви,
-            user.total_count
-        ];
-        $table.row.add(row).draw(false);
-    });
-}
-
-// function fillTable(data) {
-//     var tableBody = $('#sampleTable tbody');
-//     tableBody.empty();  // Clear the table body
-
-//     $.each(data, function (index, user) {
-//         var row = '<tr>';
-//         row += '<td class="cut-text">' + user.row_number + '</td>';
-//         row += '<td class="cut-text"><a href="#" onclick="openModals(\'' + user.name + '\')">' + user.name + '</a></td>';
-//         row += '<td class="cut-text">' + user.KOA + '</td>';
-//         row += '<td class="cut-text">' + user.SCOPUS + '</td>';
-//         row += '<td class="cut-text">' + user.РИНС + '</td>';
-//         row += '<td class="cut-text">' + user.Байналмилалӣ + '</td>';
-//         row += '<td class="cut-text">' + user.Чумхурияви + '</td>';
-//         row += '<td class="cut-text">' + user.total_count + '</td>';
-//         row += '</tr>';
-//         tableBody.append(row);
-//     });
-	
-// }
-function openModals(name) {
-	swal("", name, "");
-}
 </script>

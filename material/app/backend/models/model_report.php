@@ -65,7 +65,7 @@ class Model_Report extends Model
     public function get_facultys()
     {
         $result = $this->select(
-            "SELECT `id`, `name` FROM `faculty` WHERE `name` <> 'Барои илова' ORDER BY `date_add` DESC"
+            "SELECT `id`, `name` FROM `faculty` ORDER BY `date_add` DESC"
         );
         return $result;
     }
@@ -73,44 +73,45 @@ class Model_Report extends Model
     {
         return $this->select("SELECT * FROM `kafedra` WHERE `faculty_id` = ?", [$faculty]);
     }
-    public function get_reportArticle($kafedra)
-    {
-        // Step 1: Fetch distinct direction names
-        $directionSql = "SELECT DISTINCT name FROM material_direction_dictionary";
-        $directions = $this->select($directionSql);
-    
-        // Step 2: Construct the pivot part of the query
-        $pivotSqlParts = [];
-        foreach ($directions as $direction) {
-            $directionName = $direction['name'];
-            $pivotSqlParts[] = "SUM(CASE WHEN mdd.name = '$directionName' THEN 1 ELSE 0 END) AS `$directionName`";
-        }
-        $pivotSql = implode(", ", $pivotSqlParts);
-    
-        // Step 3: Construct the full SQL query with ROW_NUMBER() using a subquery
-        $sql = "
-            SELECT 
-                subquery.name,
-                subquery.`row_number`,
-                subquery.`total_count`,
-                subquery.`" . implode("`, subquery.`", array_column($directions, 'name')) . "`
-            FROM (
-                SELECT 
-                    u.name,
-                    $pivotSql,
-                    COUNT(mdd.id) AS total_count,
-                    ROW_NUMBER() OVER (ORDER BY u.name) AS `row_number`
-                FROM `user` AS u
-                INNER JOIN `material` AS m ON u.id = m.user_id
-                LEFT JOIN `material_direction_dictionary` AS mdd ON m.material_direction_dictionary_id = mdd.id
-                WHERE u.kafedra_id = ?
-                GROUP BY u.name
-            ) AS subquery
-        ";
-    
-        // Step 4: Execute the query with the provided kafedra_id
-        return $this->select($sql, [$kafedra]);
+   public function get_reportArticle($kafedra)
+{
+    // Step 1: Fetch distinct direction names
+    $directionSql = "SELECT DISTINCT name FROM material_direction_dictionary";
+    $directions = $this->select($directionSql);
+
+    // Step 2: Construct the pivot part of the query
+    $pivotSqlParts = [];
+    foreach ($directions as $direction) {
+        $directionName = $direction['name'];
+        $pivotSqlParts[] = "SUM(CASE WHEN mdd.name = '$directionName' THEN 1 ELSE 0 END) AS `$directionName`";
     }
+    $pivotSql = implode(", ", $pivotSqlParts);
+
+    // Step 3: Construct the full SQL query without ROW_NUMBER()
+    $sql = "
+        SELECT 
+            u.name,
+            $pivotSql,
+            COUNT(mdd.id) AS total_count
+        FROM `user` AS u
+        INNER JOIN `material` AS m ON u.id = m.user_id
+        LEFT JOIN `material_direction_dictionary` AS mdd ON m.material_direction_dictionary_id = mdd.id
+        WHERE u.kafedra_id = ?
+        GROUP BY u.name
+        ORDER BY u.name
+    ";
+
+    // Step 4: Execute the query with the provided kafedra_id
+    $results = $this->select($sql, [$kafedra]);
+
+    // Step 5: Add row numbers in PHP
+    foreach ($results as $index => $row) {
+        $results[$index]['row_number'] = $index + 1;
+    }
+
+    return $results;
+}
+
     
 
 
@@ -118,7 +119,7 @@ class Model_Report extends Model
         return $this->select("SELECT f.`name`, COUNT(m.id) AS `count` FROM faculty f"
         ." LEFT JOIN kafedra k ON f.id = k.faculty_id"
         ." LEFT JOIN `material` m ON m.kafedra_id = k.id"
-        . " WHERE f.`name` <> 'Барои илова'"
+       
         ." GROUP BY f.`name`");
     }
     public function getFacultyByYear(){

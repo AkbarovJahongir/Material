@@ -57,7 +57,6 @@ if ($_SESSION["local"] == "ru") {
 													<th><?= $language_["name"] ?></th>
 													<th><?= $language_["authors"] ?></th>
 													<th><?= $language_["typeOfScientific"] ?></th>
-													<th><?= $language_["article"] ?></th>
 													<th><?= $language_["conferenceTitle"] ?></th>
 													<th><?= $language_["magazineName"] ?></th>
 													<th><?= $language_["directionOfScientificMaterial"] ?></th>
@@ -99,7 +98,7 @@ if ($_SESSION["local"] == "ru") {
 														</td>
 
 														<td><?= $material['type'] ?></td>
-														<td><?= $material['MD'] ?></td>
+
 														<td class="material-cell"data-name="<?= $material['conference_name'] ?>">
 															<?php
 															$name = htmlspecialchars($material['conference_name'], ENT_QUOTES, 'UTF-8');
