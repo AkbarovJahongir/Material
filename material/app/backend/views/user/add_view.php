@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $language_ = [];
 if ($_SESSION["local"] == "ru") {
     $language_ = [];

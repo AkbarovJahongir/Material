@@ -35,6 +35,8 @@ if ($_SESSION["local"] == "ru") {
                         <div class="col-md-12">
                             <div class="tile">
                                 <div class="tile-body">
+                                <div class="form-group row">
+                                <div class="table-responsive">
                                     <table class="table table-hover table-bordered" id="sampleTable">
                                         <thead>
                                             <tr>
@@ -55,6 +57,8 @@ if ($_SESSION["local"] == "ru") {
                                             <?php endforeach; ?>
                                         </tbody>
                                     </table>
+                                    </div>
+                                </div>
                                 </div>
                             </div>
                         </div>

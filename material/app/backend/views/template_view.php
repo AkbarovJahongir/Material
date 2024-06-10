@@ -191,7 +191,21 @@ if ($_SESSION["local"] == "ru") {
                             <ul class="treeview-menu">
                                 <li><a class="treeview-item" href="/material/get"><i class="icon fa fa-circle-o"></i> '.$language_["allScientificMaterials"].'</a></li>
                                 <li><a class="treeview-item" href="/material/add"><i class="icon fa fa-circle-o"></i> '.$language_["addNew"].'</a></li>
-                     ';
+                            </ul>
+                        </li>
+                        <li class="treeview"><a class="app-menu__item <?= $author_active ?>" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-pencil"></i><span class="app-menu__label">'.$language_["authors (Teachers)"].'</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+                        <ul class="treeview-menu">
+                            <li><a class="treeview-item" href="/author"><i class="icon fa fa-circle-o"></i> '.$language_["allAuthors"].'</a></li>
+                            <li><a class="treeview-item" href="/author/add"><i class="icon fa fa-circle-o"></i> '.$language_["addNew"].'</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview"><a class="app-menu__item <?= $place_active ?>" href="#" data-toggle="treeview"><i class="app-menu__icon bi bi-map"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-map" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M15.817.113A.5.5 0 0 1 16 .5v14a.5.5 0 0 1-.402.49l-5 1a.5.5 0 0 1-.196 0L5.5 15.01l-4.902.98A.5.5 0 0 1 0 15.5v-14a.5.5 0 0 1 .402-.49l5-1a.5.5 0 0 1 .196 0L10.5.99l4.902-.98a.5.5 0 0 1 .415.103M10 1.91l-4-.8v12.98l4 .8zm1 12.98 4-.8V1.11l-4 .8zm-6-.8V1.11l-4 .8v12.98z"/>
+</svg></i><span class="app-menu__label">'.$language_["place"].'</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+                        <ul class="treeview-menu">
+                            <li><a class="treeview-item" href="/place"><i class="icon fa fa-circle-o"></i> '.$language_["allPlace"].'</a></li>
+                        </ul> 
+                    </li>';
             }
             ?>
         </ul>

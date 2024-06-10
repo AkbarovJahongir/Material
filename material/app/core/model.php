@@ -9,8 +9,8 @@ class Model{
 	function __construct(){
 		try {
 		  $this->pdo = new PDO(
-		    "mysql:host=localhost;dbname=razokol7_akbaror;charset=utf8",
-		    "razokol7_akbaror", "5jXM%61t", [
+		    "mysql:host=localhost;dbname=material;charset=utf8",
+		    "root", "", [
 		      PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
 		      PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
 		      PDO::ATTR_EMULATE_PREPARES => false,
