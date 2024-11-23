@@ -35,7 +35,7 @@ class Model_Material extends Model
     public function get_materialByuserId($id, $user_id)
     {
         if ($id == 4) {
-            return $this->select("SELECT DISTINCT material.`id`"
+            return $this->select("SELECT DISTINCT  material.`id`"
                 . " ,material.`name`"
                 . " ,`type`.`name` AS `type`"
                 . " ,material.`language_id`"
@@ -62,8 +62,7 @@ class Model_Material extends Model
                 . " INNER JOIN `material_direction` AS `md` ON material.`material_direction_id` = `md`.`id`"
                 . " INNER JOIN `material_status` AS `material_status` ON material_status.`id` = `material`.`status`"
                 . " LEFT JOIN `material_direction_dictionary` AS `mdd` ON mdd.`id` = `material`.`material_direction_dictionary_id`"
-                . " WHERE material.`status` = 2 "
-                . " ORDER BY material.`date_add` DESC");
+                . " WHERE material.`status` = 2 ");
         } 
         else if ($id == 1) {
             return $this->select(" SELECT DISTINCT material.`id`"
@@ -93,8 +92,7 @@ class Model_Material extends Model
             ." INNER JOIN `user` ON `material`.`user_id` = user.id"
             ." INNER JOIN material_author ON material.id = material_author.material_id"
             ." INNER JOIN author ON material_author.author_id = author.id"
-            ." WHERE `user`.`role_id` = ? AND material.`user_id` = ?"
-            ." ORDER BY `date_publish` DESC", 
+            ." WHERE `user`.`role_id` = ? AND material.`user_id` = ?", 
                 [$id, $user_id]);
         }
 
@@ -127,8 +125,7 @@ class Model_Material extends Model
             ." INNER JOIN `user` ON `material`.`user_id` = user.id"
             ." INNER JOIN material_author ON material.id = material_author.material_id"
             ." INNER JOIN author ON material_author.author_id = author.id"
-            ." WHERE material.`status` IN (1,5) AND `material`.`kafedra_id` = (SELECT kafedra_id FROM `user` WHERE id = ?)"
-            ." ORDER BY `date_publish` DESC",
+            ." WHERE material.`status` IN (1,5) AND `material`.`kafedra_id` = (SELECT kafedra_id FROM `user` WHERE id = ?)",
             [$user_id]
         );
         

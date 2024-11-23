@@ -33,7 +33,7 @@ class Controller_Place extends Controller
     {
         $user_role = $_SESSION["uid"]["role_id"];
 
-        if ($user_role != 3 && $user_role != 1) {
+        if ($user_role != 3) {
             $result = ["error" => 1, "message" => $this->language_["erroraccessMessageAddAll"]];
         } else {
             if (isset ($_POST["place"])) {

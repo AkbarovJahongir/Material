@@ -311,7 +311,7 @@ if ($_SESSION["local"] == "ru") {
     document.getElementById("select_directory").addEventListener("change", checkSelectedValue);
     });
     $("#select_directory").on('change', function () {
-    if (this.value == 1) {
+    if (this.value == 9) {
       $("#deliver_block").css("display", "block");
       $('input[name ="d_sms"]').prop('checked', true);
     } else {
@@ -320,7 +320,7 @@ if ($_SESSION["local"] == "ru") {
       $('input[name ="d_tel"]').val("");
       $('input[name ="d_passport"]').val("");
     }
-    if (this.value == 1) {
+    if (this.value == 9) {
       $("#directory").show();
       document.getElementsByName("direction_dictionary")[0].disabled = false;
     } else {
